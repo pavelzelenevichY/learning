@@ -1,0 +1,48 @@
+<?php
+/**
+ * Codifi_Training
+ *
+ * @copyright   Copyright (c) 2021 Codifi
+ * @author      Pavel Zelenevich <pzelenevich@codifi.me>
+ */
+
+/**
+ * @var Codifi\Training\Block\Account\Dashboard\CreditHold $block
+ */
+?>
+<?php if ($block->checkForOneTimeDemoMessage()): ?>
+    <div class="confirmation-modal-content">
+        <p><?= $block->escapeHtml($block->getMessage()) ?></p>
+    </div>
+    <script>
+        require([
+            'jquery',
+            'Magento_Ui/js/modal/confirm'
+        ], function ($) {
+            'use strict';
+
+            $('.confirmation-modal-content').confirm({
+                actions: {
+                    always: function() {
+                        $.ajax({
+                            type: "POST",
+                            url: '<?= $block->escapeJs($block->getSaveUrl()) ?>',
+                            data: {
+                                'note': $.mage.__('Customer is notified about credit hold.'),
+                                'customer_id': '<?= $block->escapeJs($block->getCustomerId()) ?>'
+                            },
+                            success: function(data){}
+                        });
+                    }
+                },
+                buttons: [{
+                    text: $.mage.__('OK'),
+                    class: 'action primary action-accept',
+                    click: function (event) {
+                        this.closeModal(event, true);
+                    }
+                }]
+            });
+        });
+    </script>
+<?php endif; ?>

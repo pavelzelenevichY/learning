@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Codifi_Training
+ *
+ * @copyright   Copyright (c) 2021 Codifi
+ * @author      Pavel Zelenevich <pzelenevich@codifi.me>
+ */
+ -->
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="customer_note" resource="default" engine="innodb" comment="Customer note table">
+        <column xsi:type="int" name="note_id" padding="10" unsigned="true" nullable="false" identity="true" comment="Note Id"/>
+        <column xsi:type="int" name="customer_id" padding="10" unsigned="true" nullable="false" comment="Customer id"/>
+        <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created at"/>
+        <column xsi:type="int" name="created_by" padding="10" unsigned="true" nullable="true" comment="Created by"/>
+        <column xsi:type="text" name="note" nullable="false" comment="note"/>
+        <column xsi:type="timestamp" name="updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP" comment="Updated at"/>
+        <column xsi:type="int" name="updated_by" padding="10" unsigned="true" nullable="true" comment="Updated by"/>
+        <column xsi:type="smallint" name="autocomplete" padding="10" unsigned="true" nullable="false" default="0" comment="Autocomplete"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="note_id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="CUSTOMER_NOTE_CUSTOMER_ID_CUSTOMER_ENTITY_ENTITY_ID" table="customer_note" column="customer_id" referenceTable="customer_entity" referenceColumn="entity_id" onDelete="CASCADE"/>
+    </table>
+</schema>

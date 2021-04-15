@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Codifi_Training
+ *
+ * @copyright   Copyright (c) 2021 Codifi
+ * @author      Pavel Zelenevich <pzelenevich@codifi.me>
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-2columns-left"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="after.body.start">
+            <block class="Codifi\Training\Block\Adminhtml\Edit\Tab\View\PersonalInfo" name="codifi.training.layout.personalinfo" template="Codifi_Training::tab/view/personal_info.phtml"/>
+        </referenceContainer>
+    </body>
+</page>

@@ -1,0 +1,92 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Codifi_Training
+ *
+ * @copyright   Copyright (c) 2021 Codifi
+ * @author      Pavel Zelenevich <pzelenevich@codifi.me>
+ */
+-->
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <fieldset name="customer_notes">
+        <settings>
+            <label translate="true">Account Notes</label>
+        </settings>
+        <button name="customer_note_form_modal_button" component="Magento_Ui/js/form/components/button">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="buttonClasses" xsi:type="string">open-customer-note-form-modal-button</item>
+                    <item name="actions" xsi:type="array">
+                        <item name="0" xsi:type="array">
+                            <item name="targetName" xsi:type="string">${ $.parentName}.customer_note_form_modal.customer_note_form_loader</item>
+                            <item name="actionName" xsi:type="string">destroyInserted</item>
+                        </item>
+                        <item name="1" xsi:type="array">
+                            <item name="targetName" xsi:type="string">${ $.parentName}.customer_note_form_modal</item>
+                            <item name="actionName" xsi:type="string">openModal</item>
+                        </item>
+                        <item name="2" xsi:type="array">
+                            <item name="targetName" xsi:type="string">${ $.parentName}.customer_note_form_modal.customer_note_form_loader</item>
+                            <item name="actionName" xsi:type="string">render</item>
+                        </item>
+                    </item>
+                </item>
+            </argument>
+            <settings>
+                <title translate="true">Add New Note</title>
+            </settings>
+        </button>
+        <modal name="customer_note_form_modal">
+            <settings>
+                <options>
+                    <option name="title" xsi:type="string">Note Form Modal</option>
+                    <option name="buttons" xsi:type="array">
+                            <item name="0" xsi:type="array">
+                                <item name="text" xsi:type="string" translate="true">Cancel</item>
+                                <item name="actions" xsi:type="array">
+                                    <item name="0" xsi:type="string">closeModal</item>
+                                </item>
+                            </item>
+                            <item name="1" xsi:type="array">
+                                <item name="text" xsi:type="string" translate="true">Save</item>
+                                <item name="class" xsi:type="string">action-primary</item>
+                                <item name="actions" xsi:type="array">
+                                    <item name="0" xsi:type="array">
+                                        <item name="targetName" xsi:type="string">index = customer_note_form</item>
+                                        <item name="actionName" xsi:type="string">save</item>
+                                    </item>
+                                    <item name="1" xsi:type="string">closeModal</item>
+                                </item>
+                            </item>
+                        </option>
+                    </options>
+            </settings>
+            <insertForm name="customer_note_form_loader" component="Codifi_Training/js/form/components/insert-form">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="noteListingProvider" xsi:type="string">index = customer_note_listing_data_source</item>
+                     </item>
+                </argument>
+                <settings>
+                    <formSubmitType>ajax</formSubmitType>
+                    <renderUrl path="mui/index/render">
+                        <param name="handle">customer_note_form</param>
+                        <param name="buttons">1</param>
+                    </renderUrl>
+                    <loading>true</loading>
+                    <externalProvider>${ $.ns }.customer_note_form_data_source</externalProvider>
+                    <ns>customer_note_form</ns>
+                </settings>
+            </insertForm>
+        </modal>
+        <insertListing name="customer_note_listing">
+            <settings>
+                <autoRender>true</autoRender>
+                <selectionsProvider>customer_note_listing.customer_note_listing.columns.ids</selectionsProvider>
+                <dataScope>customer_note_listing</dataScope>
+                <ns>customer_note_listing</ns>
+            </settings>
+        </insertListing>
+    </fieldset>
+</form>
+

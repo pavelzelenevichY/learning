@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Codifi_Training
+ *
+ * @copyright   Copyright (c) 2021 Codifi
+ * @author      Pavel Zelenevich <pzelenevich@codifi.me>
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <codifi>
+            <credit_hold>
+                <active>1</active>
+                <message>This account is on credit hold.</message>
+            </credit_hold>
+        </codifi>
+    </default>
+</config>
