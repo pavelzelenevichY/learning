@@ -11,17 +11,17 @@ namespace Codifi\Sales\Model\Source;
 use Magento\Eav\Model\Entity\Attribute\Source\AbstractSource;
 
 /**
- * Class OrderTypeSelect
+ * Class OrderType
  * @package Codifi\Sales\Model\Source
  */
-class OrderTypeSelect extends AbstractSource
+class OrderType extends AbstractSource
 {
     /**
      * Get all options.
      *
      * @return array
      */
-    public function getAllOptions() : array
+    public function getAllOptions(): array
     {
         if (null === $this->_options) {
             $this->_options = [

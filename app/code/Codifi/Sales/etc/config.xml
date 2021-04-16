@@ -11,7 +11,7 @@
     <default>
         <codifi>
             <order>
-                <order>REGULAR</order>
+                <order_type>REGULAR</order_type>
             </order>
         </codifi>
     </default>
