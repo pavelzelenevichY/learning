@@ -21,6 +21,20 @@
             <argument name="backendSession" xsi:type="object">Magento\Backend\Model\Session\Proxy</argument>
         </arguments>
     </type>
+    <virtualType name="updateAttributeApiLogger" type="Magento\Framework\Logger\Monolog">
+        <arguments>
+            <argument name="handlers"  xsi:type="array">
+                <item name="error" xsi:type="object">Codifi\Training\Logger\Handler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Codifi\Training\Model\CreditHoldAttributeManagement">
+        <arguments>
+            <argument name="logger" xsi:type="object">updateAttributeApiLogger</argument>
+        </arguments>
+    </type>
     <preference for="Codifi\Training\Api\NoteRepositoryInterface" type="Codifi\Training\Model\NoteRepository"/>
     <preference for="Codifi\Training\Api\Data\NoteInterface" type="Codifi\Training\Model\CustomerNote"/>
+    <preference for="Codifi\Training\Api\CreditHoldAttributeManagementInterface" type="Codifi\Training\Model\CreditHoldAttributeManagement"/>
+    <preference for="Codifi\Training\Api\AttributeManagementResponseInterface" type="Codifi\Training\Model\AttributeManagementResponse"/>
 </config>

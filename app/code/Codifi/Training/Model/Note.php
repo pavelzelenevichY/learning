@@ -6,24 +6,26 @@
  * @author      Pavel Zelenevich <pzelenevich@codifi.me>
  */
 
+declare(strict_types=1);
+
 namespace Codifi\Training\Model;
 
 use Codifi\Training\Api\Data\NoteInterface;
+use Codifi\Training\Model\ResourceModel\CustomerNote;
 use Magento\Framework\Model\AbstractModel;
-use Codifi\Training\Model\ResourceModel\CustomerNote as ResourceModel;
 
 /**
- * Class CustomerNote
+ * Class Note
  * @package Codifi\Training\Model
  */
-class CustomerNote extends AbstractModel implements NoteInterface
+class Note extends AbstractModel implements NoteInterface
 {
     /**
-     * CustomerNote constructor.
+     * Note construct.
      */
     protected function _construct()
     {
-        $this->_init(ResourceModel::class);
+        $this->_init(CustomerNote::class);
     }
 
     /**

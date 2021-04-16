@@ -1,0 +1,113 @@
+<?php
+/**
+ * Codifi_Training
+ *
+ * @copyright   Copyright (c) 2021 Codifi
+ * @author      Pavel Zelenevich <pzelenevich@codifi.me>
+ */
+
+namespace Codifi\Training\Model\Note;
+
+use Magento\Framework\App\ResponseInterface;
+use Codifi\Training\Model\CustomerNoteFactory;
+use Codifi\Training\Model\ResourceModel\CustomerNote as CustomerNoteResource;
+use Magento\Framework\Controller\Result\JsonFactory;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Controller\Result\Json;
+use Magento\Framework\Controller\ResultInterface;
+use Exception;
+
+/**
+ * Class Save
+ * @package Codifi\Training\Controller\Note
+ */
+class NoteSave
+{
+    /**
+     * Customer note factory
+     *
+     * @var CustomerNoteFactory
+     */
+    private $customerNoteFactory;
+
+    /**
+     * Customer note resource model
+     *
+     * @var CustomerNoteResource
+     */
+    private $customerNoteResource;
+
+    /**
+     * Json factory
+     *
+     * @var JsonFactory
+     */
+    private $jsonFactory;
+
+    /**
+     * Save constructor.
+     *
+     * @param JsonFactory $jsonFactory
+     * @param CustomerNoteFactory $customerNoteFactory
+     * @param CustomerNoteResource $customerNoteResource
+     */
+    public function __construct(
+        JsonFactory $jsonFactory,
+        CustomerNoteFactory $customerNoteFactory,
+        CustomerNoteResource $customerNoteResource
+    ) {
+        $this->jsonFactory = $jsonFactory;
+        $this->customerNoteFactory = $customerNoteFactory;
+        $this->customerNoteResource = $customerNoteResource;
+    }
+
+    /**
+     * Save function
+     *
+     * @param array $data
+     * @return ResponseInterface|Json|ResultInterface
+     * @throws Exception
+     */
+    public function save($data)
+    {
+        $note = $data['note'];
+        $customerId = $data['customer_id'];
+
+        $customerNoteModel = $this->customerNoteFactory->create();
+        $resultJson = $this->jsonFactory->create();
+
+        if ($customerId) {
+            if ($note) {
+                try {
+                    $customerNoteModel->setData([
+                        'customer_id' => $customerId,
+                        'note' => $note,
+                        'autocomplete' => 1
+                    ]);
+                    $this->customerNoteResource->save($customerNoteModel);
+                    $response = $resultJson->setData([
+                        'success' => true,
+                        'message' => ''
+                    ]);
+                } catch (LocalizedException $exception) {
+                    $response = $resultJson->setData([
+                        'success' => false,
+                        'message' => $exception->getMessage()
+                    ]);
+                }
+            } else {
+                $response = $resultJson->setData([
+                    'success' => false,
+                    'message' => __('Note text is missed.')
+                ]);
+            }
+        } else {
+            $response = $resultJson->setData([
+                'success' => false,
+                'message' => __('Customer id is missed.')
+            ]);
+        }
+
+        return $response;
+    }
+}
