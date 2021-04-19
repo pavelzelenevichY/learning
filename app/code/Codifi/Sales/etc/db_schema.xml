@@ -9,10 +9,10 @@
  -->
 <schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
-    <table name="sales_order" resource="sales" engine="innodb" comment="Sales Flat Order">
+    <table name="sales_order">
         <column xsi:type="varchar" name="order_type" nullable="true" length="255" comment="Order type"/>
     </table>
-    <table name="quote" resource="checkout" engine="innodb" comment="Sales Flat Quote">
+    <table name="quote">
         <column xsi:type="varchar" name="order_type" nullable="true" length="255" comment="Order type"/>
     </table>
 </schema>
