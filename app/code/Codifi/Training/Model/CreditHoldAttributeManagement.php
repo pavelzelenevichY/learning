@@ -17,7 +17,7 @@ use Codifi\Training\Model\NoteRepository;
 use Codifi\Training\Model\AttributeManagementResponseFactory;
 use Codifi\Training\Api\AttributeManagementResponseInterface;
 use Codifi\Training\Setup\Patch\Data\AddCustomerAttributeCreditHold;
-use \Psr\Log\LoggerInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * Class CreditHoldAttributeManagement

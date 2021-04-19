@@ -42,7 +42,7 @@ class CustomerNote extends AbstractModel implements NoteInterface
      * @param int $noteId
      * @return void
      */
-    public function setNoteId($noteId): void
+    public function setNoteId(int $noteId): void
     {
         $this->setData(self::NOTE_ID, $noteId);
     }
@@ -63,7 +63,7 @@ class CustomerNote extends AbstractModel implements NoteInterface
      * @param string $noteText
      * @return void
      */
-    public function setNoteText($noteText): void
+    public function setNoteText(string $noteText): void
     {
         $this->setData(self::NOTE, $noteText);
     }
@@ -81,9 +81,9 @@ class CustomerNote extends AbstractModel implements NoteInterface
     /**
      * Set autocomplete value.
      *
-     * @param $autocomplete
+     * @param int $autocomplete
      */
-    public function setAutocomplete($autocomplete)
+    public function setAutocomplete(int $autocomplete)
     {
         $this->setData(self::AUTOCOMPLETE, $autocomplete);
     }
@@ -101,9 +101,9 @@ class CustomerNote extends AbstractModel implements NoteInterface
     /**
      * Set customer id.
      *
-     * @param $customerId
+     * @param int $customerId
      */
-    public function setCustomerId($customerId)
+    public function setCustomerId(int $customerId)
     {
         $this->setData(self::CUSTOMER_ID, $customerId);
     }
