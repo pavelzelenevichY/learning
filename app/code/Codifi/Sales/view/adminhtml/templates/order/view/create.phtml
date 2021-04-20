@@ -1,0 +1,75 @@
+<?php
+/**
+ * Codifi_Sales
+ *
+ * @copyright   Copyright (c) 2021 Codifi
+ * @author      Pavel Zelenevich <pzelenevich@codifi.me>
+ */
+
+/**
+ * @var \Codifi\Sales\Block\Adminhtml\Order\View\Info $block
+ */
+?>
+<section id="order-order_type" class="admin__page-section">
+
+    <div class="admin__page-section-title head-account">
+        <span class="title"><?= $block->escapeHtml(__('Order Information')) ?></span>
+    </div>
+<!--    <div id="order_type_fields" class="admin__page-section-content">-->
+<!--        <fieldset class="fieldset admin__fieldset " id="order_type_fieldset">-->
+            <div class="admin__field field field-group_id  required _required">
+                <label class="label admin__field-label" for="order_type"><span>Order Type</span></label>
+
+
+                <div class="admin__field-control control">
+
+                    <select id="order_type_select" class="required-entry required-entry _required select admin__control-select">
+                        <option value="REGULAR">REGULAR ORDER</option>
+                        <option value="CREDIT_HOLD">CREDIT HOLD ORDER</option>
+                    </select>
+
+                </div>
+
+
+            </div>
+<!--        </fieldset>-->
+<!--    </div>-->
+    <script>
+        require(['Magento_Sales/order/create/form'], function() {
+            $('[order_type_select]').observe('change', function() {
+                order.saveData(order.serializeData('order-order_type'));
+            });
+        });
+    </script>
+
+</section>
+
+<!---->
+<!--<section id="codifi.sales.layout.info" class="admin__page-section order-account-information">-->
+<!--    <div class="admin__page-section-title head-account">-->
+
+<!--        <div class="actions"></div>-->
+<!--    </div>-->
+<!--    <div id="order_type_fields" class="admin__page-section-content">-->
+<!--        <fieldset class="fieldset admin__fieldset " id="order_type_fieldset">-->
+<!--            <div class="messages">-->
+<!--            </div>-->
+<!--            <div class="admin__field field field-order_type required _required" data-ui-id="billing-address-fieldset-element-form-field-order-type">-->
+<!--                <label class="label admin__field-label" for="order-order_type" data-ui-id="billing-address-fieldset-element-select-order-account-order-type-label"><span>Order Type</span></label>-->
+<!--                <div class="admin__field-control control">-->
+<!--                    <select id="order_type" name="order_type_value" class="required-entry required-entry _required select admin__control-select" data-ui-id="billing-address-fieldset-element-select-order-account-order-type">-->
+<!--                        <option value="REGULAR">REGULAR ORDER</option>-->
+<!--                        <option value="CREDIT_HOLD">CREDIT HOLD ORDER</option>-->
+<!--                    </select>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </fieldset>-->
+<!--    </div>-->
+<!--    <script>-->
+<!--        require(['Magento_Sales/order/create/form'], function() {-->
+<!--            $('[order_type_select]').observe('change', function() {-->
+<!--                order.saveData(order.serializeData('codifi.sales.layout.info'));-->
+<!--            });-->
+<!--        });-->
+<!--    </script>-->
+<!--</section>-->
