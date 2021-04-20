@@ -6,8 +6,9 @@
  * @author      Pavel Zelenevich <pzelenevich@codifi.me>
  */
 
-namespace Codifi\Sales\Plugin\Api;
+namespace Codifi\Sales\Plugin\Order\Api;
 
+use Codifi\Sales\Helper\Config;
 use Magento\Sales\Api\Data\OrderExtensionFactory;
 use Magento\Sales\Api\Data\OrderExtensionInterface;
 use Magento\Sales\Api\Data\OrderInterface;
@@ -15,16 +16,11 @@ use Magento\Sales\Api\Data\OrderSearchResultInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
 
 /**
- * Class OrderRepositoryInterfacePlugin
+ * Class AddOrderTypeToOrderExtensionAttributes
  * @package Codifi\Sales\Plugin\Api
  */
-class OrderRepositoryInterfacePlugin
+class AddOrderTypeToOrderExtensionAttributes
 {
-    /**
-     * Order feedback field name
-     */
-    const FIELD_NAME = 'order_type';
-
     /**
      * Order Extension Attributes Factory
      *
@@ -33,7 +29,7 @@ class OrderRepositoryInterfacePlugin
     private $orderExtensionFactory;
 
     /**
-     * OrderRepositoryPlugin constructor
+     * AddOrderTypeToOrderExtensionAttributes constructor
      *
      * @param OrderExtensionFactory $orderExtensionFactory
      */
@@ -51,12 +47,12 @@ class OrderRepositoryInterfacePlugin
      */
     public function afterGet(OrderRepositoryInterface $subject, OrderInterface $order): OrderInterface
     {
-        $orderType = $order->getData(self::FIELD_NAME);
+        $orderType = $order->getData(Config::ORDER_TYPE_CODE);
         $orderExtensionAttributes = $order->getExtensionAttributes();
         if ($orderExtensionAttributes === null) {
             $orderExtensionAttributes = $this->orderExtensionFactory->create();
         }
-        $orderExtensionAttributes->setData(self::FIELD_NAME, $orderType);
+        $orderExtensionAttributes->setData(Config::ORDER_TYPE_CODE, $orderType);
         $order->setExtensionAttributes($orderExtensionAttributes);
 
         return $order;
@@ -73,12 +69,12 @@ class OrderRepositoryInterfacePlugin
     {
         $orders = $searchResult->getItems();
         foreach ($orders as &$order) {
-            $orderType = $order->getData(self::FIELD_NAME);
+            $orderType = $order->getData(Config::ORDER_TYPE_CODE);
             $orderExtensionAttributes = $order->getExtensionAttributes();
             if ($orderExtensionAttributes === null) {
                 $orderExtensionAttributes = $this->orderExtensionFactory->create();
             }
-            $orderExtensionAttributes->setData(self::FIELD_NAME, $orderType);
+            $orderExtensionAttributes->setData(Config::ORDER_TYPE_CODE, $orderType);
             $order->setExtensionAttributes($orderExtensionAttributes);
         }
 
@@ -94,10 +90,10 @@ class OrderRepositoryInterfacePlugin
      */
     public function beforeSave(OrderRepositoryInterface $subject, OrderInterface $order): array
     {
-        $orderType = $order->getExtensionAttributes()->getOrderType();
-        $order->setData('order_type', $orderType);
+        $orderExtensionAttributes = $order->getExtensionAttributes();
+        $orderType = $orderExtensionAttributes->getOrderType();
+        $order->setData(Config::ORDER_TYPE_CODE, $orderType);
 
         return [$order];
     }
-
 }

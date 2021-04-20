@@ -6,18 +6,19 @@
  * @author      Pavel Zelenevich <pzelenevich@codifi.me>
  */
 
-namespace Codifi\Sales\Plugin\Api;
+namespace Codifi\Sales\Plugin\Quote\Api;
 
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Quote\Api\Data\CartInterface;
 use Magento\Quote\Api\Data\CartExtensionFactory;
 use Magento\Quote\Api\Data\CartSearchResultsInterface;
+use Codifi\Sales\Helper\Config;
 
 /**
- * Class CartRepositoryInterfacePlugin
+ * Class AddOrderTypeToQuoteExtensionAttributes
  * @package Codifi\Sales\Plugin\Api
  */
-class CartRepositoryInterfacePlugin
+class AddOrderTypeToQuoteExtensionAttributes
 {
     /**
      * Cart Extension Attributes Factory
@@ -27,7 +28,7 @@ class CartRepositoryInterfacePlugin
     private $quoteExtensionFactory;
 
     /**
-     * OrderRepositoryPlugin constructor
+     * AddOrderTypeToQuoteExtensionAttributes constructor
      *
      * @param CartExtensionFactory $quoteExtensionFactory
      */
@@ -45,12 +46,12 @@ class CartRepositoryInterfacePlugin
      */
     public function afterGet(CartRepositoryInterface $subject, CartInterface $quote): CartInterface
     {
-        $orderType = $quote->getData('order_type');
+        $orderType = $quote->getData(Config::ORDER_TYPE_CODE);
         $quoteExtensionAttributes = $quote->getExtensionAttributes();
         if ($quoteExtensionAttributes === null) {
             $quoteExtensionAttributes = $this->quoteExtensionFactory->create();
         }
-        $quoteExtensionAttributes->setData('order_type', $orderType);
+        $quoteExtensionAttributes->setData(Config::ORDER_TYPE_CODE, $orderType);
         $quote->setExtensionAttributes($quoteExtensionAttributes);
 
         return $quote;
@@ -67,12 +68,12 @@ class CartRepositoryInterfacePlugin
     {
         $quotes = $searchData->getItems();
         foreach ($quotes as $quote) {
-            $orderType = $quote->getData('order_type');
+            $orderType = $quote->getData(Config::ORDER_TYPE_CODE);
             $quoteExtensionAttributes = $quote->getExtensionAttributes();
             if ($quoteExtensionAttributes === null) {
                 $quoteExtensionAttributes = $this->quoteExtensionFactory->create();
             }
-            $quoteExtensionAttributes->setData('order_type', $orderType);
+            $quoteExtensionAttributes->setData(Config::ORDER_TYPE_CODE, $orderType);
             $quote->setExtensionAttributes($quoteExtensionAttributes);
         }
 
@@ -88,8 +89,9 @@ class CartRepositoryInterfacePlugin
      */
     public function beforeSave(CartRepositoryInterface $subject, CartInterface $quote): array
     {
-        $orderType = $quote->getExtensionAttributes()->getOrderType();
-        $quote->setData('order_type', $orderType);
+        $quoteExtensionAttributes = $quote->getExtensionAttributes();
+        $orderType = $quoteExtensionAttributes->getOrderType();
+        $quote->setData(Config::ORDER_TYPE_CODE, $orderType);
 
         return [$quote];
     }
