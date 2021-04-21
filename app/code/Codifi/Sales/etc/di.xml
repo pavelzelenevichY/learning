@@ -14,4 +14,7 @@
     <type name="Magento\Quote\Api\CartRepositoryInterface">
         <plugin name="orderTypeAddQuoteExtensionAttribute" type="Codifi\Sales\Plugin\Quote\Api\AddOrderTypeToQuoteExtensionAttributes" />
     </type>
+    <type name="Magento\Sales\Model\AdminOrder\Create">
+        <plugin name="orderTypeAttributeAddToOrder" type="Codifi\Sales\Plugin\AdminOrder\CreatePlugin"/>
+    </type>
 </config>

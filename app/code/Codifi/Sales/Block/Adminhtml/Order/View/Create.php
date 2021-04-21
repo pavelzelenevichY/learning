@@ -8,69 +8,34 @@
 
 namespace Codifi\Sales\Block\Adminhtml\Order\View;
 
-use Magento\Sales\Block\Adminhtml\Order\AbstractOrder;
-use Magento\Sales\Model\OrderRepository;
-use Magento\Backend\Block\Template\Context;
-use Magento\Framework\Registry;
-use Magento\Sales\Helper\Admin;
-
+use Codifi\Sales\Model\Source\OrderType;
+use Magento\Widget\Block\BlockInterface;
+use Magento\Framework\View\Element\Template;
+use Magento\Framework\View\Element\Template\Context;
 
 /**
  * Class Create
  * @package Codifi\Sales\Block\Adminhtml\Order\View
  */
-class Create extends AbstractOrder
+class Create extends Template implements BlockInterface
 {
     /**
-     * Order repository
+     * Options
      *
-     * @var OrderRepository
+     * @var array[]
      */
-    private $orderRepository;
+    private $options = [
+        ['value' => 'REGULAR', 'label' => 'Regular Order', 'selected' => 1],
+        ['value' => 'CREDIT_HOLD', 'label' => 'Credit Hold Order', 'selected' => 0]
+    ];
 
-    /**
-     * Core registry
-     *
-     * @var \Magento\Framework\Registry
-     */
-    protected $coreRegistry = null;
-
-    /**
-     * Create constructor.
-     * @param Context $context
-     * @param Registry $registry
-     * @param Admin $adminHelper
-     * @param OrderRepository $orderRepository
-     * @param array $data
-     */
-    public function __construct(
-        Context $context,
-        Registry $registry,
-        Admin $adminHelper,
-        OrderRepository $orderRepository,
-        array $data = []
-    ) {
-        $this->orderRepository = $orderRepository;
-        $this->coreRegistry = $registry;
-        parent::__construct($context, $registry, $adminHelper, $data);
-    }
-
-    /**
-     * Retrieve current order model instance
-     *
-     * @return \Magento\Sales\Model\Order
-     */
-    public function getOrder()
+    public function __construct(Context $context, array $data = [])
     {
-        return $this->coreRegistry->registry('current_order');
+        parent::__construct($context, $data);
     }
 
     public function getAttributeValue()
     {
-        $order = $this->getOrder();
-        $attributes = $order->getExtensionAttributes();
-        $orderTypeValue = $attributes->getOrderType();
-
-        return $orderTypeValue;
+        return $this->options;
     }
 }
