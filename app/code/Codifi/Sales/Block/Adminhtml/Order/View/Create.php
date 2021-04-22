@@ -8,7 +8,6 @@
 
 namespace Codifi\Sales\Block\Adminhtml\Order\View;
 
-use Codifi\Sales\Model\Source\OrderType;
 use Magento\Widget\Block\BlockInterface;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;

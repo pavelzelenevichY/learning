@@ -10,7 +10,7 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceBlock name="content">
-            <referenceBlock name="data" class="Magento\Sales\Block\Adminhtml\Order\Create\Data" template="Codifi_Sales::order/view/callblock.phtml">
+            <referenceBlock name="data" template="Codifi_Sales::order/view/data.phtml">
                 <block class="Codifi\Sales\Block\Adminhtml\Order\View\Create" name="codifi.order.layout.create" template="Codifi_Sales::order/view/create.phtml" before="-"/>
             </referenceBlock>
         </referenceBlock>

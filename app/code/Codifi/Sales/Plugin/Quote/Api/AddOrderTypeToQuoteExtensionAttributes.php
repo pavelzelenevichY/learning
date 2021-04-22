@@ -90,8 +90,12 @@ class AddOrderTypeToQuoteExtensionAttributes
     public function beforeSave(CartRepositoryInterface $subject, CartInterface $quote): array
     {
         $quoteExtensionAttributes = $quote->getExtensionAttributes();
-        $orderType = $quoteExtensionAttributes->getOrderType();
-        $quote->setData(Config::ORDER_TYPE_CODE, $orderType);
+        if ($quoteExtensionAttributes) {
+            $orderType = $quoteExtensionAttributes->getOrderType();
+            if ($orderType) {
+                $quote->setData(Config::ORDER_TYPE_CODE, $orderType);
+            }
+        }
 
         return [$quote];
     }

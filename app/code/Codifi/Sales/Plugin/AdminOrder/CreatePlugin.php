@@ -10,7 +10,6 @@ namespace Codifi\Sales\Plugin\AdminOrder;
 
 use Codifi\Sales\Helper\Config;
 use Magento\Sales\Model\AdminOrder\Create;
-use \Closure;
 
 /**
  * Class CreatePlugin
@@ -20,12 +19,17 @@ class CreatePlugin
 {
     /**
      * @param Create $subject
-     * @param Closure $proceed
+     * @param Create $result
+     * @param $data
+     * @return Create
      */
-    public function aroundAddField(Create $subject, Closure $proceed) {
-        if (isset($data['order_type'])) {
-            $subject->setData(Config::ORDER_TYPE_CODE, $data['order_type']);
+    public function afterImportPostData(Create $subject,Create $result, $data): Create
+    {
+        if (isset($data[Config::ORDER_TYPE_CODE])) {
+            $quote = $subject->getQuote();
+            $quote->setData(Config::ORDER_TYPE_CODE, $data[Config::ORDER_TYPE_CODE]);
         }
-        return $proceed;
+
+        return $result;
     }
 }

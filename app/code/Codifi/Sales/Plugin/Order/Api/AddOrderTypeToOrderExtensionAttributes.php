@@ -85,14 +85,18 @@ class AddOrderTypeToOrderExtensionAttributes
      * Save to sales_order table order_type attribute
      *
      * @param OrderRepositoryInterface $subject
-     * @param OrderInterface $quote
+     * @param OrderInterface $order
      * @return array
      */
     public function beforeSave(OrderRepositoryInterface $subject, OrderInterface $order): array
     {
         $orderExtensionAttributes = $order->getExtensionAttributes();
-        $orderType = $orderExtensionAttributes->getOrderType();
-        $order->setData(Config::ORDER_TYPE_CODE, $orderType);
+        if ($orderExtensionAttributes) {
+            $orderType = $orderExtensionAttributes->getOrderType();
+            if ($orderType) {
+                $order->setData(Config::ORDER_TYPE_CODE, $orderType);
+            }
+        }
 
         return [$order];
     }

@@ -18,7 +18,7 @@
         <div class="admin__field-control control">
             <select id="order_type_select" name="order[order_type]" class="required-entry required-entry _required select admin__control-select">
                 <?php foreach ($block->getAttributeValue() as $item) { ?>
-                <option value="<?=$item['value']?>"><?=$item['label']?></option>
+                <option value="<?=$block->escapeHtml($item['value'])?>"><?=$block->escapeHtml($item['label'])?></option>
                 <?php } ?>
             </select>
         </div>

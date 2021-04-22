@@ -1,7 +1,9 @@
 <?php
 /**
- * Copyright © Magento, Inc. All rights reserved.
- * See COPYING.txt for license details.
+ * Codifi_Sales
+ *
+ * @copyright   Copyright (c) 2021 Codifi
+ * @author      Pavel Zelenevich <pzelenevich@codifi.me>
  */
 
 /** @var \Magento\Sales\Block\Adminhtml\Order\Create\Data $block */
@@ -14,18 +16,16 @@
     </script>
     <div class="order-details<?php if ($block->getCustomerId()) : ?> order-details-existing-customer<?php endif; ?>">
 
-<section id="order-type" class="admin__page-section order-type">
-    <div class="admin__page-section-title">
-        <span class="title"><?= $block->escapeHtml(__('Order Information')) ?></span>
-    </div>
-    <div class="admin__page-section-content">
-        <div id="order-type" class="admin__page-section-item order-type">
-            <?= $block->getChildHtml('codifi.order.layout.create') ?>
-        </div>
-    </div>
-</section>
-
-
+        <section id="order-type" class="admin__page-section order-type">
+            <div class="admin__page-section-title">
+                <span class="title"><?= $block->escapeHtml(__('Order Information')) ?></span>
+            </div>
+            <div class="admin__page-section-content">
+                <div id="order-type" class="admin__page-section-item order-type">
+                    <?= $block->getChildHtml('codifi.order.layout.create') ?>
+                </div>
+            </div>
+        </section>
 
         <div id="order-additional_area" style="display: none" class="admin__page-section order-additional-area">
             <?= $block->getChildHtml('additional_area') ?>
@@ -98,8 +98,6 @@
         </section>
 
     </div>
-
-
 
     <?php if ($block->getCustomerId()) : ?>
         <div class="order-sidebar">
