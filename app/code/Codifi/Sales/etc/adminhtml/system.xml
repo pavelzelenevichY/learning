@@ -21,7 +21,7 @@
                 <label>Order</label>
                 <field id="order_type" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Order Type</label>
-                    <source_model>Codifi\Sales\Model\Source\OrderTypeSelect</source_model>
+                    <source_model>Codifi\Sales\Model\Source\OrderType</source_model>
                 </field>
             </group>
         </section>

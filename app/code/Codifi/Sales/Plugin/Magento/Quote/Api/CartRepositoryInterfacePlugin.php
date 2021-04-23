@@ -6,7 +6,7 @@
  * @author      Pavel Zelenevich <pzelenevich@codifi.me>
  */
 
-namespace Codifi\Sales\Plugin\Quote\Api;
+namespace Codifi\Sales\Plugin\Magento\Quote\Api;
 
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Quote\Api\Data\CartInterface;
@@ -15,10 +15,10 @@ use Magento\Quote\Api\Data\CartSearchResultsInterface;
 use Codifi\Sales\Helper\Config;
 
 /**
- * Class AddOrderTypeToQuoteExtensionAttributes
+ * Class CartRepositoryInterfacePlugin
  * @package Codifi\Sales\Plugin\Api
  */
-class AddOrderTypeToQuoteExtensionAttributes
+class CartRepositoryInterfacePlugin
 {
     /**
      * Cart Extension Attributes Factory
@@ -28,7 +28,7 @@ class AddOrderTypeToQuoteExtensionAttributes
     private $quoteExtensionFactory;
 
     /**
-     * AddOrderTypeToQuoteExtensionAttributes constructor
+     * CartRepositoryInterfacePlugin constructor
      *
      * @param CartExtensionFactory $quoteExtensionFactory
      */
@@ -90,8 +90,12 @@ class AddOrderTypeToQuoteExtensionAttributes
     public function beforeSave(CartRepositoryInterface $subject, CartInterface $quote): array
     {
         $quoteExtensionAttributes = $quote->getExtensionAttributes();
-        $orderType = $quoteExtensionAttributes->getOrderType();
-        $quote->setData(Config::ORDER_TYPE_CODE, $orderType);
+        if ($quoteExtensionAttributes) {
+            $orderType = $quoteExtensionAttributes->getOrderType();
+            if ($orderType) {
+                $quote->setData(Config::ORDER_TYPE_CODE, $orderType);
+            }
+        }
 
         return [$quote];
     }

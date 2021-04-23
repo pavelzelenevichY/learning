@@ -9,9 +9,9 @@
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <type name="Magento\Sales\Api\OrderRepositoryInterface">
-        <plugin name="orderTypeAddOrderExtensionAttribute" type="Codifi\Sales\Plugin\Order\Api\AddOrderTypeToOrderExtensionAttributes" />
+        <plugin name="orderTypeAddToOrderExtensionAttribute" type="Codifi\Sales\Plugin\Magento\Sales\Api\OrderRepositoryInterfacePlugin" sortOrder="10"/>
     </type>
     <type name="Magento\Quote\Api\CartRepositoryInterface">
-        <plugin name="orderTypeAddQuoteExtensionAttribute" type="Codifi\Sales\Plugin\Quote\Api\AddOrderTypeToQuoteExtensionAttributes" />
+        <plugin name="orderTypeAddToQuoteExtensionAttribute" type="Codifi\Sales\Plugin\Magento\Quote\Api\CartRepositoryInterfacePlugin" sortOrder="20"/>
     </type>
 </config>

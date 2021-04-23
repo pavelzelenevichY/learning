@@ -6,7 +6,7 @@
  * @author      Pavel Zelenevich <pzelenevich@codifi.me>
  */
 
-namespace Codifi\Sales\Plugin\Order\Api;
+namespace Codifi\Sales\Plugin\Magento\Sales\Api;
 
 use Codifi\Sales\Helper\Config;
 use Magento\Sales\Api\Data\OrderExtensionFactory;
@@ -16,10 +16,10 @@ use Magento\Sales\Api\Data\OrderSearchResultInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
 
 /**
- * Class AddOrderTypeToOrderExtensionAttributes
+ * Class OrderRepositoryInterfacePlugin
  * @package Codifi\Sales\Plugin\Api
  */
-class AddOrderTypeToOrderExtensionAttributes
+class OrderRepositoryInterfacePlugin
 {
     /**
      * Order Extension Attributes Factory
@@ -29,7 +29,7 @@ class AddOrderTypeToOrderExtensionAttributes
     private $orderExtensionFactory;
 
     /**
-     * AddOrderTypeToOrderExtensionAttributes constructor
+     * OrderRepositoryInterfacePlugin constructor
      *
      * @param OrderExtensionFactory $orderExtensionFactory
      */
@@ -85,14 +85,18 @@ class AddOrderTypeToOrderExtensionAttributes
      * Save to sales_order table order_type attribute
      *
      * @param OrderRepositoryInterface $subject
-     * @param OrderInterface $quote
+     * @param OrderInterface $order
      * @return array
      */
     public function beforeSave(OrderRepositoryInterface $subject, OrderInterface $order): array
     {
         $orderExtensionAttributes = $order->getExtensionAttributes();
-        $orderType = $orderExtensionAttributes->getOrderType();
-        $order->setData(Config::ORDER_TYPE_CODE, $orderType);
+        if ($orderExtensionAttributes) {
+            $orderType = $orderExtensionAttributes->getOrderType();
+            if ($orderType) {
+                $order->setData(Config::ORDER_TYPE_CODE, $orderType);
+            }
+        }
 
         return [$order];
     }
