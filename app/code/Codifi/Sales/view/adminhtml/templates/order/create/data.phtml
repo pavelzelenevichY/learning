@@ -1,9 +1,7 @@
 <?php
 /**
- * Codifi_Sales
- *
- * @copyright   Copyright (c) 2021 Codifi
- * @author      Pavel Zelenevich <pzelenevich@codifi.me>
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 /** @var \Magento\Sales\Block\Adminhtml\Order\Create\Data $block */
@@ -21,8 +19,8 @@
                 <span class="title"><?= $block->escapeHtml(__('Order Information')) ?></span>
             </div>
             <div class="admin__page-section-content">
-                <div id="order-type" class="admin__page-section-item order-type">
-                    <?= $block->getChildHtml('codifi.order.layout.create') ?>
+                <div id="order-type-select-block" class="admin__page-section-item order-type">
+                    <?= $block->getChildHtml('codifi.ordertype.attribute.createpage') ?>
                 </div>
             </div>
         </section>
