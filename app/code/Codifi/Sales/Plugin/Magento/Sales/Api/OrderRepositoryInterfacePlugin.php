@@ -6,7 +6,7 @@
  * @author      Pavel Zelenevich <pzelenevich@codifi.me>
  */
 
-namespace Codifi\Sales\Plugin\Order\Api;
+namespace Codifi\Sales\Plugin\Magento\Sales\Api;
 
 use Codifi\Sales\Helper\Config;
 use Magento\Sales\Api\Data\OrderExtensionFactory;
@@ -16,10 +16,10 @@ use Magento\Sales\Api\Data\OrderSearchResultInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
 
 /**
- * Class AddOrderTypeToOrderExtensionAttributes
+ * Class OrderRepositoryInterfacePlugin
  * @package Codifi\Sales\Plugin\Api
  */
-class AddOrderTypeToOrderExtensionAttributes
+class OrderRepositoryInterfacePlugin
 {
     /**
      * Order Extension Attributes Factory
@@ -29,7 +29,7 @@ class AddOrderTypeToOrderExtensionAttributes
     private $orderExtensionFactory;
 
     /**
-     * AddOrderTypeToOrderExtensionAttributes constructor
+     * OrderRepositoryInterfacePlugin constructor
      *
      * @param OrderExtensionFactory $orderExtensionFactory
      */

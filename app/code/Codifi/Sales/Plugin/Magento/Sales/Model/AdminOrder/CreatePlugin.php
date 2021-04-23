@@ -6,7 +6,7 @@
  * @author      Pavel Zelenevich <pzelenevich@codifi.me>
  */
 
-namespace Codifi\Sales\Plugin\AdminOrder;
+namespace Codifi\Sales\Plugin\Magento\Sales\Model\AdminOrder;
 
 use Codifi\Sales\Helper\Config;
 use Magento\Sales\Model\AdminOrder\Create;
@@ -18,12 +18,18 @@ use Magento\Sales\Model\AdminOrder\Create;
 class CreatePlugin
 {
     /**
+     * Set order_type attribute value to quote
+     *
      * @param Create $subject
      * @param Create $result
-     * @param $data
+     * @param array $data
      * @return Create
      */
-    public function afterImportPostData(Create $subject,Create $result, $data): Create
+    public function afterImportPostData(
+        Create $subject,
+        Create $result,
+        array $data
+    ): Create
     {
         if (isset($data[Config::ORDER_TYPE_CODE])) {
             $quote = $subject->getQuote();
