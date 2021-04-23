@@ -9,7 +9,11 @@
     <body>
         <referenceContainer name="left">
             <referenceBlock name="order_tab_info" template="Codifi_Sales::order/view/tab/info.phtml">
-                <block class="Codifi\Sales\Block\Adminhtml\Order\View\Info" name="codifi.order.layout.info" template="Codifi_Sales::order/view/info.phtml" before="-"/>
+                <block name="codifi.order.layout.info" template="Codifi_Sales::order/view/info.phtml" before="-">
+                    <arguments>
+                        <argument name="view_model" xsi:type="object">Codifi\Sales\ViewModel\Order\View\Info</argument>
+                    </arguments>
+                </block>
             </referenceBlock>
         </referenceContainer>
     </body>

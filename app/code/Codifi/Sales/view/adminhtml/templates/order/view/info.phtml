@@ -7,8 +7,10 @@
  */
 
 /**
- * @var \Codifi\Sales\Block\Adminhtml\Order\View\Info $block
+ * @var \Magento\Framework\View\Element\Template $block
  */
+$viewModel = $block->getViewModel();
+$attributeValue = $viewModel->getAttributeValue();
 ?>
 <fieldset class="fieldset admin__fieldset " id="order_type_fieldset">
     <div class="messages">
@@ -17,8 +19,8 @@
         <label class="label admin__field-label" for="order_type_select"><span>Order Type</span></label>
         <div class="admin__field-control control">
             <select id="order_type_select" name="order_type" class="required-entry required-entry _required select admin__control-select">
-                <?php foreach ($block->getAttributeValue() as $item) { ?>
-                    <option value="<?=$block->escapeHtml($item['value'])?>"><?=$block->escapeHtml($item['label'])?></option>
+                <?php foreach ($attributeValue as $item) { ?>
+                    <option value="<?=$block->escapeHtml(__($item['value']))?>"><?=$block->escapeHtml(__($item['label']))?></option>
                 <?php } ?>
             </select>
         </div>
