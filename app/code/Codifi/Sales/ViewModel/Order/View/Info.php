@@ -10,16 +10,14 @@ namespace Codifi\Sales\ViewModel\Order\View;
 
 use Codifi\Sales\Model\Source\OrderType;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
-use Magento\Sales\Block\Adminhtml\Order\AbstractOrder;
-use Magento\Backend\Block\Template\Context;
-use Magento\Framework\Registry;
-use Magento\Sales\Helper\Admin;
+use Magento\Sales\Model\Order;
+use Magento\Framework\Exception\LocalizedException;
 
 /**
  * Class Info
  * @package Codifi\Sales\ViewModel\Order\View
  */
-class Info extends AbstractOrder implements ArgumentInterface
+class Info implements ArgumentInterface
 {
     /**
      * Order type options
@@ -31,38 +29,30 @@ class Info extends AbstractOrder implements ArgumentInterface
     /**
      * Info constructor.
      *
-     * @param Context $context
-     * @param Registry $registry
-     * @param Admin $adminHelper
      * @param OrderType $orderTypeSource
-     * @param array $data
      */
     public function __construct(
-        Context $context,
-        Registry $registry,
-        Admin $adminHelper,
-        OrderType $orderTypeSource,
-        array $data = []
+        OrderType $orderTypeSource
     ){
         $this->orderTypeSource = $orderTypeSource;
-        parent::__construct($context, $registry, $adminHelper, $data);
     }
 
 
     /**
-     * Get order_type attribute value
+     * Get order_type attrubute label
      *
-     * @return array
+     * @param Order $currentOrder
+     * @return string
+     * @throws LocalizedException
      */
-    public function getAttributeValue(): array
+    public function getAttributeLabel($currentOrder): string
     {
-        $response = [];
-        $order = $this->getOrder();
-        $orderType = $order->getData('order_type');
+        $response = '';
+        $orderType = $currentOrder->getData('order_type');
         $options = $this->orderTypeSource->getAllOptions();
         foreach ($options as $item){
             if ($item['value'] === $orderType) {
-                $response[] = $item;
+                $response = $item['label'];
             }
         }
 

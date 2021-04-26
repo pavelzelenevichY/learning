@@ -1,19 +1,23 @@
 <?xml version="1.0"?>
 <!--
 /**
- * Copyright © Magento, Inc. All rights reserved.
- * See COPYING.txt for license details.
+ * Codifi_Sales
+ *
+ * @copyright   Copyright (c) 2021 Codifi
+ * @author      Pavel Zelenevich <pzelenevich@codifi.me>
  */
 -->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceContainer name="left">
-            <referenceBlock name="order_tab_info" template="Codifi_Sales::order/view/tab/info.phtml">
-                <block name="order_type_view" template="Codifi_Sales::order/view/info.phtml" before="-">
-                    <arguments>
-                        <argument name="order_view_view_model" xsi:type="object">Codifi\Sales\ViewModel\Order\View\Info</argument>
-                    </arguments>
-                </block>
+            <referenceBlock name="sales_order_tabs">
+                <referenceBlock name="order_tab_info">
+                    <referenceBlock name="order_info" template="Codifi_Sales::order/view/info.phtml">
+                        <arguments>
+                            <argument name="info_order_view_model" xsi:type="object">Codifi\Sales\ViewModel\Order\View\Info</argument>
+                        </arguments>
+                    </referenceBlock>
+                </referenceBlock>
             </referenceBlock>
         </referenceContainer>
     </body>
