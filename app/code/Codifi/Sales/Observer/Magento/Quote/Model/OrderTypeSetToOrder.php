@@ -13,10 +13,10 @@ use Magento\Framework\Event\ObserverInterface;
 use Codifi\Sales\Helper\Config;
 
 /**
- * Class QuoteManagementObserver
+ * Class OrderTypeSetToOrder
  * @package Codifi\Sales\Observer
  */
-class QuoteManagementObserver implements ObserverInterface
+class OrderTypeSetToOrder implements ObserverInterface
 {
     /**
      * Execute function.

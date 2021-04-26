@@ -22,25 +22,25 @@ class Create implements ArgumentInterface
      *
      * @var OrderType
      */
-    private $orderType;
+    private $orderTypeSource;
 
     /**
      * Create constructor.
      *
-     * @param OrderType $orderType
+     * @param OrderType $orderTypeSource
      */
-    public function __construct(OrderType $orderType)
+    public function __construct(OrderType $orderTypeSource)
     {
-        $this->orderType = $orderType;
+        $this->orderTypeSource = $orderTypeSource;
     }
 
     /**
      * Get order_type attribute value
      *
-     * @return array[]
+     * @return array
      */
-    public function getAttributeValue()
+    public function getOptionsOrderType(): array
     {
-        return $this->orderType->getAllOptions();
+        return $this->orderTypeSource->getAllOptions();
     }
 }
