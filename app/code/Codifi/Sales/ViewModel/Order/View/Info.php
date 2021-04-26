@@ -26,7 +26,7 @@ class Info extends AbstractOrder implements ArgumentInterface
      *
      * @var OrderType
      */
-    private $orderType;
+    private $orderTypeSource;
 
     /**
      * Info constructor.
@@ -34,17 +34,17 @@ class Info extends AbstractOrder implements ArgumentInterface
      * @param Context $context
      * @param Registry $registry
      * @param Admin $adminHelper
-     * @param OrderType $orderType
+     * @param OrderType $orderTypeSource
      * @param array $data
      */
     public function __construct(
         Context $context,
         Registry $registry,
         Admin $adminHelper,
-        OrderType $orderType,
+        OrderType $orderTypeSource,
         array $data = []
     ){
-        $this->orderType = $orderType;
+        $this->orderTypeSource = $orderTypeSource;
         parent::__construct($context, $registry, $adminHelper, $data);
     }
 
@@ -52,14 +52,14 @@ class Info extends AbstractOrder implements ArgumentInterface
     /**
      * Get order_type attribute value
      *
-     * @return array[]
+     * @return array
      */
-    public function getAttributeValue()
+    public function getAttributeValue(): array
     {
         $response = [];
         $order = $this->getOrder();
         $orderType = $order->getData('order_type');
-        $options = $this->orderType->getAllOptions();
+        $options = $this->orderTypeSource->getAllOptions();
         foreach ($options as $item){
             if ($item['value'] === $orderType) {
                 $response[] = $item;
