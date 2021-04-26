@@ -9,10 +9,10 @@
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
     <default>
-        <codifi>
+        <codifi_sales>
             <order>
-                <order>REGULAR</order>
+                <order_type>REGULAR</order_type>
             </order>
-        </codifi>
+        </codifi_sales>
     </default>
 </config>
