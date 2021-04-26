@@ -29,8 +29,7 @@ class CreatePlugin
         Create $subject,
         Create $result,
         array $data
-    ): Create
-    {
+    ): Create {
         if (isset($data[Config::ORDER_TYPE_CODE])) {
             $quote = $subject->getQuote();
             $quote->setData(Config::ORDER_TYPE_CODE, $data[Config::ORDER_TYPE_CODE]);
