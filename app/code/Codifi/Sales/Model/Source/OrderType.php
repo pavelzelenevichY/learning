@@ -21,7 +21,7 @@ class OrderType extends AbstractSource
      *
      * @return array
      */
-    public function getAllOptions() : array
+    public function getAllOptions(): array
     {
         if (null === $this->_options) {
             $this->_options = [
