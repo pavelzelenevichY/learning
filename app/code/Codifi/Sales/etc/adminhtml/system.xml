@@ -9,7 +9,7 @@
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
     <system>
-        <tab id="codifi_sales" translate="label" sortOrder="400">
+        <tab id="codifi" translate="label" sortOrder="400">
             <label>Codifi</label>
         </tab>
         <section id="codifi_sales" translate="label" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">

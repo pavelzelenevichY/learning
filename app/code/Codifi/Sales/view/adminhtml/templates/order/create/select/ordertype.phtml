@@ -20,9 +20,9 @@ $attributeValue = $viewModel->getOrderTypeOptions();
         <div class="admin__field-control control">
             <select id="order_type_select" name="order[order_type]" class="required-entry _required select admin__control-select">
                 <?php foreach ($attributeValue as $item): ?>
-                <option value="<?= $block->escapeHtml(__($item['value'])) ?>">
-                    <?= $block->escapeHtml(__($item['label'])) ?>
-                </option>
+                    <option value="<?= $block->escapeHtml(__($item['value'])) ?>" selected="<?= $block->escapeHtml(__($item['selected'])) ?>">
+                        <?= $block->escapeHtml(__($item['label'])) ?>
+                    </option>
                 <?php endforeach; ?>
             </select>
         </div>
