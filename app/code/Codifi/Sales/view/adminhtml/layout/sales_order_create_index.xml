@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Codifi_Sales
+ *
+ * @copyright   Copyright (c) 2021 Codifi
+ * @author      Pavel Zelenevich <pzelenevich@codifi.me>
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="content">
+            <referenceBlock name="data" template="Codifi_Sales::order/create/data.phtml">
+                <block name="order_type" template="Codifi_Sales::order/create/create.phtml" before="-">
+                    <arguments>
+                        <argument name="create_order_view_model" xsi:type="object">Codifi\Sales\ViewModel\Order\Create\Create</argument>
+                    </arguments>
+                </block>
+            </referenceBlock>
+        </referenceBlock>
+    </body>
+</page>
