@@ -1,15 +1,21 @@
 <?php
-
+/**
+ * Codifi_Sales
+ *
+ * @copyright   Copyright (c) 2021 Codifi
+ * @author      Pavel Zelenevich <pzelenevich@codifi.me>
+ */
 
 namespace Codifi\Sales\Setup\Patch\Data;
 
-use Magento\Framework\Setup\ModuleDataSetupInterface;
 use Magento\Framework\Setup\Patch\DataPatchInterface;
 use Magento\Framework\App\Config\Storage\WriterInterface;
 use Magento\Framework\Serialize\SerializerInterface;
-use Magento\Framework\App\Config\ScopeConfigInterface;
 
-
+/**
+ * Class AddOrderTypeToCoreConfigData
+ * @package Codifi\Sales\Setup\Patch\Data
+ */
 class AddOrderTypeToCoreConfigData implements DataPatchInterface
 {
     /**

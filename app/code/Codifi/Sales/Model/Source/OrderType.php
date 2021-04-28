@@ -55,6 +55,11 @@ class OrderType extends AbstractFieldArray
         $this->_addButtonLabel = __('Add');
     }
 
+    /**
+     * Get all order_type options
+     *
+     * @return array
+     */
     public function getAllOptions(): array
     {
         $value = $this->config->getValue(AddOrderTypeToCoreConfigData::PATH);
