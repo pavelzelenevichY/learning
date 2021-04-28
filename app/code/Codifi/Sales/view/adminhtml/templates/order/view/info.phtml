@@ -15,8 +15,8 @@
  */
 $order = $block->getOrder();
 
-$viewModel = $block->getInfoOrderViewModel();
-$attributeValue = $viewModel->getAttributeLabel($order);
+$viewModel = $block->getOrderInfoViewModel();
+$attributeLabel = $viewModel->getAttributeLabel($order);
 
 $baseCurrencyCode = (string)$order->getBaseCurrencyCode();
 $globalCurrencyCode = (string)$order->getGlobalCurrencyCode();
@@ -119,10 +119,12 @@ $allowedAddressHtmlTags = ['b', 'br', 'em', 'i', 'li', 'ol', 'p', 'strong', 'sub
                             <td><?= $block->escapeHtml($order->getBaseToOrderRate()) ?></td>
                         </tr>
                     <?php endif; ?>
-                    <?php if ($attributeValue) : ?>
+                    <?php if ($attributeLabel) : ?>
                         <tr>
                             <th><?= $block->escapeHtml(__('Order Type')) ?></th>
-                            <td id="order_type"><?= $block->escapeHtml(__($attributeValue)) ?></td>
+                            <td>
+                                <span id="order_type"><?= $block->escapeHtml(__($attributeLabel)) ?></span>
+                            </td>
                         </tr>
                     <?php endif; ?>
                 </table>

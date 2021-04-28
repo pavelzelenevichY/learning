@@ -9,9 +9,10 @@
 namespace Codifi\Sales\ViewModel\Order\View;
 
 use Codifi\Sales\Model\Source\OrderType;
-use Magento\Framework\View\Element\Block\ArgumentInterface;
 use Magento\Sales\Model\Order;
+use Codifi\Sales\Helper\Config;
 use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\View\Element\Block\ArgumentInterface;
 
 /**
  * Class Info
@@ -33,10 +34,9 @@ class Info implements ArgumentInterface
      */
     public function __construct(
         OrderType $orderTypeSource
-    ){
+    ) {
         $this->orderTypeSource = $orderTypeSource;
     }
-
 
     /**
      * Get order_type attrubute label
@@ -45,17 +45,22 @@ class Info implements ArgumentInterface
      * @return string
      * @throws LocalizedException
      */
-    public function getAttributeLabel($currentOrder): string
+    public function getAttributeLabel(Order $currentOrder): string
     {
-        $response = '';
-        $orderType = $currentOrder->getData('order_type');
+        $attributeLabel = '';
+        $orderType = $currentOrder->getData(Config::ORDER_TYPE_CODE);
         $options = $this->orderTypeSource->getAllOptions();
-        foreach ($options as $item){
+        foreach ($options as $item) {
             if ($item['value'] === $orderType) {
-                $response = $item['label'];
+                if ($item['label']) {
+                    $attributeLabel = $item['label'];
+                }
+                else {
+                    $attributeLabel = $item['value'];
+                }
             }
         }
 
-        return $response;
+        return $attributeLabel;
     }
 }

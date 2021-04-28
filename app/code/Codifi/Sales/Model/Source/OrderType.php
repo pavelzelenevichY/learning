@@ -25,8 +25,8 @@ class OrderType extends AbstractSource
     {
         if (null === $this->_options) {
             $this->_options = [
-                ['label' => __('Regular Order'), 'value' => 'REGULAR'],
-                ['label' => __('Credit Hold Order'), 'value' => 'CREDIT_HOLD']
+                ['label' => __('Regular Order'), 'value' => 'REGULAR', 'selected' => '1'],
+                ['label' => __('Credit Hold Order'), 'value' => 'CREDIT_HOLD', 'selected' => '0']
             ];
         }
 
