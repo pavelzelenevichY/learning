@@ -8,7 +8,7 @@
 
 namespace Codifi\Sales\ViewModel\Order\Create;
 
-use Codifi\Sales\Model\Source\OrderType;
+use Codifi\Sales\Helper\Config;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
 
 /**
@@ -20,18 +20,18 @@ class Create implements ArgumentInterface
     /**
      * Order type options
      *
-     * @var OrderType
+     * @var Config
      */
-    private $orderTypeSource;
+    private $orderTypeConfig;
 
     /**
      * Create constructor.
      *
-     * @param OrderType $orderTypeSource
+     * @param Config orderTypeConfig
      */
-    public function __construct(OrderType $orderTypeSource)
+    public function __construct(Config $orderTypeConfig)
     {
-        $this->orderTypeSource = $orderTypeSource;
+        $this->orderTypeConfig = $orderTypeConfig;
     }
 
     /**
@@ -41,6 +41,6 @@ class Create implements ArgumentInterface
      */
     public function getOrderTypeOptions(): array
     {
-        return $this->orderTypeSource->getAllOptions();
+        return $this->orderTypeConfig->getAllOptions();
     }
 }

@@ -12,14 +12,6 @@
         <codifi_sales>
             <order>
                 <order_type>
-                    <item1>
-                        <value>REGULAR</value>
-                        <description>Regular Order</description>
-                    </item1>
-                    <item2>
-                        <value>CREDIT_HOLD</value>
-                        <description>Credit Hold Order</description>
-                    </item2>
                 </order_type>
             </order>
         </codifi_sales>

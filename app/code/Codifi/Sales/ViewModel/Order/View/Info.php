@@ -8,10 +8,10 @@
 
 namespace Codifi\Sales\ViewModel\Order\View;
 
-use Codifi\Sales\Model\Source\OrderType;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
 use Magento\Sales\Model\Order;
 use Magento\Framework\Exception\LocalizedException;
+use Codifi\Sales\Helper\Config;
 
 /**
  * Class Info
@@ -22,19 +22,19 @@ class Info implements ArgumentInterface
     /**
      * Order type options
      *
-     * @var OrderType
+     * @var Config
      */
-    private $orderTypeSource;
+    private $orderTypeConfig;
 
     /**
      * Info constructor.
      *
-     * @param OrderType $orderTypeSource
+     * @param Config $orderTypeConfig
      */
     public function __construct(
-        OrderType $orderTypeSource
+        Config $orderTypeConfig
     ){
-        $this->orderTypeSource = $orderTypeSource;
+        $this->orderTypeConfig = $orderTypeConfig;
     }
 
 
@@ -49,7 +49,7 @@ class Info implements ArgumentInterface
     {
         $response = '';
         $orderType = $currentOrder->getData('order_type');
-        $options = $this->orderTypeSource->getAllOptions();
+        $options = $this->orderTypeConfig->getAllOptions();
         foreach ($options as $item){
             if ($item['value'] === $orderType) {
                 $response = $item['description'];

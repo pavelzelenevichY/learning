@@ -21,7 +21,10 @@ $attributeValue = $viewModel->getOrderTypeOptions();
         <div class="admin__field-control control">
             <select id="order_type_select" name="order[order_type]" class="required-entry _required select admin__control-select">
                 <?php foreach ($attributeValue as $item): ?>
-                    <option value="<?= $block->escapeHtml(__($item['value'])) ?>" selected="<?= $block->escapeHtml(__($item['selected'])) ?>">
+                    <option value="<?= $block->escapeHtml(__($item['value'])) ?>"
+                            <?php if($item['value'] === 'REGULAR') :
+                                echo $block->escapeHtml('selected="selected"');
+                            endif ?>
                         <?= $block->escapeHtml(__($item['description'])) ?>
                     </option>
                 <?php endforeach; ?>

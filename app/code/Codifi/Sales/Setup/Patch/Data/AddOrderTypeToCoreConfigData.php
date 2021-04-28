@@ -19,11 +19,15 @@ use Magento\Framework\Serialize\SerializerInterface;
 class AddOrderTypeToCoreConfigData implements DataPatchInterface
 {
     /**
+     * Serializer interface
+     *
      * @var SerializerInterface
      */
     private $serializer;
 
     /**
+     * Writer Interface
+     *
      * @var WriterInterface
      */
     private $configWriter;
@@ -31,12 +35,12 @@ class AddOrderTypeToCoreConfigData implements DataPatchInterface
     /**
      * Path to config
      */
-    const PATH = 'codifi_sales/order/order_type';
+    const XML_PATH_ORDER_TYPE_VALUE = 'codifi_sales/order/order_type';
 
     /**
      * Order type values
      */
-    const VALUE = [
+    const ORDER_TYPE_VALUE = [
         [
             'value' => 'REGULAR',
             'description' => 'Regular Order',
@@ -68,14 +72,14 @@ class AddOrderTypeToCoreConfigData implements DataPatchInterface
      */
     public function apply(): void
     {
-        $value = $this->serializer->serialize(self::VALUE);
-        $this->configWriter->save(self::PATH, $value);
+        $value = $this->serializer->serialize(self::ORDER_TYPE_VALUE);
+        $this->configWriter->save(self::XML_PATH_ORDER_TYPE_VALUE, $value);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getAliases()
+    public function getAliases(): array
     {
         return [];
     }
@@ -83,7 +87,7 @@ class AddOrderTypeToCoreConfigData implements DataPatchInterface
     /**
      * {@inheritdoc}
      */
-    public static function getDependencies()
+    public static function getDependencies(): array
     {
         return [];
     }
