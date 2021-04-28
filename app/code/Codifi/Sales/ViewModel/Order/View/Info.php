@@ -8,10 +8,10 @@
 
 namespace Codifi\Sales\ViewModel\Order\View;
 
-use Magento\Framework\View\Element\Block\ArgumentInterface;
 use Magento\Sales\Model\Order;
-use Magento\Framework\Exception\LocalizedException;
 use Codifi\Sales\Helper\Config;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\View\Element\Block\ArgumentInterface;
 
 /**
  * Class Info
@@ -24,19 +24,18 @@ class Info implements ArgumentInterface
      *
      * @var Config
      */
-    private $orderTypeConfig;
+    private $orderTypeSource;
 
     /**
      * Info constructor.
      *
-     * @param Config $orderTypeConfig
+     * @param Config $orderTypeSource
      */
     public function __construct(
-        Config $orderTypeConfig
-    ){
-        $this->orderTypeConfig = $orderTypeConfig;
+        Config $orderTypeSource
+    ) {
+        $this->orderTypeSource = $orderTypeSource;
     }
-
 
     /**
      * Get order_type attrubute label
@@ -45,17 +44,22 @@ class Info implements ArgumentInterface
      * @return string
      * @throws LocalizedException
      */
-    public function getAttributeLabel($currentOrder): string
+    public function getAttributeLabel(Order $currentOrder): string
     {
-        $response = '';
-        $orderType = $currentOrder->getData('order_type');
-        $options = $this->orderTypeConfig->getAllOptions();
-        foreach ($options as $item){
+        $attributeLabel = '';
+        $orderType = $currentOrder->getData(Config::ORDER_TYPE_CODE);
+        $options = $this->orderTypeSource->getAllOptions();
+        foreach ($options as $item) {
             if ($item['value'] === $orderType) {
-                $response = $item['description'];
+                if ($item['label']) {
+                    $attributeLabel = $item['label'];
+                }
+                else {
+                    $attributeLabel = $item['value'];
+                }
             }
         }
 
-        return $response;
+        return $attributeLabel;
     }
 }
