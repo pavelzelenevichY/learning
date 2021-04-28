@@ -8,17 +8,9 @@
  */
 -->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
-    <body>
-        <referenceContainer name="left">
-            <referenceBlock name="sales_order_tabs">
-                <referenceBlock name="order_tab_info">
-                    <referenceBlock name="order_info" template="Codifi_Sales::order/view/info.phtml">
-                        <arguments>
-                            <argument name="info_order_view_model" xsi:type="object">Codifi\Sales\ViewModel\Order\View\Info</argument>
-                        </arguments>
-                    </referenceBlock>
-                </referenceBlock>
-            </referenceBlock>
-        </referenceContainer>
-    </body>
+    <referenceBlock class="Magento\Sales\Block\Adminhtml\Order\View\Info" name="order_info" template="Codifi_Sales::order/view/info.phtml">
+        <arguments>
+            <argument name="order_info_view_model" xsi:type="object">Codifi\Sales\ViewModel\Order\View\Info</argument>
+        </arguments>
+    </referenceBlock>
 </page>
