@@ -6,11 +6,12 @@
  * @author      Pavel Zelenevich <pzelenevich@codifi.me>
  */
 
+
 /**
  * @var \Magento\Framework\View\Element\Template $block
  */
-$viewModel = $block->getCreateOrderViewModel();
-$attributeValue = $viewModel->getOptionsOrderType();
+$viewModel = $block->getOrderCreateViewModel();
+$attributeValue = $viewModel->getOrderTypeOptions();
 ?>
 <fieldset class="fieldset admin__fieldset " id="order_type_fieldset">
     <div class="admin__field field field-order_type required _required">
@@ -20,8 +21,8 @@ $attributeValue = $viewModel->getOptionsOrderType();
         <div class="admin__field-control control">
             <select id="order_type_select" name="order[order_type]" class="required-entry _required select admin__control-select">
                 <?php foreach ($attributeValue as $item): ?>
-                    <option value="<?= $block->escapeHtml(__($item['value'])) ?>">
-                        <?= $block->escapeHtml(__($item['label'])) ?>
+                    <option value="<?= $block->escapeHtml(__($item['value'])) ?>" selected="<?= $block->escapeHtml(__($item['selected'])) ?>">
+                        <?= $block->escapeHtml(__($item['description'])) ?>
                     </option>
                 <?php endforeach; ?>
             </select>

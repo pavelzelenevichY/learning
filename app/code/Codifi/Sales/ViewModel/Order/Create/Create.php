@@ -39,7 +39,7 @@ class Create implements ArgumentInterface
      *
      * @return array
      */
-    public function getOptionsOrderType(): array
+    public function getOrderTypeOptions(): array
     {
         return $this->orderTypeSource->getAllOptions();
     }

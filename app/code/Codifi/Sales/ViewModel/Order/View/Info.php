@@ -52,7 +52,7 @@ class Info implements ArgumentInterface
         $options = $this->orderTypeSource->getAllOptions();
         foreach ($options as $item){
             if ($item['value'] === $orderType) {
-                $response = $item['label'];
+                $response = $item['description'];
             }
         }
 

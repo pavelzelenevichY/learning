@@ -8,6 +8,9 @@
 
 namespace Codifi\Sales\Helper;
 
+use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Store\Model\ScopeInterface;
+
 /**
  * Class Config
  * @package Codifi\Sales\Helper

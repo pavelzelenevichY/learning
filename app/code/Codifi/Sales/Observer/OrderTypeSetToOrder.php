@@ -6,7 +6,7 @@
  * @author      Pavel Zelenevich <pzelenevich@codifi.me>
  */
 
-namespace Codifi\Sales\Observer\Magento\Quote\Model;
+namespace Codifi\Sales\Observer;
 
 use Magento\Framework\Event\Observer as EventObserver;
 use Magento\Framework\Event\ObserverInterface;
