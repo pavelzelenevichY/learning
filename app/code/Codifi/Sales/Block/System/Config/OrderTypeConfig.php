@@ -10,10 +10,6 @@ namespace Codifi\Sales\Block\System\Config;
 
 use Magento\Config\Block\System\Config\Form\Field\FieldArray\AbstractFieldArray;
 
-/**
- * Class OrderTypeConfig
- * @package Codifi\Sales\Block\System\Config
- */
 class OrderTypeConfig extends AbstractFieldArray
 {
     /**
