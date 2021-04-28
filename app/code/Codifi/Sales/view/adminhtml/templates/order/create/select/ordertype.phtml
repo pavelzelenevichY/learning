@@ -11,7 +11,7 @@
  * @var \Magento\Framework\View\Element\Template $block
  */
 $viewModel = $block->getOrderCreateViewModel();
-$attributeValue = $viewModel->getOrderTypeOptions();
+$orderTypeOptions = $viewModel->getOrderTypeOptions();
 ?>
 <fieldset class="fieldset admin__fieldset " id="order_type_fieldset">
     <div class="admin__field field field-order_type required _required">
@@ -20,11 +20,9 @@ $attributeValue = $viewModel->getOrderTypeOptions();
         </label>
         <div class="admin__field-control control">
             <select id="order_type_select" name="order[order_type]" class="required-entry _required select admin__control-select">
-                <?php foreach ($attributeValue as $item): ?>
+                <?php foreach ($orderTypeOptions as $item): ?>
                     <option value="<?= $block->escapeHtml(__($item['value'])) ?>"
-                            <?php if($item['value'] === 'REGULAR') :
-                                echo $block->escapeHtml('selected="selected"');
-                            endif ?>
+                        <?= ($item['value'] === Codifi\Sales\Helper\Config::ORDER_TYPE_REGULAR_VALUE ) ? ' selected="selected"' : '' ?>>
                         <?= $block->escapeHtml(__($item['description'])) ?>
                     </option>
                 <?php endforeach; ?>

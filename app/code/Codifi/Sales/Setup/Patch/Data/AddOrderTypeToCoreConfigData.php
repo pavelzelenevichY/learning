@@ -35,21 +35,19 @@ class AddOrderTypeToCoreConfigData implements DataPatchInterface
     /**
      * Path to config
      */
-    const XML_PATH_ORDER_TYPE_VALUE = 'codifi_sales/order/order_type';
+    const ORDER_TYPE_XML_PATH = 'codifi_sales/order/order_type';
 
     /**
      * Order type values
      */
-    const ORDER_TYPE_VALUE = [
+    private $orderTypeValue = [
         [
             'value' => 'REGULAR',
-            'description' => 'Regular Order',
-            'selected' => '1'
+            'description' => 'Regular Order'
         ],
         [
             'value' => 'CREDIT_HOLD',
-            'description' => 'Credit Hold Order',
-            'selected' => '0'
+            'description' => 'Credit Hold Order'
         ]
     ];
 
@@ -72,8 +70,8 @@ class AddOrderTypeToCoreConfigData implements DataPatchInterface
      */
     public function apply(): void
     {
-        $value = $this->serializer->serialize(self::ORDER_TYPE_VALUE);
-        $this->configWriter->save(self::XML_PATH_ORDER_TYPE_VALUE, $value);
+        $value = $this->serializer->serialize($this->orderTypeValue);
+        $this->configWriter->save(self::ORDER_TYPE_XML_PATH, $value);
     }
 
     /**

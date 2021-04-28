@@ -206,9 +206,12 @@ $allowedAddressHtmlTags = ['b', 'br', 'em', 'i', 'li', 'ol', 'p', 'strong', 'sub
     </div>
 </section>
 <script>
-    require(['jquery', 'jquery/ui'], function($){ $(document).ready(function($) {
+    require([
+        'jquery',
+        'jquery/ui'
+    ], function($) { $(document).ready(function($) {
         var order_type = $('#order_type').text();
-            if (order_type === 'Credit Hold Order') {
+            if (order_type === <?= \Codifi\Sales\Helper\Config::ORDER_TYPE_LABEL_CREDIT_HOLD ?>) {
                 $('#order_reorder').hide();
             }
         });

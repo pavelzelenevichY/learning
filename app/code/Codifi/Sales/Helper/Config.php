@@ -8,14 +8,17 @@
 
 namespace Codifi\Sales\Helper;
 
+use Magento\Framework\App\Helper\AbstractHelper;
 use Codifi\Sales\Setup\Patch\Data\AddOrderTypeToCoreConfigData;
+use Magento\Framework\App\Helper\Context;
 use Magento\Framework\Serialize\SerializerInterface;
+use Exception;
 
 /**
  * Class Config
  * @package Codifi\Sales\Helper
  */
-class Config
+class Config extends AbstractHelper
 {
     /**
      * Order type attribute code
@@ -23,11 +26,23 @@ class Config
     const ORDER_TYPE_CODE = 'order_type';
 
     /**
-     * @var \Magento\Framework\App\Config
+     * Order type credit hold
      */
-    private $config;
+    const ORDER_TYPE_CREDIT_HOLD_VALUE = 'CREDIT_HOLD';
 
     /**
+     * Order type regular
+     */
+    const ORDER_TYPE_REGULAR_VALUE = 'REGULAR';
+
+    /**
+     * Order type label credit hold
+     */
+    const ORDER_TYPE_LABEL_CREDIT_HOLD = 'Credit Hold Order';
+
+    /**
+     * Serializer interface
+     *
      * @var SerializerInterface
      */
     private $serializer;
@@ -35,27 +50,30 @@ class Config
     /**
      * Config constructor.
      *
-     * @param Config $config
+     * @param Context $context
      * @param SerializerInterface $serializer
      */
     public function __construct(
-        Config $config,
+        Context $context,
         SerializerInterface $serializer
-    )
-    {
-        $this->config = $config;
+    ) {
         $this->serializer = $serializer;
+        parent::__construct($context);
     }
 
     /**
      * Get all order_type options
      *
+     * @throws Exception
      * @return array
      */
-    public function getAllOptions(): array
+    public function getAllOptionsOrderType(): array
     {
-        $value = $this->config->getValue(AddOrderTypeToCoreConfigData::XML_PATH_ORDER_TYPE_VALUE);
-        $options = $this->serializer->unserialize($value);
+        $options = [];
+        $value =$this->scopeConfig->getValue(AddOrderTypeToCoreConfigData::ORDER_TYPE_XML_PATH);
+        if ($value){
+            $options = $this->serializer->unserialize($value);
+        }
 
         return $options;
     }
