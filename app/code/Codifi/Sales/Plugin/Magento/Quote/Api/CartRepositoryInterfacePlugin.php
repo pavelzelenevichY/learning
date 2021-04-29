@@ -16,7 +16,7 @@ use Codifi\Sales\Helper\Config;
 
 /**
  * Class CartRepositoryInterfacePlugin
- * @package Codifi\Sales\Plugin\Api
+ * @package Codifi\Sales\Plugin\Magento\Quote\Api
  */
 class CartRepositoryInterfacePlugin
 {
@@ -64,8 +64,10 @@ class CartRepositoryInterfacePlugin
      * @param CartSearchResultsInterface $searchData
      * @return CartSearchResultsInterface
      */
-    public function afterGetList(CartRepositoryInterface $subject, CartSearchResultsInterface $searchData): CartSearchResultsInterface
-    {
+    public function afterGetList(
+        CartRepositoryInterface $subject,
+        CartSearchResultsInterface $searchData
+    ): CartSearchResultsInterface {
         $quotes = $searchData->getItems();
         foreach ($quotes as $quote) {
             $orderType = $quote->getData(Config::ORDER_TYPE_CODE);

@@ -15,11 +15,12 @@
 <div class="page-create-order">
     <script>
         require(["Magento_Sales/order/create/form"], function(){
-            order.setCurrencySymbol('<?= $block->escapeJs($block->getCurrencySymbol($block->getCurrentCurrencyCode())) ?>')
+            order.setCurrencySymbol(
+                '<?= $block->escapeJs($block->getCurrencySymbol($block->getCurrentCurrencyCode())) ?>'
+            )
         });
     </script>
     <div class="order-details<?php if ($block->getCustomerId()) : ?> order-details-existing-customer<?php endif; ?>">
-
         <section id="order-type" class="admin__page-section order-type">
             <div class="admin__page-section-title">
                 <span class="title"><?= $block->escapeHtml(__('Order Information')) ?></span>
@@ -76,13 +77,11 @@
                 </div>
             </div>
         </section>
-
         <?php if ($block->getChildBlock('card_validation')) : ?>
             <section id="order-card_validation" class="admin__page-section order-card-validation">
                 <?= $block->getChildHtml('card_validation') ?>
             </section>
         <?php endif; ?>
-
         <?= $block->getChildHtml('gift_options') ?>
 
         <section class="admin__page-section order-summary">
@@ -112,9 +111,13 @@
                 <select id="currency_switcher"
                         class="admin__control-select"
                         name="order[currency]"
-                        onchange="order.setCurrencyId(this.value); order.setCurrencySymbol(this.options[this.selectedIndex].getAttribute('symbol'));">
+                        onchange="order.setCurrencyId(this.value);
+                        order.setCurrencySymbol(this.options[this.selectedIndex].getAttribute('symbol'));">
                     <?php foreach ($block->getAvailableCurrencies() as $_code) : ?>
-                        <option value="<?= $block->escapeHtmlAttr($_code) ?>"<?php if ($_code == $block->getCurrentCurrencyCode()) : ?> selected="selected"<?php endif; ?> symbol="<?= $block->escapeHtmlAttr($block->getCurrencySymbol($_code)) ?>">
+                        <option value="<?= $block->escapeHtmlAttr($_code) ?>"
+                            <?php if ($_code == $block->getCurrentCurrencyCode()) : ?>
+                                selected="selected"<?php endif; ?>
+                                symbol="<?= $block->escapeHtmlAttr($block->getCurrencySymbol($_code)) ?>">
                             <?= $block->escapeHtml($block->getCurrencyName($_code)) ?>
                         </option>
                     <?php endforeach; ?>

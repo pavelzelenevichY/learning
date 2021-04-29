@@ -53,8 +53,7 @@ class Info implements ArgumentInterface
             if ($item['value'] === $orderType) {
                 if ($item['label']) {
                     $attributeLabel = $item['label'];
-                }
-                else {
+                } else {
                     $attributeLabel = $item['value'];
                 }
             }

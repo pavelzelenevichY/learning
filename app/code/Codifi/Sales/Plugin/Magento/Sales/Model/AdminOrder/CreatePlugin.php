@@ -13,7 +13,7 @@ use Magento\Sales\Model\AdminOrder\Create;
 
 /**
  * Class CreatePlugin
- * @package Codifi\Sales\Plugin\AdminOrder
+ * @package Codifi\Sales\Plugin\Magento\Sales\Model\AdminOrder
  */
 class CreatePlugin
 {

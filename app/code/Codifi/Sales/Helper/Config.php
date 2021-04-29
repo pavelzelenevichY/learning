@@ -71,7 +71,7 @@ class Config extends AbstractHelper
     {
         $options = [];
         $value =$this->scopeConfig->getValue(AddOrderTypeToCoreConfigData::ORDER_TYPE_XML_PATH);
-        if ($value){
+        if ($value) {
             $options = $this->serializer->unserialize($value);
         }
 

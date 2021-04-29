@@ -19,10 +19,14 @@ $orderTypeOptions = $viewModel->getOrderTypeOptions();
             <span><?= $block->escapeHtml(__('Order Type')) ?></span>
         </label>
         <div class="admin__field-control control">
-            <select id="order_type_select" name="order[order_type]" class="required-entry _required select admin__control-select">
+            <select
+                id="order_type_select"
+                name="order[order_type]"
+                class="required-entry _required select admin__control-select">
                 <?php foreach ($orderTypeOptions as $item): ?>
                     <option value="<?= $block->escapeHtml(__($item['value'])) ?>"
-                        <?= ($item['value'] === Codifi\Sales\Helper\Config::ORDER_TYPE_REGULAR_VALUE ) ? ' selected="selected"' : '' ?>>
+                        <?= ($item['value'] === Codifi\Sales\Helper\Config::ORDER_TYPE_REGULAR_VALUE )
+                            ? ' selected="selected"' : '' ?>>
                         <?= $block->escapeHtml(__($item['description'])) ?>
                     </option>
                 <?php endforeach; ?>
