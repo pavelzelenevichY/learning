@@ -14,4 +14,7 @@
     <type name="Magento\Quote\Api\CartRepositoryInterface">
         <plugin name="orderTypeAddToQuoteExtensionAttribute" type="Codifi\Sales\Plugin\Magento\Quote\Api\CartRepositoryInterfacePlugin" sortOrder="10"/>
     </type>
+    <type name="Magento\Sales\Model\AdminOrder\Create">
+        <plugin name="orderTypeAttributeAddToOrder" type="Codifi\Sales\Plugin\Magento\Sales\Model\AdminOrder\CreatePlugin" sortOrder="10"/>
+    </type>
 </config>
