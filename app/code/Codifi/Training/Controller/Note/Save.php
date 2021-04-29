@@ -59,7 +59,7 @@ class Save extends Action
         Context $context,
         JsonFactory $jsonFactory,
         CustomerNoteFactory $customerNoteFactory,
-        CustomerNoteResource $customerNoteResource
+        CustomerNoteResource $customerNoteResource,
     ) {
         parent::__construct($context);
         $this->jsonFactory = $jsonFactory;
