@@ -28,6 +28,7 @@ class ActionPlugin
 
     /**
      * ActionPlugin constructor.
+     *
      * @param OrderRepository $orderRepository
      */
     public function __construct(OrderRepository $orderRepository)
@@ -47,7 +48,30 @@ class ActionPlugin
      */
     public function aroundAddToActions(Action $subject, callable $proceed, array $actionArray)
     {
-        $urlPath = parse_url($actionArray["@"]['href'], PHP_URL_PATH);
+        $url = $actionArray["@"]['href'];
+        $orderId = $this->getOrderIdParamFromUrl($url);
+
+        if ($orderId) {
+            $currentOrder = $this->orderRepository->get($orderId);
+            $orderType = $currentOrder->getOrderType();
+
+            if ($orderType !== 'CREDIT_HOLD') {
+                $proceed($actionArray);
+            }
+        }
+
+        return ;
+    }
+
+    /**
+     * Get order id function
+     *
+     * @param $url
+     * @return string
+     */
+    private function getOrderIdParamFromUrl($url): string
+    {
+        $urlPath = parse_url($url, PHP_URL_PATH);
         $urlInArray = explode('/', $urlPath);
 
         $orderId = '';
@@ -61,15 +85,7 @@ class ActionPlugin
                 $flag = true;
             }
         }
-        $currentOrder = $this->orderRepository->get($orderId);
-        $orderType = $currentOrder->getOrderType();
 
-        if ($orderType !== 'CREDIT_HOLD') {
-            $response = $proceed($actionArray);
-        } else {
-            $response = null;
-        }
-
-        return $response;
+        return $orderId;
     }
 }
