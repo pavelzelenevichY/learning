@@ -12,7 +12,7 @@ use Magento\Framework\App\Helper\AbstractHelper;
 use Codifi\Sales\Setup\Patch\Data\AddOrderTypeToCoreConfigData;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\Serialize\SerializerInterface;
-use Exception;
+use \InvalidArgumentException;
 
 /**
  * Class Config
@@ -64,13 +64,13 @@ class Config extends AbstractHelper
     /**
      * Get all order_type options
      *
-     * @throws Exception
+     * @throws InvalidArgumentException
      * @return array
      */
     public function getAllOptionsOrderType(): array
     {
         $options = [];
-        $value =$this->scopeConfig->getValue(AddOrderTypeToCoreConfigData::ORDER_TYPE_XML_PATH);
+        $value = $this->scopeConfig->getValue(AddOrderTypeToCoreConfigData::ORDER_TYPE_XML_PATH);
         if ($value) {
             $options = $this->serializer->unserialize($value);
         }

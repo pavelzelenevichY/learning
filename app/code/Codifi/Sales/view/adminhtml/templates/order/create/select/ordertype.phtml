@@ -26,7 +26,8 @@ $orderTypeOptions = $viewModel->getOrderTypeOptions();
                 <?php foreach ($orderTypeOptions as $item): ?>
                     <option value="<?= $block->escapeHtml(__($item['value'])) ?>"
                         <?= ($item['value'] === Codifi\Sales\Helper\Config::ORDER_TYPE_REGULAR_VALUE )
-                            ? ' selected="selected"' : '' ?>>
+                            ? ' selected="selected"'
+                            : '' ?>>
                         <?= $block->escapeHtml(__($item['description'])) ?>
                     </option>
                 <?php endforeach; ?>

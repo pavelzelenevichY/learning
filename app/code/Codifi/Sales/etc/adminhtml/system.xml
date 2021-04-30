@@ -21,7 +21,7 @@
                 <label>Order</label>
                 <field id="order_type" translate="label" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Order Type</label>
-                    <frontend_model>Codifi\Sales\Helper\Config</frontend_model>
+                    <frontend_model>Codifi\Sales\Block\System\Config\OrderTypeConfig</frontend_model>
                     <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
                 </field>
             </group>

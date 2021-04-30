@@ -51,11 +51,7 @@ class Info implements ArgumentInterface
         $options = $this->orderTypeSource->getAllOptionsOrderType();
         foreach ($options as $item) {
             if ($item['value'] === $orderType) {
-                if ($item['label']) {
-                    $attributeLabel = $item['label'];
-                } else {
-                    $attributeLabel = $item['value'];
-                }
+                $attributeLabel = $item['description'] ?? $item['value'];
             }
         }
 
