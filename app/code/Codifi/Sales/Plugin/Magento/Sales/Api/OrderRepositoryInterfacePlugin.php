@@ -17,7 +17,7 @@ use Magento\Sales\Api\OrderRepositoryInterface;
 
 /**
  * Class OrderRepositoryInterfacePlugin
- * @package Codifi\Sales\Plugin\Api
+ * @package Codifi\Sales\Plugin\Magento\Sales\Api
  */
 class OrderRepositoryInterfacePlugin
 {
@@ -65,8 +65,10 @@ class OrderRepositoryInterfacePlugin
      * @param OrderSearchResultInterface $searchResult
      * @return OrderSearchResultInterface
      */
-    public function afterGetList(OrderRepositoryInterface $subject, OrderSearchResultInterface $searchResult): OrderSearchResultInterface
-    {
+    public function afterGetList(
+        OrderRepositoryInterface $subject,
+        OrderSearchResultInterface $searchResult
+    ): OrderSearchResultInterface {
         $orders = $searchResult->getItems();
         foreach ($orders as &$order) {
             $orderType = $order->getData(Config::ORDER_TYPE_CODE);

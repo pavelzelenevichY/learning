@@ -22,7 +22,6 @@ class OrderTypeSetToOrder implements ObserverInterface
      * Execute function.
      *
      * @param EventObserver $observer
-     * @return void
      */
     public function execute(EventObserver $observer): void
     {

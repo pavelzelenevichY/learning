@@ -17,4 +17,7 @@
     <type name="Magento\Sales\Model\AdminOrder\Create">
         <plugin name="orderTypeAttributeAddToOrder" type="Codifi\Sales\Plugin\Magento\Sales\Model\AdminOrder\CreatePlugin" sortOrder="10"/>
     </type>
+    <type name="Magento\Sales\Block\Adminhtml\Reorder\Renderer\Action">
+        <plugin name="hideReorderLink" type="Codifi\Sales\Plugin\Magento\Sales\Block\Adminhtml\Reorder\Renderer\ActionPlugin" sortOrder="10"/>
+    </type>
 </config>

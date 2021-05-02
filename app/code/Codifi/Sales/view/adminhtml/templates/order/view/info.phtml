@@ -47,13 +47,17 @@ $allowedAddressHtmlTags = ['b', 'br', 'em', 'i', 'li', 'ol', 'p', 'strong', 'sub
     <div class="admin__page-section-content">
         <div class="admin__page-section-item order-information">
             <?php /* Order Information */ ?>
-            <?php $confirmationEmailStatusMessage = $order->getEmailSent() ? __('The order confirmation email was sent') : __('The order confirmation email is not sent'); ?>
+            <?php $confirmationEmailStatusMessage = $order->getEmailSent() ?
+                __('The order confirmation email was sent') : __('The order confirmation email is not sent'); ?>
             <div class="admin__page-section-item-title">
                 <span class="title">
                     <?php if ($block->getNoUseOrderLink()) : ?>
-                        <?= $block->escapeHtml(__('Order # %1', $order->getRealOrderId())) ?> (<span><?= $block->escapeHtml($confirmationEmailStatusMessage) ?></span>)
+                        <?= $block->escapeHtml(__('Order # %1', $order->getRealOrderId())) ?>
+                        (<span><?= $block->escapeHtml($confirmationEmailStatusMessage) ?></span>)
                     <?php else : ?>
-                        <a href="<?= $block->escapeUrl($block->getViewUrl($order->getId())) ?>"><?= $block->escapeHtml(__('Order # %1', $order->getRealOrderId())) ?></a>
+                        <a href="<?= $block->escapeUrl($block->getViewUrl($order->getId())) ?>">
+                            <?= $block->escapeHtml(__('Order # %1', $order->getRealOrderId())) ?>
+                        </a>
                         <span>(<?= $block->escapeHtml($confirmationEmailStatusMessage) ?>)</span>
                     <?php endif; ?>
                 </span>
@@ -66,7 +70,9 @@ $allowedAddressHtmlTags = ['b', 'br', 'em', 'i', 'li', 'ol', 'p', 'strong', 'sub
                     </tr>
                     <?php if ($orderAdminDate != $orderStoreDate) : ?>
                         <tr>
-                            <th><?= $block->escapeHtml(__('Order Date (%1)', $block->getTimezoneForStore($order->getStore()))) ?></th>
+                            <th><?= $block->escapeHtml(__('Order Date (%1)',
+                                    $block->getTimezoneForStore($order->getStore()))) ?>
+                            </th>
                             <td><?= $block->escapeHtml($orderStoreDate) ?></td>
                         </tr>
                     <?php endif;?>
@@ -104,12 +110,17 @@ $allowedAddressHtmlTags = ['b', 'br', 'em', 'i', 'li', 'ol', 'p', 'strong', 'sub
                     <?php if ($order->getRemoteIp() && $block->shouldDisplayCustomerIp()) : ?>
                         <tr>
                             <th><?= $block->escapeHtml(__('Placed from IP')) ?></th>
-                            <td><?= $block->escapeHtml($order->getRemoteIp()); ?><?= $order->getXForwardedFor() ? ' (' . $block->escapeHtml($order->getXForwardedFor()) . ')' : ''; ?></td>
+                            <td><?= $block->escapeHtml($order->getRemoteIp()); ?>
+                                <?= $order->getXForwardedFor() ?
+                                    ' (' . $block->escapeHtml($order->getXForwardedFor()) . ')' : ''; ?>
+                            </td>
                         </tr>
                     <?php endif; ?>
                     <?php if ($globalCurrencyCode !== $baseCurrencyCode) : ?>
                         <tr>
-                            <th><?= $block->escapeHtml(__('%1 / %2 rate:', $globalCurrencyCode, $baseCurrencyCode)) ?></th>
+                            <th>
+                                <?= $block->escapeHtml(__('%1 / %2 rate:', $globalCurrencyCode, $baseCurrencyCode)) ?>
+                            </th>
                             <td><?= $block->escapeHtml($order->getBaseToGlobalRate()) ?></td>
                         </tr>
                     <?php endif; ?>
@@ -159,7 +170,11 @@ $allowedAddressHtmlTags = ['b', 'br', 'em', 'i', 'li', 'ol', 'p', 'strong', 'sub
                     </tr>
                     <tr>
                         <th><?= $block->escapeHtml(__('Email')) ?></th>
-                        <td><a href="mailto:<?= $block->escapeHtmlAttr($order->getCustomerEmail()) ?>"><?= $block->escapeHtml($order->getCustomerEmail()) ?></a></td>
+                        <td>
+                            <a href="mailto:<?= $block->escapeHtmlAttr($order->getCustomerEmail()) ?>">
+                                <?= $block->escapeHtml($order->getCustomerEmail()) ?>
+                            </a>
+                        </td>
                     </tr>
                     <?php if ($groupName = $block->getCustomerGroupName()) : ?>
                         <tr>
@@ -179,7 +194,6 @@ $allowedAddressHtmlTags = ['b', 'br', 'em', 'i', 'li', 'ol', 'p', 'strong', 'sub
         </div>
     </div>
 </section>
-
 <section class="admin__page-section order-addresses">
     <div class="admin__page-section-title">
         <span class="title"><?= $block->escapeHtml(__('Address Information')) ?></span>
@@ -191,7 +205,9 @@ $allowedAddressHtmlTags = ['b', 'br', 'em', 'i', 'li', 'ol', 'p', 'strong', 'sub
                 <span class="title"><?= $block->escapeHtml(__('Billing Address')) ?></span>
                 <div class="actions"><?= /* @noEscape */ $block->getAddressEditLink($order->getBillingAddress()); ?></div>
             </div>
-            <address class="admin__page-section-item-content"><?= $block->escapeHtml($block->getFormattedAddress($order->getBillingAddress()), $allowedAddressHtmlTags); ?></address>
+            <address class="admin__page-section-item-content">
+                <?= $block->escapeHtml($block->getFormattedAddress($order->getBillingAddress()), $allowedAddressHtmlTags); ?>
+            </address>
         </div>
         <?php if (!$block->getOrder()->getIsVirtual()) : ?>
             <div class="admin__page-section-item order-shipping-address">
@@ -200,15 +216,21 @@ $allowedAddressHtmlTags = ['b', 'br', 'em', 'i', 'li', 'ol', 'p', 'strong', 'sub
                     <span class="title"><?= $block->escapeHtml(__('Shipping Address')) ?></span>
                     <div class="actions"><?= /* @noEscape */ $block->getAddressEditLink($order->getShippingAddress()); ?></div>
                 </div>
-                <address class="admin__page-section-item-content"><?= $block->escapeHtml($block->getFormattedAddress($order->getShippingAddress()), $allowedAddressHtmlTags); ?></address>
+                <address class="admin__page-section-item-content">
+                    <?= $block->escapeHtml($block->getFormattedAddress($order->getShippingAddress()), $allowedAddressHtmlTags); ?>
+                </address>
             </div>
         <?php endif; ?>
     </div>
 </section>
 <script>
-    require(['jquery', 'jquery/ui'], function($){ $(document).ready(function($) {
-        var order_type = $('#order_type').text();
-            if (order_type === 'Credit Hold Order') {
+    require([
+        'jquery',
+        'jquery/ui'
+    ], function($) {
+        $(document).ready(function($) {
+            var order_type = $('#order_type').text();
+            if (order_type === <?= \Codifi\Sales\Helper\Config::ORDER_TYPE_LABEL_CREDIT_HOLD ?>) {
                 $('#order_reorder').hide();
             }
         });

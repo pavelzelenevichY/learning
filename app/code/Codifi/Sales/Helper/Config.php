@@ -8,11 +8,17 @@
 
 namespace Codifi\Sales\Helper;
 
+use Magento\Framework\App\Helper\AbstractHelper;
+use Codifi\Sales\Setup\Patch\Data\AddOrderTypeToCoreConfigData;
+use Magento\Framework\App\Helper\Context;
+use Magento\Framework\Serialize\SerializerInterface;
+use \InvalidArgumentException;
+
 /**
  * Class Config
  * @package Codifi\Sales\Helper
  */
-class Config
+class Config extends AbstractHelper
 {
     /**
      * Order type attribute code
@@ -28,4 +34,47 @@ class Config
      * Order type regular
      */
     const ORDER_TYPE_REGULAR_VALUE = 'REGULAR';
+
+    /**
+     * Order type label credit hold
+     */
+    const ORDER_TYPE_LABEL_CREDIT_HOLD = 'Credit Hold Order';
+
+    /**
+     * Serializer interface
+     *
+     * @var SerializerInterface
+     */
+    private $serializer;
+
+    /**
+     * Config constructor.
+     *
+     * @param Context $context
+     * @param SerializerInterface $serializer
+     */
+    public function __construct(
+        Context $context,
+        SerializerInterface $serializer
+    ) {
+        $this->serializer = $serializer;
+        parent::__construct($context);
+    }
+
+    /**
+     * Get all order_type options
+     *
+     * @throws InvalidArgumentException
+     * @return array
+     */
+    public function getAllOptionsOrderType(): array
+    {
+        $options = [];
+        $value = $this->scopeConfig->getValue(AddOrderTypeToCoreConfigData::ORDER_TYPE_XML_PATH);
+        if ($value) {
+            $options = $this->serializer->unserialize($value);
+        }
+
+        return $options;
+    }
 }
