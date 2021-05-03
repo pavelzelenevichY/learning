@@ -12,6 +12,7 @@ use Magento\Sales\Model\Order;
 use Codifi\Sales\Helper\Config;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
+use Codifi\Training\Model\ConfigProvider;
 
 /**
  * Class Info
@@ -27,14 +28,21 @@ class Info implements ArgumentInterface
     private $orderTypeSource;
 
     /**
+     * @var ConfigProvider
+     */
+    private $trainingConfigProvider;
+
+    /**
      * Info constructor.
      *
      * @param Config $orderTypeSource
      */
     public function __construct(
-        Config $orderTypeSource
+        Config $orderTypeSource,
+        ConfigProvider $trainingConfigProvider
     ) {
         $this->orderTypeSource = $orderTypeSource;
+        $this->trainingConfigProvider = $trainingConfigProvider;
     }
 
     /**
@@ -56,5 +64,15 @@ class Info implements ArgumentInterface
         }
 
         return $attributeLabel;
+    }
+
+    /**
+     * Is option credit_hold enabled
+     *
+     * @return bool
+     */
+    public function isCreditHoldConfigEnabled(): bool
+    {
+        return $this->trainingConfigProvider->isOptionCreditHoldEnable();
     }
 }
