@@ -22,16 +22,16 @@ $viewModel = $block->getOrderInfoViewModel();
         <table class="data table table-order-items history" id="my-orders-table">
             <caption class="table-caption"><?= $block->escapeHtml(__('Orders')) ?></caption>
             <thead>
-            <tr>
-                <th scope="col" class="col id"><?= $block->escapeHtml(__('Order #')) ?></th>
-                <th scope="col" class="col date"><?= $block->escapeHtml(__('Date')) ?></th>
-                <?= $block->getChildHtml('extra.column.header') ?>
-                <th scope="col" class="col shipping"><?= $block->escapeHtml(__('Ship To')) ?></th>
-                <th scope="col" class="col total"><?= $block->escapeHtml(__('Order Total')) ?></th>
-                <th scope="col" class="col status"><?= $block->escapeHtml(__('Status')) ?></th>
-                <th scope="col" class="col type"><?= $block->escapeHtml(__('Type')) ?></th>
-                <th scope="col" class="col actions"><?= $block->escapeHtml(__('Action')) ?></th>
-            </tr>
+                <tr>
+                    <th scope="col" class="col id"><?= $block->escapeHtml(__('Order #')) ?></th>
+                    <th scope="col" class="col date"><?= $block->escapeHtml(__('Date')) ?></th>
+                    <?= $block->getChildHtml('extra.column.header') ?>
+                    <th scope="col" class="col shipping"><?= $block->escapeHtml(__('Ship To')) ?></th>
+                    <th scope="col" class="col total"><?= $block->escapeHtml(__('Order Total')) ?></th>
+                    <th scope="col" class="col status"><?= $block->escapeHtml(__('Status')) ?></th>
+                    <th scope="col" class="col type"><?= $block->escapeHtml(__('Type')) ?></th>
+                    <th scope="col" class="col actions"><?= $block->escapeHtml(__('Action')) ?></th>
+                </tr>
             </thead>
             <tbody>
             <?php foreach ($_orders as $_order) : ?>
