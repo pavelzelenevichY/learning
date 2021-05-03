@@ -11,6 +11,7 @@ namespace Codifi\Sales\Block\Adminhtml\Edit\Tab;
 use Magento\Customer\Block\Adminhtml\Edit\Tab\Orders as MagentoCustomerOrders;
 use Codifi\Sales\Block\Adminhtml\Order\Renderer\Type;
 use Magento\Sales\Block\Adminhtml\Reorder\Renderer\Action;
+use \Exception;
 
 /**
  * Class Orders
@@ -19,9 +20,9 @@ use Magento\Sales\Block\Adminhtml\Reorder\Renderer\Action;
 class Orders extends MagentoCustomerOrders
 {
     /**
-     * @return Orders|void
+     * Add order_type label to column
      */
-    protected function _prepareCollection()
+    protected function _prepareCollection(): void
     {
         parent::_prepareCollection();
 
@@ -33,9 +34,11 @@ class Orders extends MagentoCustomerOrders
     }
 
     /**
-     * @inheritdoc
+     * Add order_type label to column
+     *
+     * @throws Exception
      */
-    protected function _prepareColumns()
+    protected function _prepareColumns(): void
     {
         parent::_prepareColumns();
 
