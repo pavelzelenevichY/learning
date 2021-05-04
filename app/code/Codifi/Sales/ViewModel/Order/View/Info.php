@@ -28,21 +28,24 @@ class Info implements ArgumentInterface
     private $orderTypeSource;
 
     /**
+     * Customer config provider
+     *
      * @var ConfigProvider
      */
-    private $trainingConfigProvider;
+    private $customerConfigProvider;
 
     /**
      * Info constructor.
      *
      * @param Config $orderTypeSource
+     * @param ConfigProvider $customerConfigProvider
      */
     public function __construct(
         Config $orderTypeSource,
-        ConfigProvider $trainingConfigProvider
+        ConfigProvider $customerConfigProvider
     ) {
         $this->orderTypeSource = $orderTypeSource;
-        $this->trainingConfigProvider = $trainingConfigProvider;
+        $this->customerConfigProvider = $customerConfigProvider;
     }
 
     /**
@@ -54,16 +57,9 @@ class Info implements ArgumentInterface
      */
     public function getAttributeLabel(Order $currentOrder): string
     {
-        $attributeLabel = '';
         $orderType = $currentOrder->getData(Config::ORDER_TYPE_CODE);
-        $options = $this->orderTypeSource->getAllOptionsOrderType();
-        foreach ($options as $item) {
-            if ($item['value'] === $orderType) {
-                $attributeLabel = $item['description'] ?? $item['value'];
-            }
-        }
 
-        return $attributeLabel;
+        return $this->orderTypeSource->getAttributeLabel($orderType);
     }
 
     /**
@@ -73,6 +69,6 @@ class Info implements ArgumentInterface
      */
     public function isCreditHoldConfigEnabled(): bool
     {
-        return $this->trainingConfigProvider->isOptionCreditHoldEnable();
+        return $this->customerConfigProvider->isOptionCreditHoldEnable();
     }
 }

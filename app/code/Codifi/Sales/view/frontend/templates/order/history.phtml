@@ -51,8 +51,7 @@ $viewModel = $block->getOrderInfoViewModel();
                         <a href="<?= $block->escapeUrl($block->getViewUrl($_order)) ?>" class="action view">
                             <span><?= $block->escapeHtml(__('View Order')) ?></span>
                         </a>
-                        <?php if ($_order->getOrderType() === \Codifi\Sales\Helper\Config::ORDER_TYPE_CREDIT_HOLD_VALUE && $viewModel->isCreditHoldConfigEnabled()) : ?>
-                        <?php else : ?>
+                        <?php if ($_order->getOrderType() !== \Codifi\Sales\Helper\Config::ORDER_TYPE_CREDIT_HOLD_VALUE || !$viewModel->isCreditHoldConfigEnabled()) : ?>
                             <?php if ($this->helper(\Magento\Sales\Helper\Reorder::class)->canReorder($_order->getEntityId())) : ?>
                                 <a href="#" data-post='<?= /* @noEscape */
                                 $this->helper(\Magento\Framework\Data\Helper\PostHelper::class)
@@ -60,8 +59,8 @@ $viewModel = $block->getOrderInfoViewModel();
                                    class="action order">
                                     <span><?= $block->escapeHtml(__('Reorder')) ?></span>
                                 </a>
-                            <?php endif ?>
-                        <?php endif ?>
+                            <?php endif; ?>
+                        <?php endif; ?>
                     </td>
                 </tr>
             <?php endforeach; ?>
@@ -70,7 +69,7 @@ $viewModel = $block->getOrderInfoViewModel();
     </div>
     <?php if ($block->getPagerHtml()) : ?>
         <div class="order-products-toolbar toolbar bottom"><?= $block->getPagerHtml() ?></div>
-    <?php endif ?>
+    <?php endif; ?>
 <?php else : ?>
     <div class="message info empty"><span><?= $block->escapeHtml(__('You have placed no orders.')) ?></span></div>
-<?php endif ?>
+<?php endif; ?>
