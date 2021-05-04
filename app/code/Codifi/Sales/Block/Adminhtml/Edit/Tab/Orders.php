@@ -11,7 +11,6 @@ namespace Codifi\Sales\Block\Adminhtml\Edit\Tab;
 use Magento\Customer\Block\Adminhtml\Edit\Tab\Orders as MagentoCustomerOrders;
 use Codifi\Sales\Block\Adminhtml\Order\Renderer\Type;
 use Magento\Sales\Block\Adminhtml\Reorder\Renderer\Action;
-use Exception;
 
 /**
  * Class Orders
