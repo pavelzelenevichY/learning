@@ -50,26 +50,10 @@ class Type extends AbstractRenderer
      */
     public function render(DataObject $row): string
     {
-        $orderType = $row->getOrderType();
-        $attributeLabel = $this->getAttributeLabel($orderType);
-
-        return $attributeLabel;
-    }
-
-    /**
-     * Get order_type attribute label
-     *
-     * @param $orderType
-     * @return string
-     */
-    public function getAttributeLabel($orderType): string
-    {
         $attributeLabel = '';
-        $options = $this->orderTypeSource->getAllOptionsOrderType();
-        foreach ($options as $item) {
-            if ($item['value'] === $orderType) {
-                $attributeLabel = $item['description'] ?? $item['value'];
-            }
+        $orderType = $row->getOrderType();
+        if ($orderType) {
+            $attributeLabel = $this->orderTypeSource->getAttributeLabel($orderType);
         }
 
         return $attributeLabel;

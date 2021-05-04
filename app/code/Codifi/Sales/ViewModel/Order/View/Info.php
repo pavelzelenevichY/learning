@@ -46,15 +46,8 @@ class Info implements ArgumentInterface
      */
     public function getAttributeLabel(Order $currentOrder): string
     {
-        $attributeLabel = '';
         $orderType = $currentOrder->getData(Config::ORDER_TYPE_CODE);
-        $options = $this->orderTypeSource->getAllOptionsOrderType();
-        foreach ($options as $item) {
-            if ($item['value'] === $orderType) {
-                $attributeLabel = $item['description'] ?? $item['value'];
-            }
-        }
 
-        return $attributeLabel;
+        return $this->orderTypeSource->getAttributeLabel($orderType);
     }
 }
