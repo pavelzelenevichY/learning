@@ -43,11 +43,11 @@ class AddOrderTypeToCoreConfigData implements DataPatchInterface
     private $orderTypeValue = [
         [
             'value' => 'REGULAR',
-            'description' => 'Regular Order'
+            'label' => 'Regular Order'
         ],
         [
             'value' => 'CREDIT_HOLD',
-            'description' => 'Credit Hold Order'
+            'label' => 'Credit Hold Order'
         ]
     ];
 

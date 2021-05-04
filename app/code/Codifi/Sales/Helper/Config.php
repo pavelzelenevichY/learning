@@ -90,7 +90,7 @@ class Config extends AbstractHelper
         $options = $this->getAllOptionsOrderType();
         foreach ($options as $item) {
             if ($item['value'] === $orderType) {
-                $attributeLabel = $item['description'] ?? $item['value'];
+                $attributeLabel = $item['label'] ?? $item['value'];
             }
         }
 
