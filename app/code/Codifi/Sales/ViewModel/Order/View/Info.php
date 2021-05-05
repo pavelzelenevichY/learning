@@ -10,7 +10,6 @@ namespace Codifi\Sales\ViewModel\Order\View;
 
 use Magento\Sales\Model\Order;
 use Codifi\Sales\Helper\Config;
-use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
 
 /**
@@ -42,12 +41,16 @@ class Info implements ArgumentInterface
      *
      * @param Order $currentOrder
      * @return string
-     * @throws LocalizedException
      */
     public function getAttributeLabel(Order $currentOrder): string
     {
         $orderType = $currentOrder->getData(Config::ORDER_TYPE_CODE);
+        if ($orderType) {
+            $label = $this->orderTypeSource->getAttributeLabel($orderType);
+        } else {
+            $label = '';
+        }
 
-        return $this->orderTypeSource->getAttributeLabel($orderType);
+        return $label;
     }
 }
