@@ -22,7 +22,7 @@ class OrderTypeConfig extends AbstractFieldArray
     protected function _prepareToRender()
     {
         $this->addColumn('value', ['label' => __('value'), 'class' => 'required-entry']);
-        $this->addColumn('description', ['label' => __('description'), 'class' => 'required-entry']);
+        $this->addColumn('label', ['label' => __('description'), 'class' => 'required-entry']);
         $this->_addAfter = false;
         $this->_addButtonLabel = __('Add');
     }

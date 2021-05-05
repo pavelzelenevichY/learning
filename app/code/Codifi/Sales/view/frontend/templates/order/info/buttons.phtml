@@ -18,7 +18,7 @@ $viewModel = $block->getOrderInfoViewModel();
 ?>
 <div class="actions">
     <?php $_order = $block->getOrder() ?>
-    <?php if ($_order->getOrderType() !== \Codifi\Sales\Helper\Config::ORDER_TYPE_CREDIT_HOLD_VALUE || !$viewModel->isCreditHoldConfigEnabled()) : ?>
+    <?php if (!$viewModel->isCreditHoldConfigEnabled() || $_order->getOrderType() !== \Codifi\Sales\Helper\Config::ORDER_TYPE_CREDIT_HOLD_VALUE) : ?>
         <?php if ($this->helper(\Magento\Sales\Helper\Reorder::class)->canReorder($_order->getEntityId())) : ?>
             <a href="#" data-post='<?=
             /* @noEscape */ $this->helper(\Magento\Framework\Data\Helper\PostHelper::class)
