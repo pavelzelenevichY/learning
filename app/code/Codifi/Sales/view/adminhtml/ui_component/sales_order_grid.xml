@@ -15,7 +15,7 @@
                 <filter>select</filter>
                 <dataType>select</dataType>
                 <options class="Codifi\Sales\Ui\Component\Order\Grid\Column\OrderType"/>
-                <label translate="true">Order type</label>
+                <label translate="true">Order Type</label>
             </settings>
         </column>
     </columns>
