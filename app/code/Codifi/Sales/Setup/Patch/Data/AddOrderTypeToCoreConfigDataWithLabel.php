@@ -11,12 +11,13 @@ namespace Codifi\Sales\Setup\Patch\Data;
 use Magento\Framework\Setup\Patch\DataPatchInterface;
 use Magento\Framework\App\Config\Storage\WriterInterface;
 use Magento\Framework\Serialize\SerializerInterface;
+use Codifi\Sales\Setup\Patch\Data\AddOrderTypeToCoreConfigData;
 
 /**
- * Class AddOrderTypeToCoreConfigData
+ * Class AddOrderTypeToCoreConfigDataWithLabel
  * @package Codifi\Sales\Setup\Patch\Data
  */
-class AddOrderTypeToCoreConfigData implements DataPatchInterface
+class AddOrderTypeToCoreConfigDataWithLabel implements DataPatchInterface
 {
     /**
      * Serializer interface
@@ -43,11 +44,11 @@ class AddOrderTypeToCoreConfigData implements DataPatchInterface
     private $orderTypeValue = [
         [
             'value' => 'REGULAR',
-            'description' => 'Regular Order'
+            'label' => 'Regular Order'
         ],
         [
             'value' => 'CREDIT_HOLD',
-            'description' => 'Credit Hold Order'
+            'label' => 'Credit Hold Order'
         ]
     ];
 
@@ -87,6 +88,8 @@ class AddOrderTypeToCoreConfigData implements DataPatchInterface
      */
     public static function getDependencies(): array
     {
-        return [];
+        return [
+            AddOrderTypeToCoreConfigData::class
+        ];
     }
 }
