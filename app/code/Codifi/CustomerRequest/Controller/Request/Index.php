@@ -45,7 +45,7 @@ class Index extends Action
      *
      * @return Page
      */
-    public function execute(): Page
+    public function execute()
     {
         $resultPage = $this->resultPageFactory->create();
         $config = $resultPage->getConfig();

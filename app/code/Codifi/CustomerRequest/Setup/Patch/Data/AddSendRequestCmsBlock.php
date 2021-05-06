@@ -64,8 +64,10 @@ class AddSendRequestCmsBlock implements DataPatchInterface
             'identifier' => 'send-request',
             'stores' => ['0'],
             'is_active' => self::BLOCK_IS_ACTIVE,
-            'content' => '<div class="cms-terms">Thank you for visiting {{store_name}}.</div>
-                          <div class="cms-terms">Our customer service team will gladly help with any queries.</div>'
+            'content' => '<div class="cms-terms">
+    <p class="greeting">{{trans "Thank you for visiting %store_name" store_name=$store.frontend_name}}.</p>
+    </div>
+    <div class="cms-terms">Our customer service team will gladly help with any queries.</div>'
         ];
         $newBlock = $this->blockFactory->create(['data' => $data]);
 
