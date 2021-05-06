@@ -15,4 +15,7 @@
     <table name="quote">
         <column xsi:type="varchar" name="order_type" nullable="true" length="255" comment="Order type"/>
     </table>
+    <table name="sales_order_grid">
+        <column xsi:type="varchar" name="order_type" nullable="true" length="255" comment="Order type"/>
+    </table>
 </schema>

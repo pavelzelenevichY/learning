@@ -77,4 +77,23 @@ class Config extends AbstractHelper
 
         return $options;
     }
+
+    /**
+     * Get order_type attribute label
+     *
+     * @param string $orderType
+     * @return string
+     */
+    public function getAttributeLabel(string $orderType): string
+    {
+        $attributeLabel = '';
+        $options = $this->getAllOptionsOrderType();
+        foreach ($options as $item) {
+            if ($item['value'] === $orderType) {
+                $attributeLabel = $item['description'] ?? $item['value'];
+            }
+        }
+
+        return $attributeLabel;
+    }
 }

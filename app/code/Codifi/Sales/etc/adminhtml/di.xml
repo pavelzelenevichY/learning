@@ -20,4 +20,5 @@
     <type name="Magento\Sales\Block\Adminhtml\Reorder\Renderer\Action">
         <plugin name="hideReorderLink" type="Codifi\Sales\Plugin\Magento\Sales\Block\Adminhtml\Reorder\Renderer\ActionPlugin" sortOrder="10"/>
     </type>
+    <preference for="Magento\Customer\Block\Adminhtml\Edit\Tab\Orders" type="Codifi\Sales\Block\Adminhtml\Edit\Tab\Orders"/>
 </config>

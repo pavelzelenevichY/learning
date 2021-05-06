@@ -11,7 +11,11 @@
     <update handle="customer_account"/>
     <body>
         <referenceContainer name="content">
-            <referenceBlock name="sales.order.history" template="Codifi_Sales::order/history.phtml"/>
+            <referenceBlock name="sales.order.history" template="Codifi_Sales::order/history.phtml">
+                <arguments>
+                    <argument name="order_info_view_model" xsi:type="object">Codifi\Sales\ViewModel\Order\View\Info</argument>
+                </arguments>
+            </referenceBlock>
         </referenceContainer>
     </body>
 </page>

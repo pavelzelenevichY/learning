@@ -25,8 +25,8 @@
             ?>' class="action order">
                 <span><?= $block->escapeHtml(__('Reorder')) ?></span>
             </a>
-        <?php endif ?>
-    <?php endif ?>
+        <?php endif; ?>
+    <?php endif; ?>
     <a href="<?= $block->escapeUrl($block->getPrintUrl($_order)) ?>"
        class="action print"
        target="_blank"
