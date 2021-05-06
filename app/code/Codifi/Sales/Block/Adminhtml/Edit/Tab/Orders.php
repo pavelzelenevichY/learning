@@ -25,12 +25,12 @@ class Orders extends MagentoCustomerOrders
     {
         parent::_prepareCollection();
 
-        $gridCollection = $this->getCollection();
-        $gridCollection->addFieldToSelect('order_type');
-        $gridCollection->clear();
-        $gridCollection->load();
+        $collection = $this->getCollection();
+        $collection->addFieldToSelect('order_type');
+        $collection->clear();
+        $collection->load();
 
-        $this->setCollection($gridCollection);
+        $this->setCollection($collection);
     }
 
     /**
