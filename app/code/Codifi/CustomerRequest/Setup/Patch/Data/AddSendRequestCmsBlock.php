@@ -14,27 +14,32 @@ use Magento\Cms\Model\BlockFactory;
 use Magento\Cms\Model\BlockRepository;
 
 /**
- * Class AddRequestSendCmsBlock
+ * Class AddSendRequestCmsBlock
  * @package Codifi\CustomerRequest\Setup\Patch\Data
  */
-class AddRequestSendCmsBlock implements DataPatchInterface
+class AddSendRequestCmsBlock implements DataPatchInterface
 {
+    /**
+     * Block is active
+     */
+    const BLOCK_IS_ACTIVE = 1;
+
     /**
      * Block factory
      *
      * @var BlockFactory
      */
-    protected $blockFactory;
+    private $blockFactory;
 
     /**
      * Block repository
      *
      * @var BlockRepository
      */
-    protected $blockRepository;
+    private $blockRepository;
 
     /**
-     * AddRequestSendCmsBlock constructor.
+     * AddSendRequestCmsBlock constructor.
      *
      * @param BlockFactory $blockFactory
      * @param BlockRepository $blockRepository
@@ -55,10 +60,10 @@ class AddRequestSendCmsBlock implements DataPatchInterface
     public function apply(): void
     {
         $data = [
-            'title' => 'Send request',
+            'title' => 'Send Request',
             'identifier' => 'send-request',
-            'stores' => \Magento\Store\Model\Store::DEFAULT_STORE_ID,
-            'is_active' => 1,
+            'stores' => ['0'],
+            'is_active' => self::BLOCK_IS_ACTIVE,
             'content' => '<div class="cms-terms">Thank you for visiting {{store_name}}.</div>
                           <div class="cms-terms">Our customer service team will gladly help with any queries.</div>'
         ];
@@ -70,16 +75,16 @@ class AddRequestSendCmsBlock implements DataPatchInterface
     /**
      * {@inheritdoc}
      */
-    public function getAliases()
+    public function getAliases(): string
     {
-        return [];
+        return '';
     }
 
     /**
      * {@inheritdoc}
      */
-    public static function getDependencies()
+    public static function getDependencies(): string
     {
-        return [];
+        return '';
     }
 }

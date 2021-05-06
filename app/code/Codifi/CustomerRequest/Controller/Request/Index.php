@@ -6,7 +6,7 @@
  * @author      Pavel Zelenevich <pzelenevich@codifi.me>
  */
 
-namespace Codifi\CustomerRequest\Controller\Account;
+namespace Codifi\CustomerRequest\Controller\Request;
 
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
@@ -24,7 +24,7 @@ class Index extends Action
      *
      * @var PageFactory
      */
-    protected $resultPageFactory;
+    private $resultPageFactory;
 
     /**
      * Index constructor.
@@ -45,10 +45,12 @@ class Index extends Action
      *
      * @return Page
      */
-    public function execute()
+    public function execute(): Page
     {
         $resultPage = $this->resultPageFactory->create();
-        $resultPage->getConfig()->getTitle()->set(__('Send request'));
+        $config = $resultPage->getConfig();
+        $title = $config->getTitle();
+        $title->set(__('Send request'));
 
         return $resultPage;
     }
