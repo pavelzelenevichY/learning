@@ -223,12 +223,7 @@ $allowedAddressHtmlTags = ['b', 'br', 'em', 'i', 'li', 'ol', 'p', 'strong', 'sub
         <?php endif; ?>
     </div>
 </section>
-<?php
-$hide = false;
-if (\Codifi\Sales\Helper\Config::ORDER_TYPE_LABEL_CREDIT_HOLD && $viewModel->isCreditHoldConfigEnabled()){
-    $hide = \Codifi\Sales\Helper\Config::ORDER_TYPE_LABEL_CREDIT_HOLD;
-}
-?>
+<?php if ($viewModel->isCreditHoldConfigEnabled()) : ?>
 <script>
     require([
         'jquery',
@@ -236,9 +231,11 @@ if (\Codifi\Sales\Helper\Config::ORDER_TYPE_LABEL_CREDIT_HOLD && $viewModel->isC
     ], function($) {
         $(document).ready(function($) {
             var order_type = $('#order_type').text();
-            if (order_type === "<?= $hide ?>") {
+            var order_type_config = "<?= \Codifi\Sales\Helper\Config::ORDER_TYPE_LABEL_CREDIT_HOLD ?>";
+            if (order_type === order_type_config) {
                 $('#order_reorder').hide();
             }
         });
     });
 </script>
+<?php endif; ?>

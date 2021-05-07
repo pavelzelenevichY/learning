@@ -25,7 +25,8 @@ class Orders extends MagentoCustomerOrders
     {
         parent::_prepareCollection();
 
-        $collection = $this->getCollection()->addFieldToSelect('order_type');
+        $collection = $this->getCollection();
+        $collection->addFieldToSelect('order_type');
         $collection->clear();
         $collection->load();
 
