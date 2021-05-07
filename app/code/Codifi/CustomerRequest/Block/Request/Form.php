@@ -67,7 +67,7 @@ class Form extends Template
         $firstname = $customerData->getFirstname();
         $lastname = $customerData->getLastname();
 
-        if($firstname && $lastname) {
+        if ($firstname && $lastname) {
             $fullName = $firstname . ' ' . $lastname;
         }
 

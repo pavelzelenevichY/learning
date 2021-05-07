@@ -12,6 +12,7 @@ use Magento\Framework\Setup\Patch\DataPatchInterface;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Cms\Model\BlockFactory;
 use Magento\Cms\Model\BlockRepository;
+use Magento\Cms\Model\Block;
 
 /**
  * Class AddSendRequestCmsBlock
@@ -19,11 +20,6 @@ use Magento\Cms\Model\BlockRepository;
  */
 class AddSendRequestCmsBlock implements DataPatchInterface
 {
-    /**
-     * Block is active
-     */
-    const BLOCK_IS_ACTIVE = 1;
-
     /**
      * Block factory
      *
@@ -63,11 +59,11 @@ class AddSendRequestCmsBlock implements DataPatchInterface
             'title' => 'Send Request',
             'identifier' => 'send-request',
             'stores' => ['0'],
-            'is_active' => self::BLOCK_IS_ACTIVE,
+            'is_active' => Block::STATUS_ENABLED,
             'content' => '<div class="cms-terms">
-    <p class="greeting">"Thank you for visiting {{config path="general/store_information/name"}}.</p>
-    </div>
-    <div class="cms-terms">Our customer service team will gladly help with any queries.</div>'
+                            Thank you for visiting {{config path="general/store_information/name"}}.
+                          </div>
+                          <div class="cms-terms">Our customer service team will gladly help with any queries.</div>'
         ];
         $newBlock = $this->blockFactory->create(['data' => $data]);
 
@@ -77,16 +73,16 @@ class AddSendRequestCmsBlock implements DataPatchInterface
     /**
      * {@inheritdoc}
      */
-    public function getAliases(): string
+    public function getAliases(): array
     {
-        return '';
+        return [];
     }
 
     /**
      * {@inheritdoc}
      */
-    public static function getDependencies(): string
+    public static function getDependencies(): array
     {
-        return '';
+        return [];
     }
 }
