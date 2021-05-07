@@ -65,7 +65,7 @@ class AddSendRequestCmsBlock implements DataPatchInterface
             'stores' => ['0'],
             'is_active' => self::BLOCK_IS_ACTIVE,
             'content' => '<div class="cms-terms">
-    <p class="greeting">{{trans "Thank you for visiting %store_name" store_name=$store.frontend_name}}.</p>
+    <p class="greeting">"Thank you for visiting {{config path="general/store_information/name"}}.</p>
     </div>
     <div class="cms-terms">Our customer service team will gladly help with any queries.</div>'
         ];
