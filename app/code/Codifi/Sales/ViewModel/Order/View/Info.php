@@ -11,6 +11,7 @@ namespace Codifi\Sales\ViewModel\Order\View;
 use Magento\Sales\Model\Order;
 use Codifi\Sales\Helper\Config;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
+use Codifi\Training\Model\ConfigProvider;
 
 /**
  * Class Info
@@ -26,14 +27,24 @@ class Info implements ArgumentInterface
     private $orderTypeSource;
 
     /**
+     * Customer config provider
+     *
+     * @var ConfigProvider
+     */
+    private $customerConfigProvider;
+
+    /**
      * Info constructor.
      *
      * @param Config $orderTypeSource
+     * @param ConfigProvider $customerConfigProvider
      */
     public function __construct(
-        Config $orderTypeSource
+        Config $orderTypeSource,
+        ConfigProvider $customerConfigProvider
     ) {
         $this->orderTypeSource = $orderTypeSource;
+        $this->customerConfigProvider = $customerConfigProvider;
     }
 
     /**

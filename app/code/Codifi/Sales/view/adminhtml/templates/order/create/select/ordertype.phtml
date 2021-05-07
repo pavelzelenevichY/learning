@@ -27,7 +27,7 @@ $orderTypeOptions = $viewModel->getOrderTypeOptions();
                         <?= ($item['value'] === Codifi\Sales\Helper\Config::ORDER_TYPE_REGULAR_VALUE )
                             ? ' selected="selected"'
                             : '' ?>>
-                        <?= $block->escapeHtml(__($item['description'])) ?>
+                        <?= $block->escapeHtml(__($item['label'])) ?>
                     </option>
                 <?php endforeach; ?>
             </select>

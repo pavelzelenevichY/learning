@@ -51,7 +51,7 @@ $viewModel = $block->getOrderInfoViewModel();
                         <a href="<?= $block->escapeUrl($block->getViewUrl($_order)) ?>" class="action view">
                             <span><?= $block->escapeHtml(__('View Order')) ?></span>
                         </a>
-                        <?php if ($_order->getOrderType() !== \Codifi\Sales\Helper\Config::ORDER_TYPE_CREDIT_HOLD_VALUE) : ?>
+                        <?php if (!$viewModel->isCreditHoldConfigEnabled() || $_order->getOrderType() !== \Codifi\Sales\Helper\Config::ORDER_TYPE_CREDIT_HOLD_VALUE) : ?>
                             <?php if ($this->helper(\Magento\Sales\Helper\Reorder::class)->canReorder($_order->getEntityId())) : ?>
                                 <a href="#" data-post='<?= /* @noEscape */
                                 $this->helper(\Magento\Framework\Data\Helper\PostHelper::class)
