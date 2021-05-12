@@ -83,9 +83,13 @@ class Form extends Template
      */
     public function getCustomerEmail(): string
     {
+        $customerEmail = '';
         $customerData = $this->customerSession->getCustomerData();
+        if ($customerData){
+            $customerEmail = $customerData->getEmail();
+        }
 
-        return $customerData->getEmail();
+        return $customerEmail;
     }
 
     /**
