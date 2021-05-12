@@ -1,4 +1,10 @@
 <?php
+/**
+ * Codifi_CustomerRequest
+ *
+ * @copyright   Copyright (c) 2021 Codifi
+ * @author      Pavel Zelenevich <pzelenevich@codifi.me>
+ */
 
 
 namespace Codifi\CustomerRequest\Controller\Request;
@@ -11,6 +17,7 @@ use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Mail\Template\TransportBuilder;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Framework\Escaper;
+use Magento\Framework\Message\ManagerInterface;
 
 /**
  * Class Save
@@ -53,19 +60,28 @@ class Save extends Action
      */
     private $storeManager;
 
+    /**
+     * Message manager
+     *
+     * @var ManagerInterface
+     */
+    private $_messageManager;
+
     public function __construct(
         Context $context,
         CustomerNoteFactory $customerNoteFactory,
         NoteRepository $customerNoteRepository,
         TransportBuilder $transportBuilder,
         StoreManagerInterface $storeManager,
-        Escaper $escaper
+        Escaper $escaper,
+        ManagerInterface $messageManager
     ) {
         $this->customerNoteFactory = $customerNoteFactory;
         $this->customerNoteRepository = $customerNoteRepository;
         $this->transportBuilder = $transportBuilder;
         $this->storeManager = $storeManager;
         $this->escaper = $escaper;
+        $this->_messageManager = $messageManager;
         parent::__construct($context);
     }
 
@@ -105,8 +121,6 @@ class Save extends Action
 
         $customerNoteModel = $this->customerNoteFactory->create();
 
-        $message = "An error occurred while processing your form. Please try again later.";
-
         if ($customerId) {
             if ($note) {
                 try {
@@ -116,9 +130,9 @@ class Save extends Action
                         'autocomplete' => 1
                     ]);
                     $this->customerNoteRepository->save($customerNoteModel);
-                    $message = "Thanks for contacting us with your request. We'll respond to you very soon.";
+                    $this->_messageManager->addSuccessMessage("Thanks for contacting us with your request. We'll respond to you very soon.");
                 } catch (LocalizedException $exception) {
-                    $errorMessage = $exception->getMessage();
+                    $this->_messageManager->addErrorMessage("An error occurred while processing your form. Please try again later");
                 }
             }
         }
