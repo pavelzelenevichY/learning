@@ -6,7 +6,6 @@
  * @author      Pavel Zelenevich <pzelenevich@codifi.me>
  */
 
-
 namespace Codifi\CustomerRequest\Controller\Request;
 
 use Magento\Framework\App\Action\Action;
@@ -18,6 +17,12 @@ use Magento\Framework\Mail\Template\TransportBuilder;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Framework\Escaper;
 use Magento\Framework\Message\ManagerInterface;
+use Magento\Framework\Controller\ResultInterface;
+use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Exception\MailException;
+use Magento\Framework\App\Area;
+use Magento\Store\Model\Store;
+use Magento\Framework\Controller\ResultFactory;
 
 /**
  * Class Save
@@ -67,6 +72,17 @@ class Save extends Action
      */
     private $_messageManager;
 
+    /**
+     * Save constructor.
+     *
+     * @param Context $context
+     * @param CustomerNoteFactory $customerNoteFactory
+     * @param NoteRepository $customerNoteRepository
+     * @param TransportBuilder $transportBuilder
+     * @param StoreManagerInterface $storeManager
+     * @param Escaper $escaper
+     * @param ManagerInterface $messageManager
+     */
     public function __construct(
         Context $context,
         CustomerNoteFactory $customerNoteFactory,
@@ -85,62 +101,73 @@ class Save extends Action
         parent::__construct($context);
     }
 
-    public function execute()
+    /**
+     * Execute function
+     *
+     * @return ResultInterface
+     * @throws LocalizedException
+     * @throws MailException
+     * @throws NoSuchEntityException
+     */
+    public function execute(): ResultInterface
     {
+        $successMessage = "Thanks for contacting us with your request. We'll respond to you very soon.";
+        $errorMessage = "An error occurred while processing your form. Please try again later";
+
         $customerId = $this->getRequest()->getParam('customer_id');
         $customerEmail = $this->getRequest()->getParam('email_address');
         $message = $this->getRequest()->getParam('customer_messsage');
         $customerName = $this->getRequest()->getParam('customer_name');
 
-        $storeName = $this->storeManager->getStore()->getFrontendName();
+        if ($customerId && $customerEmail && $message && $customerName) {
 
-        $note = "Customer sent request from $storeName";
+            $storeName = $this->storeManager->getStore()->getFrontendName();
 
-        $sender = [
-            'name' => $this->escaper->escapeHtml($customerName),
-            'email' => $this->escaper->escapeHtml($customerEmail),
-        ];
+            $note = "Customer sent request from $storeName";
 
-        $transport = $this->transportBuilder
-            ->setTemplateIdentifier('email_request_template')
-            ->setTemplateOptions(
-                [
-                    'area' => \Magento\Framework\App\Area::AREA_FRONTEND,
-                    'store' => \Magento\Store\Model\Store::DEFAULT_STORE_ID,
-                ]
-            )
-            ->setTemplateVars([
-                'customerNameVar' => $customerName,
-                'customerEmailVar' => $customerEmail,
-                'messageVar'  => $message,
-            ])
-            ->setFromByScope($sender)
-            ->addTo('support@example.com')
-            ->getTransport();
-        $transport->sendMessage();
+            $sender = [
+                'name' => $this->escaper->escapeHtml($customerName),
+                'email' => $this->escaper->escapeHtml($customerEmail),
+            ];
 
-        $customerNoteModel = $this->customerNoteFactory->create();
+            $transport = $this->transportBuilder
+                ->setTemplateIdentifier('email_request_template')
+                ->setTemplateOptions(
+                    [
+                        'area' => Area::AREA_FRONTEND,
+                        'store' => Store::DEFAULT_STORE_ID,
+                    ]
+                )
+                ->setTemplateVars([
+                    'customerNameVar' => $customerName,
+                    'customerEmailVar' => $customerEmail,
+                    'messageVar' => $message,
+                ])
+                ->setFromByScope($sender)
+                ->addTo('support@example.com')
+                ->getTransport();
+            $transport->sendMessage();
 
-        if ($customerId) {
-            if ($note) {
-                try {
-                    $customerNoteModel->setData([
-                        'customer_id' => $customerId,
-                        'note' => $note,
-                        'autocomplete' => 1
-                    ]);
-                    $this->customerNoteRepository->save($customerNoteModel);
-                    $this->_messageManager->addSuccessMessage("Thanks for contacting us with your request. We'll respond to you very soon.");
-                } catch (LocalizedException $exception) {
-                    $this->_messageManager->addErrorMessage("An error occurred while processing your form. Please try again later");
-                }
+            $customerNoteModel = $this->customerNoteFactory->create();
+
+            try {
+                $customerNoteModel->setData([
+                    'customer_id' => $customerId,
+                    'note' => $note,
+                    'autocomplete' => 1
+                ]);
+                $this->customerNoteRepository->save($customerNoteModel);
+                $this->_messageManager->addSuccessMessage($successMessage);
+            } catch (LocalizedException $exception) {
+                $this->_messageManager->addErrorMessage($errorMessage);
             }
+        } else {
+            $this->_messageManager->addErrorMessage($errorMessage);
         }
 
-        $redirect = $this->resultFactory->create(\Magento\Framework\Controller\ResultFactory::TYPE_REDIRECT);
+        $redirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
         $redirect->setPath('customer/request/index');
 
         return $redirect;
-
     }
 }
