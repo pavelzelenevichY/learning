@@ -16,13 +16,13 @@ use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Mail\Template\TransportBuilder;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Framework\Escaper;
-use Magento\Framework\Message\ManagerInterface;
 use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Exception\MailException;
 use Magento\Framework\App\Area;
 use Magento\Store\Model\Store;
 use Magento\Framework\Controller\ResultFactory;
+use Codifi\CustomerRequest\Helper\Config;
 
 /**
  * Class Save
@@ -66,13 +66,6 @@ class Save extends Action
     private $storeManager;
 
     /**
-     * Message manager
-     *
-     * @var ManagerInterface
-     */
-    private $_messageManager;
-
-    /**
      * Save constructor.
      *
      * @param Context $context
@@ -81,7 +74,6 @@ class Save extends Action
      * @param TransportBuilder $transportBuilder
      * @param StoreManagerInterface $storeManager
      * @param Escaper $escaper
-     * @param ManagerInterface $messageManager
      */
     public function __construct(
         Context $context,
@@ -89,15 +81,13 @@ class Save extends Action
         NoteRepository $customerNoteRepository,
         TransportBuilder $transportBuilder,
         StoreManagerInterface $storeManager,
-        Escaper $escaper,
-        ManagerInterface $messageManager
+        Escaper $escaper
     ) {
         $this->customerNoteFactory = $customerNoteFactory;
         $this->customerNoteRepository = $customerNoteRepository;
         $this->transportBuilder = $transportBuilder;
         $this->storeManager = $storeManager;
         $this->escaper = $escaper;
-        $this->_messageManager = $messageManager;
         parent::__construct($context);
     }
 
@@ -111,9 +101,6 @@ class Save extends Action
      */
     public function execute(): ResultInterface
     {
-        $successMessage = "Thanks for contacting us with your request. We'll respond to you very soon.";
-        $errorMessage = "An error occurred while processing your form. Please try again later";
-
         $customerId = $this->getRequest()->getParam('customer_id');
         $customerEmail = $this->getRequest()->getParam('email_address');
         $message = $this->getRequest()->getParam('customer_messsage');
@@ -157,12 +144,12 @@ class Save extends Action
                     'autocomplete' => 1
                 ]);
                 $this->customerNoteRepository->save($customerNoteModel);
-                $this->_messageManager->addSuccessMessage($successMessage);
+                $this->messageManager->addSuccessMessage(Config::SUCCESS_MESSAGE);
             } catch (LocalizedException $exception) {
-                $this->_messageManager->addErrorMessage($errorMessage);
+                $this->messageManager->addErrorMessage(Config::ERROR_MESSAGE);
             }
         } else {
-            $this->_messageManager->addErrorMessage($errorMessage);
+            $this->messageManager->addErrorMessage(Config::ERROR_MESSAGE);
         }
 
         $redirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
