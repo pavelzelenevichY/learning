@@ -101,14 +101,16 @@ class Save extends Action
      */
     public function execute(): ResultInterface
     {
-        $customerId = $this->getRequest()->getParam('customer_id');
-        $customerEmail = $this->getRequest()->getParam('email_address');
-        $message = $this->getRequest()->getParam('customer_messsage');
-        $customerName = $this->getRequest()->getParam('customer_name');
+        $request = $this->getRequest();
+        $customerId = $request->getParam('customer_id');
+        $customerEmail = $request->getParam('email_address');
+        $message = $request->getParam('customer_messsage');
+        $customerName = $request->getParam('customer_name');
 
         if ($customerId && $customerEmail && $message && $customerName) {
 
-            $storeName = $this->storeManager->getStore()->getFrontendName();
+            $store = $this->storeManager->getStore();
+            $storeName = $store->getFrontendName();
 
             $note = "Customer sent request from $storeName";
 
