@@ -18,6 +18,4 @@ define([
             this.customsection = customerData.get('credit_hold_section');
         }
     });
-
-
 });

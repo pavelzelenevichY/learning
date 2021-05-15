@@ -15,6 +15,5 @@
                 <argument name="path" xsi:type="string">customer/request/index</argument>
             </arguments>
         </block>
-        <block class="Magento\Customer\Block\Account\Customer" name="customer_credit_hold_section" after="-" template="Codifi_CustomerRequest::customer/credit_hold_section.phtml" />
     </referenceBlock>
 </page>
