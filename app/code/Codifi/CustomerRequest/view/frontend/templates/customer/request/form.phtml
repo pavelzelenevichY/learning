@@ -14,7 +14,7 @@
     <form action="<?= $block->escapeUrl($block->getSubmitUrl()) ?>" method="post">
         <fieldset class="fieldset">
             <?= $block->getBlockHtml('formkey') ?>
-            <input type="hidden" name="customer_id" value="<?=$block->escapeHtml($block->getCustomerId()) ?>"/>
+            <input type="hidden" name="customer_id" value="<?= $block->escapeHtml($block->getCustomerId()) ?>"/>
             <div class="field required">
                 <label for="customer_name" class="label">
                     <span><?= $block->escapeHtml(__('Name')) ?></span>
