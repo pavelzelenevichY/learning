@@ -8,6 +8,7 @@
 
 namespace Codifi\CustomerRequest\Model;
 
+use Codifi\CustomerRequest\Helper\Config;
 use Magento\Framework\Filesystem;
 use Codifi\Training\Model\NoteRepository;
 use Magento\Framework\File\Csv;
@@ -79,6 +80,13 @@ class ExportCsv
     private $newDirectory;
 
     /**
+     * Config
+     *
+     * @var Config
+     */
+    private $config;
+
+    /**
      * ExportCsv constructor.
      *
      * @param Filesystem $fileSystem
@@ -88,6 +96,7 @@ class ExportCsv
      * @param FilterBuilder $filterBuilder
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param TimezoneInterface $timeZoneInterface
+     * @param Config $config
      * @throws FileSystemException
      */
     public function __construct(
@@ -97,7 +106,8 @@ class ExportCsv
         DirectoryList $directoryList,
         FilterBuilder $filterBuilder,
         SearchCriteriaBuilder $searchCriteriaBuilder,
-        TimezoneInterface $timeZoneInterface
+        TimezoneInterface $timeZoneInterface,
+        Config $config
     ) {
         $this->noteRepository = $noteRepository;
         $this->csvProcessor = $csvProcessor;
@@ -106,6 +116,7 @@ class ExportCsv
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->timeZoneInterface = $timeZoneInterface->date();
         $this->newDirectory = $fileSystem->getDirectoryWrite(DirectoryList::VAR_DIR);
+        $this->config = $config;
     }
 
     /**
@@ -117,6 +128,8 @@ class ExportCsv
      */
     public function export(int $period): string
     {
+        $period = $period ?? $this->config->getPeriod();
+
         $currentDateTime = $this->timeZoneInterface->format('Y_m_d H:m:s');
 
         $date = strtotime($currentDateTime . "-1 $period");

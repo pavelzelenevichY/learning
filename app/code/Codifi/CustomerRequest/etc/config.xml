@@ -13,6 +13,10 @@
             <archive>
                 <months>1</months>
             </archive>
+            <archive_cron>
+                <frequency>Daily</frequency>
+                <time>01:00:00</time>
+            </archive_cron>
         </request>
     </default>
 </config>
