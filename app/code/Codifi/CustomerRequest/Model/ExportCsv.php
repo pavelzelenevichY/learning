@@ -1,5 +1,10 @@
 <?php
-
+/**
+ * Codifi_CustomerRequest
+ *
+ * @copyright   Copyright (c) 2021 Codifi
+ * @author      Pavel Zelenevich <pzelenevich@codifi.me>
+ */
 
 namespace Codifi\CustomerRequest\Model;
 
@@ -13,6 +18,10 @@ use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\Framework\Exception\FileSystemException;
 use Magento\Framework\Exception\NoSuchEntityException;
 
+/**
+ * Class ExportCsv
+ * @package Codifi\CustomerRequest\Model
+ */
 class ExportCsv
 {
     /**
@@ -69,6 +78,18 @@ class ExportCsv
      */
     private $newDirectory;
 
+    /**
+     * ExportCsv constructor.
+     *
+     * @param Filesystem $fileSystem
+     * @param NoteRepository $noteRepository
+     * @param Csv $csvProcessor
+     * @param DirectoryList $directoryList
+     * @param FilterBuilder $filterBuilder
+     * @param SearchCriteriaBuilder $searchCriteriaBuilder
+     * @param TimezoneInterface $timeZoneInterface
+     * @throws FileSystemException
+     */
     public function __construct(
         Filesystem $fileSystem,
         NoteRepository $noteRepository,

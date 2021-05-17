@@ -14,6 +14,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Codifi\CustomerRequest\Model\ExportCsv;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Codifi\CustomerRequest\Helper\Config;
 
 /**
  * Class PackCustomerNotes
@@ -34,13 +35,24 @@ class PackCustomerNotes extends Command
     private $exportCsv;
 
     /**
+     * Config
+     *
+     * @var Config
+     */
+    private $config;
+
+    /**
      * PackCustomerNotes constructor.
      *
      * @param ExportCsv $exportCsv
+     * @param Config $config
      */
-    public function __construct(ExportCsv $exportCsv)
-    {
+    public function __construct(
+        ExportCsv $exportCsv,
+        Config $config
+    ) {
         $this->exportCsv = $exportCsv;
+        $this->config = $config;
         parent::__construct();
     }
 
@@ -75,15 +87,14 @@ class PackCustomerNotes extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        if ($period = $input->getOption(self::PERIOD)) {
-            $export = $this->exportCsv->export($period);
-            if ($export === 'success'){
-                $output->writeln("Customer notes that haven't updates " . $period . " months archived!");
-            } else {
-                $output->writeln($export);
-            }
+        $period = $input->getOption(self::PERIOD) ?? $this->config->getPeriod();
+
+        $export = $this->exportCsv->export($period);
+
+        if ($export === 'success'){
+            $output->writeln("Customer notes that haven't updates " . $period . " months archived!");
         } else {
-            $output->writeln("You need to write period month. Like php bin/magento codifi:archive:notes --period [PERIOD]");
+            $output->writeln($export);
         }
 
         return $this;
