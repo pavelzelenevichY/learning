@@ -8,5 +8,5 @@
  */
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Email:etc/email_templates.xsd">
-    <template id="customer_request_template" label="Customer request email" module="Codifi_CustomerRequest" file="email_request_template.html" type="html" area="frontend"/>
+    <template id="customer_request_template" label="Customer request email" module="Codifi_CustomerRequest" file="customer_request_template.html" type="html" area="frontend"/>
 </config>

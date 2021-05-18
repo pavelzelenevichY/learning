@@ -6,6 +6,8 @@
  * @author      Pavel Zelenevich <pzelenevich@codifi.me>
  */
 
+declare(strict_types=1);
+
 namespace Codifi\CustomerRequest\Controller\Request;
 
 use Magento\Framework\App\Action\Action;
@@ -15,7 +17,6 @@ use Magento\Framework\App\Action\Context;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Mail\Template\TransportBuilder;
 use Magento\Store\Model\StoreManagerInterface;
-use Magento\Framework\Escaper;
 use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Exception\MailException;
@@ -23,6 +24,7 @@ use Magento\Framework\App\Area;
 use Magento\Store\Model\Store;
 use Magento\Framework\Controller\ResultFactory;
 use Codifi\CustomerRequest\Helper\Config;
+use Magento\Framework\App\RequestInterface;
 
 /**
  * Class Save
@@ -52,13 +54,6 @@ class Save extends Action
     private $transportBuilder;
 
     /**
-     * Escaper
-     *
-     * @var Escaper
-     */
-    private $escaper;
-
-    /**
      * Store manager interface
      *
      * @var StoreManagerInterface
@@ -66,6 +61,8 @@ class Save extends Action
     private $storeManager;
 
     /**
+     * Config
+     *
      * @var Config
      */
     private $config;
@@ -78,7 +75,7 @@ class Save extends Action
      * @param NoteRepository $customerNoteRepository
      * @param TransportBuilder $transportBuilder
      * @param StoreManagerInterface $storeManager
-//     * @param Escaper $escaper
+     * @param Config $config
      */
     public function __construct(
         Context $context,
@@ -86,14 +83,12 @@ class Save extends Action
         NoteRepository $customerNoteRepository,
         TransportBuilder $transportBuilder,
         StoreManagerInterface $storeManager,
-        Escaper $escaper,
         Config $config
     ) {
         $this->customerNoteFactory = $customerNoteFactory;
         $this->customerNoteRepository = $customerNoteRepository;
         $this->transportBuilder = $transportBuilder;
         $this->storeManager = $storeManager;
-        $this->escaper = $escaper;
         $this->config = $config;
         parent::__construct($context);
     }
@@ -129,7 +124,7 @@ class Save extends Action
                 'email' => $customerEmail
             ];
 
-            $transportTemplate = $this->transportBuilder->setTemplateIdentifier('email_request_template');
+            $transportTemplate = $this->transportBuilder->setTemplateIdentifier('customer_request_template');
             $transportOptions = $transportTemplate->setTemplateOptions(
                 [
                     'area' => Area::AREA_FRONTEND,
@@ -169,7 +164,13 @@ class Save extends Action
         return $redirect;
     }
 
-    private function validate($request)
+    /**
+     * Validate request values
+     *
+     * @param RequestInterface $request
+     * @return array
+     */
+    private function validate(RequestInterface $request): array
     {
         $customerId = $request->getParam('customer_id');
         $customerEmail = strip_tags($request->getParam('email_address'));
