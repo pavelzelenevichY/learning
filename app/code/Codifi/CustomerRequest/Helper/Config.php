@@ -25,4 +25,19 @@ class Config extends AbstractHelper
      * Error response message after customer request
      */
     const ERROR_MESSAGE = "An error occurred while processing your form. Please try again later";
+
+    /**
+     * Magento support email path
+     */
+    const MAGENTO_SUPPORT_EMAIL_PATH = 'trans_email/ident_support/email';
+
+    /**
+     * @return string
+     */
+    public function getSupportEmailPath(): string
+    {
+        $value = $this->scopeConfig->getValue(self::MAGENTO_SUPPORT_EMAIL_PATH) ?? '';
+
+        return $value;
+    }
 }

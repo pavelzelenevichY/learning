@@ -6,6 +6,13 @@
  * @author      Pavel Zelenevich <pzelenevich@codifi.me>
  */
 -->
+<!--@vars {
+"var customerNameVar":"Customer Name",
+"var customerEmailVar":"Customer Email",
+"var messageVar":"Message",
+} @-->
+{{template config_path="design/email/header_template"}}
+
 <div>
     <div>
         <span>
@@ -19,3 +26,5 @@
         </span>
     </div>
 </div>
+
+{{template config_path="design/email/footer_template"}}

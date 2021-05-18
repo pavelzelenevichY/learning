@@ -66,6 +66,11 @@ class Save extends Action
     private $storeManager;
 
     /**
+     * @var Config
+     */
+    private $config;
+
+    /**
      * Save constructor.
      *
      * @param Context $context
@@ -73,7 +78,7 @@ class Save extends Action
      * @param NoteRepository $customerNoteRepository
      * @param TransportBuilder $transportBuilder
      * @param StoreManagerInterface $storeManager
-     * @param Escaper $escaper
+//     * @param Escaper $escaper
      */
     public function __construct(
         Context $context,
@@ -81,13 +86,15 @@ class Save extends Action
         NoteRepository $customerNoteRepository,
         TransportBuilder $transportBuilder,
         StoreManagerInterface $storeManager,
-        Escaper $escaper
+        Escaper $escaper,
+        Config $config
     ) {
         $this->customerNoteFactory = $customerNoteFactory;
         $this->customerNoteRepository = $customerNoteRepository;
         $this->transportBuilder = $transportBuilder;
         $this->storeManager = $storeManager;
         $this->escaper = $escaper;
+        $this->config = $config;
         parent::__construct($context);
     }
 
@@ -102,39 +109,41 @@ class Save extends Action
     public function execute(): ResultInterface
     {
         $request = $this->getRequest();
-        $customerId = $request->getParam('customer_id');
-        $customerEmail = $request->getParam('email_address');
-        $message = $request->getParam('customer_messsage');
-        $customerName = $request->getParam('customer_name');
 
-        if ($customerId && $customerEmail && $message && $customerName) {
+        $validate = $this->validate($request);
 
+        $customerId = $validate['customerId'];
+        $customerEmail = $validate['customerEmail'];
+        $message = $validate['message'];
+        $customerName = $validate['customerName'];
+
+        try {
             $store = $this->storeManager->getStore();
             $storeName = $store->getFrontendName();
 
-            $note = "Customer sent request from $storeName";
+            $format = 'Customer sent request from %s';
+            $note = sprintf($format, $storeName);
 
             $sender = [
-                'name' => $this->escaper->escapeHtml($customerName),
-                'email' => $this->escaper->escapeHtml($customerEmail),
+                'name' => $customerName,
+                'email' => $customerEmail
             ];
 
-            $transport = $this->transportBuilder
-                ->setTemplateIdentifier('email_request_template')
-                ->setTemplateOptions(
-                    [
-                        'area' => Area::AREA_FRONTEND,
-                        'store' => Store::DEFAULT_STORE_ID,
-                    ]
-                )
-                ->setTemplateVars([
-                    'customerNameVar' => $customerName,
-                    'customerEmailVar' => $customerEmail,
-                    'messageVar' => $message,
-                ])
-                ->setFromByScope($sender)
-                ->addTo('support@example.com')
-                ->getTransport();
+            $transportTemplate = $this->transportBuilder->setTemplateIdentifier('email_request_template');
+            $transportOptions = $transportTemplate->setTemplateOptions(
+                [
+                    'area' => Area::AREA_FRONTEND,
+                    'store' => Store::DEFAULT_STORE_ID,
+                ]
+            );
+            $transportVars = $transportOptions->setTemplateVars([
+                'customerNameVar' => $customerName,
+                'customerEmailVar' => $customerEmail,
+                'messageVar' => $message,
+            ]);
+            $transportVarsInScope = $transportVars->setFromByScope($sender);
+            $transportAddress = $transportVarsInScope->addTo($this->config->getSupportEmailPath());
+            $transport = $transportAddress->getTransport();
             $transport->sendMessage();
 
             $customerNoteModel = $this->customerNoteFactory->create();
@@ -148,15 +157,30 @@ class Save extends Action
                 $this->customerNoteRepository->save($customerNoteModel);
                 $this->messageManager->addSuccessMessage(Config::SUCCESS_MESSAGE);
             } catch (LocalizedException $exception) {
-                $this->messageManager->addErrorMessage(Config::ERROR_MESSAGE);
+                $this->messageManager->addErrorMessage(Config::ERROR_MESSAGE . $exception->getMessage());
             }
-        } else {
-            $this->messageManager->addErrorMessage(Config::ERROR_MESSAGE);
+        } catch (NoSuchEntityException $exception) {
+            throw $exception;
         }
 
         $redirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
         $redirect->setPath('customer/request/index');
 
         return $redirect;
+    }
+
+    private function validate($request)
+    {
+        $customerId = $request->getParam('customer_id');
+        $customerEmail = strip_tags($request->getParam('email_address'));
+        $message = strip_tags($request->getParam('customer_messsage'));
+        $customerName = strip_tags($request->getParam('customer_name'));
+
+        return [
+            'customerId' => $customerId,
+            'customerEmail' => trim($customerEmail),
+            'message' => trim($message),
+            'customerName' => trim($customerName)
+        ];
     }
 }
