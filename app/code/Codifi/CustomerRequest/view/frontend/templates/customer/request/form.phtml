@@ -18,13 +18,15 @@
             <div class="field required">
                 <label for="customer_name" class="label"><span><?= $block->escapeHtml(__('Name')) ?></span></label>
                 <div class="control">
-                    <input type="text" name="customer_name" value="<?= $block->escapeHtml($block->getCustomerName()) ?>"/>
+                    <input type="text" name="customer_name"
+                           value="<?= $block->escapeHtml($block->getCustomerName()) ?>"/>
                 </div>
             </div>
             <div class="field required">
                 <label for="email_address" class="label"><span><?= $block->escapeHtml(__('Email')) ?></span></label>
                 <div class="control">
-                    <input type="email" name="email_address" data-validate="{required:true, 'validate-email':true}" value="<?= $block->escapeHtml($block->getCustomerEmail()) ?>"/>
+                    <input type="email" name="email_address" data-validate="{required:true, 'validate-email':true}"
+                           value="<?= $block->escapeHtml($block->getCustomerEmail()) ?>"/>
                 </div>
             </div>
             <div class="field required">

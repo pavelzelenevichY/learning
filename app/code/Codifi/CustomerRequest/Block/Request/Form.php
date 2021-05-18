@@ -85,7 +85,7 @@ class Form extends Template
     {
         $customerEmail = '';
         $customerData = $this->customerSession->getCustomerData();
-        if ($customerData){
+        if ($customerData) {
             $customerEmail = $customerData->getEmail();
         }
 

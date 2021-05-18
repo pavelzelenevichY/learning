@@ -12,6 +12,7 @@ use Magento\Customer\CustomerData\SectionSourceInterface;
 use Magento\Customer\Model\Session;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Exception\LocalizedException;
+use Codifi\Training\Setup\Patch\Data\AddCustomerAttributeCreditHold;
 
 /**
  * Class CreditHoldSection
@@ -31,7 +32,8 @@ class CreditHoldSection implements SectionSourceInterface
      *
      * @param Session $customerSession
      */
-    public function __construct(Session $customerSession){
+    public function __construct(Session $customerSession)
+    {
         $this->customerSession = $customerSession;
     }
 
@@ -42,17 +44,12 @@ class CreditHoldSection implements SectionSourceInterface
      * @throws LocalizedException
      * @throws NoSuchEntityException
      */
-    public function getCustomerAttrCreditHold(): bool
+    private function getCustomerAttrCreditHold(): bool
     {
         $customerData = $this->customerSession->getCustomerData();
-        $customerAttribute = $customerData->getCustomAttribute('credit_hold');
-        if ($customerAttribute !== null) {
-            $value = (bool)$customerAttribute->getValue();
-        } else {
-            $value = 0;
-        }
+        $customerAttribute = $customerData->getCustomAttribute(AddCustomerAttributeCreditHold::ATTRIBUTE_CODE);
 
-        return $value;
+        return (bool)$customerAttribute->getValue() ?? false;
     }
 
     /**
