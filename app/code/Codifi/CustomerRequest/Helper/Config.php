@@ -34,12 +34,12 @@ class Config extends AbstractHelper
     const MAGENTO_SUPPORT_EMAIL_PATH = 'trans_email/ident_support/email';
 
     /**
+     * Get support email
+     *
      * @return string
      */
-    public function getSupportEmailPath(): string
+    public function getSupportEmail(): string
     {
-        $value = $this->scopeConfig->getValue(self::MAGENTO_SUPPORT_EMAIL_PATH) ?? '';
-
-        return $value;
+        return $this->scopeConfig->getValue(self::MAGENTO_SUPPORT_EMAIL_PATH) ?? '';
     }
 }

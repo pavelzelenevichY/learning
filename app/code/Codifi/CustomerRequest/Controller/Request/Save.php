@@ -112,50 +112,52 @@ class Save extends Action
         $message = $validate['message'];
         $customerName = $validate['customerName'];
 
-        try {
-            $store = $this->storeManager->getStore();
-            $storeName = $store->getFrontendName();
-
-            $format = 'Customer sent request from %s';
-            $note = sprintf($format, $storeName);
-
-            $sender = [
-                'name' => $customerName,
-                'email' => $customerEmail
-            ];
-
-            $transportTemplate = $this->transportBuilder->setTemplateIdentifier('customer_request_template');
-            $transportOptions = $transportTemplate->setTemplateOptions(
-                [
-                    'area' => Area::AREA_FRONTEND,
-                    'store' => Store::DEFAULT_STORE_ID,
-                ]
-            );
-            $transportVars = $transportOptions->setTemplateVars([
-                'customerNameVar' => $customerName,
-                'customerEmailVar' => $customerEmail,
-                'messageVar' => $message,
-            ]);
-            $transportVarsInScope = $transportVars->setFromByScope($sender);
-            $transportAddress = $transportVarsInScope->addTo($this->config->getSupportEmailPath());
-            $transport = $transportAddress->getTransport();
-            $transport->sendMessage();
-
-            $customerNoteModel = $this->customerNoteFactory->create();
-
+        if ($customerId && $customerEmail && $message && $customerName) {
             try {
-                $customerNoteModel->setData([
-                    'customer_id' => $customerId,
-                    'note' => $note,
-                    'autocomplete' => 1
+                $store = $this->storeManager->getStore();
+
+                $note = sprintf('Customer sent request from %s', $store->getFrontendName());
+
+                $sender = [
+                    'name' => $customerName,
+                    'email' => $customerEmail
+                ];
+
+                $this->transportBuilder->setTemplateIdentifier('customer_request_template');
+                $this->transportBuilder->setTemplateOptions(
+                    [
+                        'area' => Area::AREA_FRONTEND,
+                        'store' => Store::DEFAULT_STORE_ID,
+                    ]
+                );
+                $this->transportBuilder->setTemplateVars([
+                    'customerNameVar' => $customerName,
+                    'customerEmailVar' => $customerEmail,
+                    'messageVar' => $message,
                 ]);
-                $this->customerNoteRepository->save($customerNoteModel);
-                $this->messageManager->addSuccessMessage(Config::SUCCESS_MESSAGE);
-            } catch (LocalizedException $exception) {
-                $this->messageManager->addErrorMessage(Config::ERROR_MESSAGE . $exception->getMessage());
+                $this->transportBuilder->setFromByScope($sender);
+                $this->transportBuilder->addTo($this->config->getSupportEmailPath());
+                $transport = $this->transportBuilder->getTransport();
+                $transport->sendMessage();
+
+                $customerNoteModel = $this->customerNoteFactory->create();
+
+                try {
+                    $customerNoteModel->setData([
+                        'customer_id' => $customerId,
+                        'note' => $note,
+                        'autocomplete' => 1
+                    ]);
+                    $this->customerNoteRepository->save($customerNoteModel);
+                    $this->messageManager->addSuccessMessage(Config::SUCCESS_MESSAGE);
+                } catch (LocalizedException $exception) {
+                    $this->messageManager->addErrorMessage(Config::ERROR_MESSAGE . $exception->getMessage());
+                }
+            } catch (NoSuchEntityException $exception) {
+                throw $exception;
             }
-        } catch (NoSuchEntityException $exception) {
-            throw $exception;
+        } else {
+            $this->messageManager->addErrorMessage(Config::ERROR_MESSAGE);
         }
 
         $redirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
