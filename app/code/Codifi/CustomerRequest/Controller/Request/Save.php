@@ -25,6 +25,8 @@ use Magento\Store\Model\Store;
 use Magento\Framework\Controller\ResultFactory;
 use Codifi\CustomerRequest\Helper\Config;
 use Magento\Framework\App\RequestInterface;
+use Magento\Framework\Validator\EmailAddress;
+use \Psr\Log\LoggerInterface;
 
 /**
  * Class Save
@@ -68,6 +70,20 @@ class Save extends Action
     private $config;
 
     /**
+     * Email validator
+     *
+     * @var EmailAddress
+     */
+    private $emailValidator;
+
+    /**
+     * Logger interface
+     *
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    /**
      * Save constructor.
      *
      * @param Context $context
@@ -76,6 +92,8 @@ class Save extends Action
      * @param TransportBuilder $transportBuilder
      * @param StoreManagerInterface $storeManager
      * @param Config $config
+     * @param EmailAddress $emailValidator
+     * @param LoggerInterface $logger
      */
     public function __construct(
         Context $context,
@@ -83,13 +101,17 @@ class Save extends Action
         NoteRepository $customerNoteRepository,
         TransportBuilder $transportBuilder,
         StoreManagerInterface $storeManager,
-        Config $config
+        Config $config,
+        EmailAddress $emailValidator,
+        LoggerInterface $logger
     ) {
         $this->customerNoteFactory = $customerNoteFactory;
         $this->customerNoteRepository = $customerNoteRepository;
         $this->transportBuilder = $transportBuilder;
         $this->storeManager = $storeManager;
         $this->config = $config;
+        $this->emailValidator = $emailValidator;
+        $this->logger = $logger;
         parent::__construct($context);
     }
 
@@ -112,52 +134,51 @@ class Save extends Action
         $message = $validate['message'];
         $customerName = $validate['customerName'];
 
-        if ($customerId && $customerEmail && $message && $customerName) {
+        $this->isEmpty($customerId, $customerEmail, $customerName, $message);
+
+        try {
+            $store = $this->storeManager->getStore();
+
+            $note = sprintf('Customer sent request from %s', $store->getFrontendName());
+
+            $sender = [
+                'name' => $customerName,
+                'email' => $customerEmail
+            ];
+
+            $this->transportBuilder->setTemplateIdentifier('customer_request_template');
+            $this->transportBuilder->setTemplateOptions(
+                [
+                    'area' => Area::AREA_FRONTEND,
+                    'store' => Store::DEFAULT_STORE_ID,
+                ]
+            );
+            $this->transportBuilder->setTemplateVars([
+                'customerNameVar' => $customerName,
+                'customerEmailVar' => $customerEmail,
+                'messageVar' => $message,
+            ]);
+            $this->transportBuilder->setFromByScope($sender);
+            $this->transportBuilder->addTo($this->config->getSupportEmail());
+            $transport = $this->transportBuilder->getTransport();
+            $transport->sendMessage();
+
+            $customerNoteModel = $this->customerNoteFactory->create();
+
             try {
-                $store = $this->storeManager->getStore();
-
-                $note = sprintf('Customer sent request from %s', $store->getFrontendName());
-
-                $sender = [
-                    'name' => $customerName,
-                    'email' => $customerEmail
-                ];
-
-                $this->transportBuilder->setTemplateIdentifier('customer_request_template');
-                $this->transportBuilder->setTemplateOptions(
-                    [
-                        'area' => Area::AREA_FRONTEND,
-                        'store' => Store::DEFAULT_STORE_ID,
-                    ]
-                );
-                $this->transportBuilder->setTemplateVars([
-                    'customerNameVar' => $customerName,
-                    'customerEmailVar' => $customerEmail,
-                    'messageVar' => $message,
+                $customerNoteModel->setData([
+                    'customer_id' => $customerId,
+                    'note' => $note,
+                    'autocomplete' => 1
                 ]);
-                $this->transportBuilder->setFromByScope($sender);
-                $this->transportBuilder->addTo($this->config->getSupportEmailPath());
-                $transport = $this->transportBuilder->getTransport();
-                $transport->sendMessage();
-
-                $customerNoteModel = $this->customerNoteFactory->create();
-
-                try {
-                    $customerNoteModel->setData([
-                        'customer_id' => $customerId,
-                        'note' => $note,
-                        'autocomplete' => 1
-                    ]);
-                    $this->customerNoteRepository->save($customerNoteModel);
-                    $this->messageManager->addSuccessMessage(Config::SUCCESS_MESSAGE);
-                } catch (LocalizedException $exception) {
-                    $this->messageManager->addErrorMessage(Config::ERROR_MESSAGE . $exception->getMessage());
-                }
-            } catch (NoSuchEntityException $exception) {
-                throw $exception;
+                $this->customerNoteRepository->save($customerNoteModel);
+            } catch (LocalizedException $exception) {
+                $message = $exception->getMessage();
+                $this->logger->error($message);
             }
-        } else {
-            $this->messageManager->addErrorMessage(Config::ERROR_MESSAGE);
+            $this->messageManager->addSuccessMessage(Config::SUCCESS_MESSAGE);
+        } catch (NoSuchEntityException $exception) {
+            $this->messageManager->addErrorMessage(Config::ERROR_MESSAGE . $exception->getMessage());
         }
 
         $redirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
@@ -185,5 +206,37 @@ class Save extends Action
             'message' => trim($message),
             'customerName' => trim($customerName)
         ];
+    }
+
+    /**
+     * Check is empty values
+     *
+     * @param string $customerId
+     * @param string $customerEmail
+     * @param string $customerName
+     * @param string $message
+     * @throws LocalizedException
+     */
+    public function isEmpty(string $customerId, string $customerEmail, string $customerName, string $message): void
+    {
+        if (!$customerId) {
+            throw new LocalizedException(__('Customer id is empty!'));
+        }
+
+        if (!$customerEmail) {
+            throw new LocalizedException(__('Email must be specified!'));
+        }
+
+        if (!$this->emailValidator->isValid($customerEmail)) {
+            throw new LocalizedException(__('Email is invalid!'));
+        }
+
+        if (!$message) {
+            throw new LocalizedException(__('Message is empty!'));
+        }
+
+        if (!$customerName) {
+            throw new LocalizedException(__('Customer name is empty!'));
+        }
     }
 }
