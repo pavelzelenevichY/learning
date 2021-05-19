@@ -47,9 +47,14 @@ class CreditHoldSection implements SectionSourceInterface
     private function getCustomerAttrCreditHold(): bool
     {
         $customerData = $this->customerSession->getCustomerData();
-        $customerAttribute = $customerData->getCustomAttribute(AddCustomerAttributeCreditHold::ATTRIBUTE_CODE);
+        $creditHoldAttribute = $customerData->getCustomAttribute(AddCustomerAttributeCreditHold::ATTRIBUTE_CODE);
 
-        return (bool)$customerAttribute->getValue() ?? false;
+        $creditHoldAttributeValue = '';
+        if ($creditHoldAttribute){
+            $creditHoldAttributeValue = $creditHoldAttribute->getValue();
+        }
+
+        return $creditHoldAttributeValue;
     }
 
     /**

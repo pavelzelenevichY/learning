@@ -24,7 +24,17 @@
                         "config": {
                             "url": "<?= $block->escapeJs($block->getSaveUrl()) ?>",
                             "customerId": <?= $block->escapeJs($block->getCustomerId()) ?>
-                        }
+                        },
+                        "children": {
+                                "errors": {
+                                    "component": "Magento_Ui/js/view/messages",
+                                    "sortOrder": 0,
+                                    "displayArea": "messages",
+                                    "config": {
+                                        "autoHideTimeOut": -1
+                                     }
+                                }
+                            }
                     }
                 }
             }
