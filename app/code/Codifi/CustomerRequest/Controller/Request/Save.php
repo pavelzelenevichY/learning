@@ -134,8 +134,6 @@ class Save extends Action
         $message = $validate['message'];
         $customerName = $validate['customerName'];
 
-        $this->isEmpty($customerId, $customerEmail, $customerName, $message);
-
         try {
             $store = $this->storeManager->getStore();
 
@@ -200,12 +198,16 @@ class Save extends Action
         $message = strip_tags($request->getParam('customer_messsage'));
         $customerName = strip_tags($request->getParam('customer_name'));
 
-        return [
+        $values = [
             'customerId' => $customerId,
             'customerEmail' => trim($customerEmail),
             'message' => trim($message),
             'customerName' => trim($customerName)
         ];
+
+        $this->isEmpty($values['customerId'], $values['customerEmail'], $values['customerName'], $values['message']);
+
+        return $values;
     }
 
     /**
@@ -220,23 +222,23 @@ class Save extends Action
     public function isEmpty(string $customerId, string $customerEmail, string $customerName, string $message): void
     {
         if (!$customerId) {
-            throw new LocalizedException(__('Customer id is empty!'));
+            throw new LocalizedException(__('Customer id is empty'));
         }
 
         if (!$customerEmail) {
-            throw new LocalizedException(__('Email must be specified!'));
+            throw new LocalizedException(__('Email must be specified'));
         }
 
         if (!$this->emailValidator->isValid($customerEmail)) {
-            throw new LocalizedException(__('Email is invalid!'));
+            throw new LocalizedException(__('Email is invalid'));
         }
 
         if (!$message) {
-            throw new LocalizedException(__('Message is empty!'));
+            throw new LocalizedException(__('Message is empty'));
         }
 
         if (!$customerName) {
-            throw new LocalizedException(__('Customer name is empty!'));
+            throw new LocalizedException(__('Customer name is empty'));
         }
     }
 }
