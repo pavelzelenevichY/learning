@@ -40,6 +40,6 @@ class Config extends AbstractHelper
      */
     public function getPeriod(): int
     {
-        return $this->scopeConfig->getValue(self::MONTHS_PERIOD_PATH, ScopeConfigInterface::SCOPE_TYPE_DEFAULT);
+        return (int)$this->scopeConfig->getValue(self::MONTHS_PERIOD_PATH, ScopeConfigInterface::SCOPE_TYPE_DEFAULT);
     }
 }

@@ -20,13 +20,15 @@
                     <span><?= $block->escapeHtml(__('Name')) ?></span>
                 </label>
                 <div class="control">
-                    <input type="text" name="customer_name" value="<?= $block->escapeHtml($block->getCustomerName()) ?>"/>
+                    <input type="text" name="customer_name"
+                           value="<?= $block->escapeHtml($block->getCustomerName()) ?>"/>
                 </div>
             </div>
             <div class="field required">
                 <label for="customer_email" class="label"><span><?= $block->escapeHtml(__('Email')) ?></span></label>
                 <div class="control">
-                    <input type="email" name="customer_email" value="<?= $block->escapeHtml($block->getCustomerEmail()) ?>"/>
+                    <input type="email" name="customer_email"
+                           value="<?= $block->escapeHtml($block->getCustomerEmail()) ?>"/>
                 </div>
             </div>
             <div class="field required">

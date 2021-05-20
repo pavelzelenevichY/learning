@@ -11,7 +11,7 @@
     <default>
         <request>
             <archive>
-                <months>1</months>
+                <lifetime>1</lifetime>
             </archive>
         </request>
     </default>

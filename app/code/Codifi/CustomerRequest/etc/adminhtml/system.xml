@@ -9,18 +9,15 @@
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
     <system>
-        <tab id="codifi" translate="label" sortOrder="400">
-            <label>Codifi</label>
-        </tab>
         <section id="request" translate="label" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
             <class>separator-top</class>
-            <label>Customer Request</label>
+            <label>Customer Notes</label>
             <tab>codifi</tab>
             <resource>Codifi_CustomerRequest::config</resource>
             <group id="archive" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
-                <label>Credit Hold</label>
-                <field id="months" translate="label comment"  type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>Months period</label>
+                <label>Archive Customer Notes</label>
+                <field id="lifetime" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Months</label>
                 </field>
             </group>
         </section>

@@ -17,6 +17,7 @@ use Magento\Framework\Api\Search\SearchCriteriaBuilder;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\Framework\Exception\FileSystemException;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Stdlib\DateTime\DateTime;
 
 /**
  * Class ExportCsv
@@ -29,7 +30,7 @@ class ExportCsv
      *
      * @var Filesystem
      */
-    protected $fileSystem;
+    private $fileSystem;
 
     /**
      * Note repository
@@ -74,6 +75,11 @@ class ExportCsv
     private $timeZoneInterface;
 
     /**
+     * @var DateTime
+     */
+    private $dateTime;
+
+    /**
      * New directory
      */
     private $newDirectory;
@@ -97,7 +103,8 @@ class ExportCsv
         DirectoryList $directoryList,
         FilterBuilder $filterBuilder,
         SearchCriteriaBuilder $searchCriteriaBuilder,
-        TimezoneInterface $timeZoneInterface
+        TimezoneInterface $timeZoneInterface,
+        DateTime $dateTime
     ) {
         $this->noteRepository = $noteRepository;
         $this->csvProcessor = $csvProcessor;
@@ -105,6 +112,7 @@ class ExportCsv
         $this->filterBuilder = $filterBuilder;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->timeZoneInterface = $timeZoneInterface->date();
+        $this->dateTime = $dateTime;
         $this->newDirectory = $fileSystem->getDirectoryWrite(DirectoryList::VAR_DIR);
     }
 
@@ -117,16 +125,13 @@ class ExportCsv
      */
     public function export(int $period): string
     {
-        $currentDateTime = $this->timeZoneInterface->format('Y_m_d H:m:s');
-
-        $date = strtotime($currentDateTime . "-1 $period");
-        $newDate = date('Y-m-d H:m:s', $date);
-
-        $updatedAt = $newDate;
+        $format = "-%s months";
+        $period = sprintf($format, $period);
+        $newDate = $this->dateTime->date('Y-m-d H:m:s', strtotime($period));
 
         $this->filterBuilder->setField('updated_at');
         $this->filterBuilder->setConditionType('to');
-        $this->filterBuilder->setValue($updatedAt);
+        $this->filterBuilder->setValue($newDate);
         $filter = $this->filterBuilder->create();
 
         $this->searchCriteriaBuilder->addFilter($filter);
@@ -136,36 +141,39 @@ class ExportCsv
 
         $noteListItems = $noteList->getItems();
 
-        $content[] = [
-            'note_id' => __('Note ID'),
-            'customer_id' => __('Customer ID'),
-            'created_at' => __('Created At'),
-            'created_by' => __('Created By'),
-            'note' => __('Note'),
-            'updated_at' => __('Updated At'),
-            'updated_by' => __('Updated By'),
-            'autocomplete' => __('Autocomplete')
-        ];
-
+        $content = [];
+        $isHeaderColsSet = false;
         foreach ($noteListItems as $item) {
-            $note = $item->getData();
-            $content[] = $note;
-            $this->noteRepository->deleteById($note['note_id']);
+            if (!$isHeaderColsSet) {
+                $content[] = array_keys($item->getData());
+                $isHeaderColsSet = true;
+            }
+            $content[] = $item->getData();
         }
 
         try {
-            $currentDateForName = $this->timeZoneInterface->format('Y_m_d');
+            $currentDateForName = $this->dateTime->date('Y_m_d');
 
             $this->newDirectory->create('/archive/');
 
-            $fileName = "customer_note_$currentDateForName.csv";
-            $filePath = $this->directoryList->getPath(DirectoryList::VAR_DIR) . "/archive/" . $fileName;
+            if ($this->newDirectory->isDirectory('/archive/')) {
 
-            $this->csvProcessor->setEnclosure('"');
-            $this->csvProcessor->setDelimiter(',');
-            $this->csvProcessor->saveData($filePath, $content);
+                $format = 'customer_note_%s.csv';
+                $fileName = sprintf($format, $currentDateForName);
+                $filePath = $this->directoryList->getPath(DirectoryList::VAR_DIR) . "/archive/" . $fileName;
 
-            $message = 'success';
+                $this->csvProcessor->setEnclosure('"');
+                $this->csvProcessor->setDelimiter(',');
+                $this->csvProcessor->saveData($filePath, $content);
+
+                $message = 'success';
+                foreach ($noteListItems as $item) {
+                    $note = $item->getData();
+                    $this->noteRepository->deleteById($note['note_id']);
+                }
+            } else {
+                $message = 'Something went wrong, try again later.';
+            }
         } catch (FileSystemException $exception) {
             $message = $exception->getMessage();
         }

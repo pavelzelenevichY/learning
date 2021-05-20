@@ -25,7 +25,7 @@ class PackCustomerNotes extends Command
     /**
      * Period
      */
-    const PERIOD = 'period';
+    const KEY_PERIOD = 'period';
 
     /**
      * Export to csv file
@@ -63,9 +63,9 @@ class PackCustomerNotes extends Command
     {
         $options = [
             new InputOption(
-                self::PERIOD,
+                self::KEY_PERIOD,
                 null,
-                InputOption::VALUE_REQUIRED,
+                null,
                 'period'
             )
         ];
@@ -87,14 +87,18 @@ class PackCustomerNotes extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $period = $input->getOption(self::PERIOD) ?? $this->config->getPeriod();
+        if (gettype($input->getOption(self::KEY_PERIOD)) === "integer" || !$input->getOption(self::KEY_PERIOD)) {
+            $period = $input->getOption(self::KEY_PERIOD) ?? $this->config->getPeriod();
+            $export = $this->exportCsv->export($period);
 
-        $export = $this->exportCsv->export($period);
-
-        if ($export === 'success'){
-            $output->writeln("Customer notes that haven't updates " . $period . " months archived!");
+            if ($export === 'success') {
+                $format = "Customer notes that haven't updates %s months archived.";
+                $output->writeln(sprintf($format, $period));
+            } else {
+                $output->writeln($export);
+            }
         } else {
-            $output->writeln($export);
+            $output->writeln("Input value must have integer type");
         }
 
         return $this;
