@@ -11,7 +11,7 @@
  */
 ?>
 <?php if ($block->checkForOneTimeDemoMessage()): ?>
-    <div class="confirmation-modal-content">
+    <div class="confirmation-modal-content" style="display: none;">
         <p><?= $block->escapeHtml($block->getMessage()) ?></p>
     </div>
     <script type="text/x-magento-init">
@@ -26,15 +26,15 @@
                             "customerId": <?= $block->escapeJs($block->getCustomerId()) ?>
                         },
                         "children": {
-                                "errors": {
-                                    "component": "Magento_Ui/js/view/messages",
-                                    "sortOrder": 0,
-                                    "displayArea": "messages",
-                                    "config": {
-                                        "autoHideTimeOut": -1
-                                     }
+                            "errors": {
+                                "component": "Magento_Ui/js/view/messages",
+                                "sortOrder": 0,
+                                "displayArea": "messages",
+                                "config": {
+                                    "autoHideTimeOut": -1
                                 }
                             }
+                        }
                     }
                 }
             }
