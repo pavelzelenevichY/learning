@@ -15,6 +15,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Codifi\CustomerRequest\Model\ExportCsv;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Codifi\CustomerRequest\Helper\Config;
+use Magento\Framework\Exception\LocalizedException;
 
 /**
  * Class PackCustomerNotes
@@ -25,7 +26,7 @@ class PackCustomerNotes extends Command
     /**
      * Period
      */
-    const PERIOD = 'period';
+    const KEY_PERIOD = 'period';
 
     /**
      * Export to csv file
@@ -63,9 +64,9 @@ class PackCustomerNotes extends Command
     {
         $options = [
             new InputOption(
-                self::PERIOD,
+                self::KEY_PERIOD,
                 null,
-                InputOption::VALUE_REQUIRED,
+                InputOption::VALUE_OPTIONAL,
                 'period'
             )
         ];
@@ -83,16 +84,24 @@ class PackCustomerNotes extends Command
      * @param InputInterface $input
      * @param OutputInterface $output
      * @return $this
+     * @throws LocalizedException
      * @throws NoSuchEntityException
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $period = $input->getOption(self::PERIOD) ?? $this->config->getPeriod();
+        if (!$input->getOption(self::KEY_PERIOD)) {
+            $period = $this->config->getPeriod();
+        } elseif (is_int($input->getOption(self::KEY_PERIOD))) {
+            $period = $input->getOption(self::KEY_PERIOD);
+        } else {
+            throw new LocalizedException(__("Input value must have integer type"));
+        }
 
         $export = $this->exportCsv->export($period);
 
-        if ($export === 'success'){
-            $output->writeln("Customer notes that haven't updates " . $period . " months archived!");
+        if ($export === 'success') {
+            $format = "Customer notes that haven't updates %s months archived.";
+            $output->writeln(sprintf($format, $period));
         } else {
             $output->writeln($export);
         }

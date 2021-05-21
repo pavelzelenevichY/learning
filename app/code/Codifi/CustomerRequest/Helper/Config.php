@@ -21,17 +21,7 @@ class Config extends AbstractHelper
     /**
      * Path to config
      */
-    const MONTHS_PERIOD_PATH = 'request/archive/months';
-
-    /**
-     * Config constructor.
-     *
-     * @param Context $context
-     */
-    public function __construct(Context $context)
-    {
-        parent::__construct($context);
-    }
+    const MONTHS_PERIOD_PATH = 'customer_note/archive/lifetime';
 
     /**
      * Get months period
@@ -40,6 +30,6 @@ class Config extends AbstractHelper
      */
     public function getPeriod(): int
     {
-        return $this->scopeConfig->getValue(self::MONTHS_PERIOD_PATH, ScopeConfigInterface::SCOPE_TYPE_DEFAULT);
+        return (int)$this->scopeConfig->getValue(self::MONTHS_PERIOD_PATH, ScopeConfigInterface::SCOPE_TYPE_DEFAULT);
     }
 }

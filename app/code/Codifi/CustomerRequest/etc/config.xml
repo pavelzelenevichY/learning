@@ -9,14 +9,14 @@
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
     <default>
-        <request>
+        <customer_note>
             <archive>
-                <months>1</months>
+                <lifetime>1</lifetime>
             </archive>
             <archive_cron>
-                <frequency>Daily</frequency>
-                <time>01:00:00</time>
+                <frequency>D</frequency>
+                <time>01,00,00</time>
             </archive_cron>
-        </request>
+        </customer_note>
     </default>
 </config>

@@ -8,16 +8,18 @@
 
 namespace Codifi\CustomerRequest\Model;
 
-use Codifi\CustomerRequest\Helper\Config;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Filesystem;
 use Codifi\Training\Model\NoteRepository;
 use Magento\Framework\File\Csv;
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\Api\FilterBuilder;
 use Magento\Framework\Api\Search\SearchCriteriaBuilder;
-use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\Framework\Exception\FileSystemException;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Stdlib\DateTime\DateTime;
+use Codifi\CustomerRequest\Helper\Config;
+use \Exception;
 
 /**
  * Class ExportCsv
@@ -26,11 +28,16 @@ use Magento\Framework\Exception\NoSuchEntityException;
 class ExportCsv
 {
     /**
+     * Customer note archive path
+     */
+    const CUSTOMER_NOTE_ARCHIVE_PATH = '/archive/';
+
+    /**
      * Filesystem
      *
      * @var Filesystem
      */
-    protected $fileSystem;
+    private $fileSystem;
 
     /**
      * Note repository
@@ -68,16 +75,11 @@ class ExportCsv
     private $searchCriteriaBuilder;
 
     /**
-     * TimezoneInterface
+     * Datetime
      *
-     * @var TimezoneInterface
+     * @var DateTime
      */
-    private $timeZoneInterface;
-
-    /**
-     * New directory
-     */
-    private $newDirectory;
+    private $dateTime;
 
     /**
      * Config
@@ -95,9 +97,8 @@ class ExportCsv
      * @param DirectoryList $directoryList
      * @param FilterBuilder $filterBuilder
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
-     * @param TimezoneInterface $timeZoneInterface
+     * @param DateTime $dateTime
      * @param Config $config
-     * @throws FileSystemException
      */
     public function __construct(
         Filesystem $fileSystem,
@@ -106,16 +107,16 @@ class ExportCsv
         DirectoryList $directoryList,
         FilterBuilder $filterBuilder,
         SearchCriteriaBuilder $searchCriteriaBuilder,
-        TimezoneInterface $timeZoneInterface,
+        DateTime $dateTime,
         Config $config
     ) {
+        $this->fileSystem = $fileSystem;
         $this->noteRepository = $noteRepository;
         $this->csvProcessor = $csvProcessor;
         $this->directoryList = $directoryList;
         $this->filterBuilder = $filterBuilder;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
-        $this->timeZoneInterface = $timeZoneInterface->date();
-        $this->newDirectory = $fileSystem->getDirectoryWrite(DirectoryList::VAR_DIR);
+        $this->dateTime = $dateTime;
         $this->config = $config;
     }
 
@@ -124,22 +125,17 @@ class ExportCsv
      *
      * @param int $period
      * @return string
+     * @throws FileSystemException
      * @throws NoSuchEntityException
      */
     public function export(int $period): string
     {
-        $period = $period ?? $this->config->getPeriod();
-
-        $currentDateTime = $this->timeZoneInterface->format('Y_m_d H:m:s');
-
-        $date = strtotime($currentDateTime . "-1 $period");
-        $newDate = date('Y-m-d H:m:s', $date);
-
-        $updatedAt = $newDate;
+        $period = sprintf("-%s months", $period);
+        $newDate = $this->dateTime->date('Y-m-d H:m:s', strtotime($period));
 
         $this->filterBuilder->setField('updated_at');
         $this->filterBuilder->setConditionType('to');
-        $this->filterBuilder->setValue($updatedAt);
+        $this->filterBuilder->setValue($newDate);
         $filter = $this->filterBuilder->create();
 
         $this->searchCriteriaBuilder->addFilter($filter);
@@ -149,40 +145,58 @@ class ExportCsv
 
         $noteListItems = $noteList->getItems();
 
-        $content[] = [
-            'note_id' => __('Note ID'),
-            'customer_id' => __('Customer ID'),
-            'created_at' => __('Created At'),
-            'created_by' => __('Created By'),
-            'note' => __('Note'),
-            'updated_at' => __('Updated At'),
-            'updated_by' => __('Updated By'),
-            'autocomplete' => __('Autocomplete')
-        ];
-
+        $content = [];
+        $isHeaderColsSet = false;
         foreach ($noteListItems as $item) {
-            $note = $item->getData();
-            $content[] = $note;
-            $this->noteRepository->deleteById($note['note_id']);
+            if (!$isHeaderColsSet) {
+                $content[] = array_keys($item->getData());
+                $isHeaderColsSet = true;
+            }
+            $content[] = $item->getData();
         }
 
         try {
-            $currentDateForName = $this->timeZoneInterface->format('Y_m_d');
+            $newDirectory = $this->fileSystem->getDirectoryWrite(DirectoryList::VAR_DIR);
+            $newDirectory->create(self::CUSTOMER_NOTE_ARCHIVE_PATH);
+        } catch (Exception $exception) {
+            throw $exception;
+        }
 
-            $this->newDirectory->create('/archive/');
+        if ($newDirectory->isWritable(self::CUSTOMER_NOTE_ARCHIVE_PATH)) {
+            try {
+                $currentDateForName = $this->dateTime->date('Y_m_d');
 
-            $fileName = "customer_note_$currentDateForName.csv";
-            $filePath = $this->directoryList->getPath(DirectoryList::VAR_DIR) . "/archive/" . $fileName;
+                $fileName = sprintf("customer_note_%s.csv", $currentDateForName);
+                $filePath = $this->directoryList->getPath(DirectoryList::VAR_DIR) .
+                    self::CUSTOMER_NOTE_ARCHIVE_PATH . $fileName;
 
-            $this->csvProcessor->setEnclosure('"');
-            $this->csvProcessor->setDelimiter(',');
-            $this->csvProcessor->saveData($filePath, $content);
+                $this->csvProcessor->setEnclosure('"');
+                $this->csvProcessor->setDelimiter(',');
+                $this->csvProcessor->saveData($filePath, $content);
 
-            $message = 'success';
-        } catch (FileSystemException $exception) {
-            $message = $exception->getMessage();
+                $message = 'success';
+                foreach ($noteListItems as $item) {
+                    $noteId = $item->getNoteId();
+                    $this->noteRepository->deleteById($noteId);
+                }
+            } catch (FileSystemException $exception) {
+                $message = $exception->getMessage();
+            }
+        } else {
+            $message = 'Directory is not writable.';
         }
 
         return $message;
+    }
+
+    /**
+     * Appropriation period for cron
+     *
+     * @throws NoSuchEntityException
+     */
+    public function exportCron(): void
+    {
+        $period = $this->config->getPeriod();
+        $this->export($period);
     }
 }

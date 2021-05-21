@@ -31,7 +31,8 @@ class CreditHoldSection implements SectionSourceInterface
      *
      * @param Session $customerSession
      */
-    public function __construct(Session $customerSession){
+    public function __construct(Session $customerSession)
+    {
         $this->customerSession = $customerSession;
     }
 

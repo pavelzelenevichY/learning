@@ -9,8 +9,8 @@
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
     <group id="archive">
-        <job name="codifi_customerrequest_cron_archivecronmodel" instance="Codifi\CustomerRequest\Model\ExportCsv" method="export">
-            <config_path>crontab/default/jobs/codifi_customerrequest_cron_archivecronmodel/schedule/cron_expr</config_path>
+        <job name="codifi_customerrequest_cron_archivecronmodel" instance="Codifi\CustomerRequest\Model\ExportCsv" method="exportCron">
+            <config_path>crontab/archive/jobs/codifi_customerrequest_cron_archivecronmodel/schedule/cron_expr</config_path>
         </job>
     </group>
 </config>
