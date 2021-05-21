@@ -1,14 +1,11 @@
 <?php
 /**
- * Copyright © Magento, Inc. All rights reserved.
- * See COPYING.txt for license details.
+ * Codifi_CustomerRequest
+ *
+ * @copyright   Copyright (c) 2021 Codifi
+ * @author      Pavel Zelenevich <pzelenevich@codifi.me>
  */
 
-/**
- * Backend Model for product alerts
- *
- * @author     Magento Core Team <core@magentocommerce.com>
- */
 namespace Codifi\CustomerRequest\Model\Config\Backend;
 
 use Magento\Framework\App\Config\Value;
