@@ -190,6 +190,7 @@ class Save extends Action
      *
      * @param RequestInterface $request
      * @return array
+     * @throws LocalizedException
      */
     private function validate(RequestInterface $request): array
     {
@@ -198,34 +199,11 @@ class Save extends Action
         $message = strip_tags($request->getParam('customer_messsage'));
         $customerName = strip_tags($request->getParam('customer_name'));
 
-        $values = [
-            'customerId' => $customerId,
-            'customerEmail' => trim($customerEmail),
-            'message' => trim($message),
-            'customerName' => trim($customerName)
-        ];
-
-        $this->isEmpty($values['customerId'], $values['customerEmail'], $values['customerName'], $values['message']);
-
-        return $values;
-    }
-
-    /**
-     * Check is empty values
-     *
-     * @param string $customerId
-     * @param string $customerEmail
-     * @param string $customerName
-     * @param string $message
-     * @throws LocalizedException
-     */
-    public function isEmpty(string $customerId, string $customerEmail, string $customerName, string $message): void
-    {
         if (!$customerId) {
             throw new LocalizedException(__('Customer id is empty'));
         }
 
-        if (!$customerEmail) {
+        if (!trim($customerEmail)) {
             throw new LocalizedException(__('Email must be specified'));
         }
 
@@ -233,12 +211,21 @@ class Save extends Action
             throw new LocalizedException(__('Email is invalid'));
         }
 
-        if (!$message) {
+        if (!trim($message)) {
             throw new LocalizedException(__('Message is empty'));
         }
 
-        if (!$customerName) {
+        if (!trim($customerName)) {
             throw new LocalizedException(__('Customer name is empty'));
         }
+
+        $values = [
+            'customerId' => $customerId,
+            'customerEmail' => $customerEmail,
+            'message' => $message,
+            'customerName' => $customerName
+        ];
+
+        return $values;
     }
 }
