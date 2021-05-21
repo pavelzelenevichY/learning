@@ -21,17 +21,7 @@ class Config extends AbstractHelper
     /**
      * Path to config
      */
-    const MONTHS_PERIOD_PATH = 'request/archive/months';
-
-    /**
-     * Config constructor.
-     *
-     * @param Context $context
-     */
-    public function __construct(Context $context)
-    {
-        parent::__construct($context);
-    }
+    const MONTHS_PERIOD_PATH = 'customer_note/archive/months';
 
     /**
      * Get months period

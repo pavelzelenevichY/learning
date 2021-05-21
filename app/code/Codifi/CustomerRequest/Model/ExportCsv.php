@@ -8,16 +8,18 @@
 
 namespace Codifi\CustomerRequest\Model;
 
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Filesystem;
 use Codifi\Training\Model\NoteRepository;
 use Magento\Framework\File\Csv;
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\Api\FilterBuilder;
 use Magento\Framework\Api\Search\SearchCriteriaBuilder;
-use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\Framework\Exception\FileSystemException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Stdlib\DateTime\DateTime;
+use Codifi\CustomerRequest\Helper\Config;
+use \Exception;
 
 /**
  * Class ExportCsv
@@ -25,6 +27,11 @@ use Magento\Framework\Stdlib\DateTime\DateTime;
  */
 class ExportCsv
 {
+    /**
+     * Customer note archive path
+     */
+    const CUSTOMER_NOTE_ARCHIVE_PATH = '/archive/';
+
     /**
      * Filesystem
      *
@@ -68,21 +75,11 @@ class ExportCsv
     private $searchCriteriaBuilder;
 
     /**
-     * TimezoneInterface
+     * Datetime
      *
-     * @var TimezoneInterface
-     */
-    private $timeZoneInterface;
-
-    /**
      * @var DateTime
      */
     private $dateTime;
-
-    /**
-     * New directory
-     */
-    private $newDirectory;
 
     /**
      * ExportCsv constructor.
@@ -93,8 +90,7 @@ class ExportCsv
      * @param DirectoryList $directoryList
      * @param FilterBuilder $filterBuilder
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
-     * @param TimezoneInterface $timeZoneInterface
-     * @throws FileSystemException
+     * @param DateTime $dateTime
      */
     public function __construct(
         Filesystem $fileSystem,
@@ -103,17 +99,15 @@ class ExportCsv
         DirectoryList $directoryList,
         FilterBuilder $filterBuilder,
         SearchCriteriaBuilder $searchCriteriaBuilder,
-        TimezoneInterface $timeZoneInterface,
         DateTime $dateTime
     ) {
+        $this->fileSystem = $fileSystem;
         $this->noteRepository = $noteRepository;
         $this->csvProcessor = $csvProcessor;
         $this->directoryList = $directoryList;
         $this->filterBuilder = $filterBuilder;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
-        $this->timeZoneInterface = $timeZoneInterface->date();
         $this->dateTime = $dateTime;
-        $this->newDirectory = $fileSystem->getDirectoryWrite(DirectoryList::VAR_DIR);
     }
 
     /**
@@ -121,12 +115,12 @@ class ExportCsv
      *
      * @param int $period
      * @return string
+     * @throws FileSystemException
      * @throws NoSuchEntityException
      */
     public function export(int $period): string
     {
-        $format = "-%s months";
-        $period = sprintf($format, $period);
+        $period = sprintf("-%s months", $period);
         $newDate = $this->dateTime->date('Y-m-d H:m:s', strtotime($period));
 
         $this->filterBuilder->setField('updated_at');
@@ -152,15 +146,19 @@ class ExportCsv
         }
 
         try {
-            $currentDateForName = $this->dateTime->date('Y_m_d');
+            $newDirectory = $this->fileSystem->getDirectoryWrite(DirectoryList::VAR_DIR);
+            $newDirectory->create(self::CUSTOMER_NOTE_ARCHIVE_PATH);
+        } catch (Exception $exception) {
+            throw $exception;
+        }
 
-            $this->newDirectory->create('/archive/');
+        if ($newDirectory->isWritable(self::CUSTOMER_NOTE_ARCHIVE_PATH)) {
+            try {
+                $currentDateForName = $this->dateTime->date('Y_m_d');
 
-            if ($this->newDirectory->isDirectory('/archive/')) {
-
-                $format = 'customer_note_%s.csv';
-                $fileName = sprintf($format, $currentDateForName);
-                $filePath = $this->directoryList->getPath(DirectoryList::VAR_DIR) . "/archive/" . $fileName;
+                $fileName = sprintf("customer_note_%s.csv", $currentDateForName);
+                $filePath = $this->directoryList->getPath(DirectoryList::VAR_DIR) .
+                    self::CUSTOMER_NOTE_ARCHIVE_PATH . $fileName;
 
                 $this->csvProcessor->setEnclosure('"');
                 $this->csvProcessor->setDelimiter(',');
@@ -168,14 +166,14 @@ class ExportCsv
 
                 $message = 'success';
                 foreach ($noteListItems as $item) {
-                    $note = $item->getData();
-                    $this->noteRepository->deleteById($note['note_id']);
+                    $noteId = $item->getNoteId();
+                    $this->noteRepository->deleteById($noteId);
                 }
-            } else {
-                $message = 'Something went wrong, try again later.';
+            } catch (FileSystemException $exception) {
+                $message = $exception->getMessage();
             }
-        } catch (FileSystemException $exception) {
-            $message = $exception->getMessage();
+        } else {
+            $message = 'Directory is not writable.';
         }
 
         return $message;

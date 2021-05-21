@@ -15,6 +15,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Codifi\CustomerRequest\Model\ExportCsv;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Codifi\CustomerRequest\Helper\Config;
+use Magento\Framework\Exception\LocalizedException;
 
 /**
  * Class PackCustomerNotes
@@ -65,7 +66,7 @@ class PackCustomerNotes extends Command
             new InputOption(
                 self::KEY_PERIOD,
                 null,
-                null,
+                InputOption::VALUE_OPTIONAL,
                 'period'
             )
         ];
@@ -83,22 +84,26 @@ class PackCustomerNotes extends Command
      * @param InputInterface $input
      * @param OutputInterface $output
      * @return $this
+     * @throws LocalizedException
      * @throws NoSuchEntityException
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        if (gettype($input->getOption(self::KEY_PERIOD)) === "integer" || !$input->getOption(self::KEY_PERIOD)) {
-            $period = $input->getOption(self::KEY_PERIOD) ?? $this->config->getPeriod();
-            $export = $this->exportCsv->export($period);
-
-            if ($export === 'success') {
-                $format = "Customer notes that haven't updates %s months archived.";
-                $output->writeln(sprintf($format, $period));
-            } else {
-                $output->writeln($export);
-            }
+        if (!$input->getOption(self::KEY_PERIOD)) {
+            $period = $this->config->getPeriod();
+        } elseif (is_int($input->getOption(self::KEY_PERIOD))) {
+            $period = $input->getOption(self::KEY_PERIOD);
         } else {
-            $output->writeln("Input value must have integer type");
+            throw new LocalizedException(__("Input value must have integer type"));
+        }
+
+        $export = $this->exportCsv->export($period);
+
+        if ($export === 'success') {
+            $format = "Customer notes that haven't updates %s months archived.";
+            $output->writeln(sprintf($format, $period));
+        } else {
+            $output->writeln($export);
         }
 
         return $this;
