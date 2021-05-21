@@ -6,6 +6,8 @@
  * @author      Pavel Zelenevich <pzelenevich@codifi.me>
  */
 
+declare(strict_types=1);
+
 namespace Codifi\CustomerRequest\CustomerData;
 
 use Magento\Customer\CustomerData\SectionSourceInterface;
@@ -49,9 +51,9 @@ class CreditHoldSection implements SectionSourceInterface
         $customerData = $this->customerSession->getCustomerData();
         $creditHoldAttribute = $customerData->getCustomAttribute(AddCustomerAttributeCreditHold::ATTRIBUTE_CODE);
 
-        $creditHoldAttributeValue = '';
-        if ($creditHoldAttribute){
-            $creditHoldAttributeValue = $creditHoldAttribute->getValue();
+        $creditHoldAttributeValue = false;
+        if ($creditHoldAttribute) {
+            $creditHoldAttributeValue = (bool)$creditHoldAttribute->getValue();
         }
 
         return $creditHoldAttributeValue;
