@@ -68,7 +68,7 @@ class AdminSessionManagement
      *
      * @return bool
      */
-    private function getCustomerAttrCreditHold() : bool
+    private function getCustomerAttrCreditHold(): bool
     {
         $customerData = $this->backendSession->getCustomerData();
 
@@ -92,7 +92,7 @@ class AdminSessionManagement
      *
      * @return void
      */
-    public function setCustomerIdToAdminSession(int $customerId = null) : void
+    public function setCustomerIdToAdminSession(int $customerId = null): void
     {
         if (!$customerId) {
             $customerId = $this->getCustomerId();
@@ -117,7 +117,7 @@ class AdminSessionManagement
      *
      * @return bool
      */
-    public function checkCustomerIdInArrayAdminSession() : bool
+    public function checkCustomerIdInArrayAdminSession(): bool
     {
         $currentCustomerId = $this->getCustomerId();
         $customerIds = $this->getCustomerIds();
@@ -134,7 +134,7 @@ class AdminSessionManagement
      *
      * @return bool
      */
-    public function isCreditHoldConfigEnabled() : bool
+    public function isCreditHoldConfigEnabled(): bool
     {
         return $this->configProvider->isOptionCreditHoldEnable();
     }
@@ -144,7 +144,7 @@ class AdminSessionManagement
      *
      * @return bool
      */
-    public function checkForOneTimeDemoMessage() : bool
+    public function checkForOneTimeDemoMessage(): bool
     {
         return $this->getCustomerAttrCreditHold() && $this->isCreditHoldConfigEnabled() && !$this->checkCustomerIdInArrayAdminSession();
     }
@@ -154,7 +154,7 @@ class AdminSessionManagement
      *
      * @return string
      */
-    public function getMessageAndSetCustomerIdToAdminSession() : string
+    public function getMessageAndSetCustomerIdToAdminSession(): string
     {
         $this->setCustomerIdToAdminSession();
 
