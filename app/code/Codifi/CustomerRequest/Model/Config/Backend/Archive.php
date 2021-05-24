@@ -6,6 +6,8 @@
  * @author      Pavel Zelenevich <pzelenevich@codifi.me>
  */
 
+declare(strict_types=1);
+
 namespace Codifi\CustomerRequest\Model\Config\Backend;
 
 use Magento\Framework\App\Config\Value;
@@ -31,23 +33,29 @@ class Archive extends Value
     const CRON_CODIFI_STRING_PATH = 'crontab/archive/jobs/codifi_customerrequest_cron_archivecronmodel/schedule/cron_expr';
 
     /**
-     * @var \Magento\Framework\App\Config\ValueFactory
+     * Value factory
+     *
+     * @var ValueFactory
      */
     protected $_configValueFactory;
 
     /**
+     * Run model path
+     *
      * @var string
      */
     protected $_runModelPath = '';
 
     /**
+     * Archive constructor.
+     *
      * @param Context $context
      * @param Registry $registry
      * @param ScopeConfigInterface $config
      * @param TypeListInterface $cacheTypeList
      * @param ValueFactory $configValueFactory
-     * @param AbstractResource $resource
-     * @param AbstractDb $resourceCollection
+     * @param AbstractResource|null $resource
+     * @param AbstractDb|null $resourceCollection
      * @param string $runModelPath
      * @param array $data
      */

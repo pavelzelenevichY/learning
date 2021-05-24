@@ -6,9 +6,10 @@
  * @author      Pavel Zelenevich <pzelenevich@codifi.me>
  */
 
+declare(strict_types=1);
+
 namespace Codifi\CustomerRequest\Model;
 
-use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Filesystem;
 use Codifi\Training\Model\NoteRepository;
 use Magento\Framework\File\Csv;
@@ -192,6 +193,7 @@ class ExportCsv
     /**
      * Appropriation period for cron
      *
+     * @throws FileSystemException
      * @throws NoSuchEntityException
      */
     public function exportCron(): void

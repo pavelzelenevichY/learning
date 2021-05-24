@@ -6,6 +6,8 @@
  * @author      Pavel Zelenevich <pzelenevich@codifi.me>
  */
 
+declare(strict_types=1);
+
 namespace Codifi\CustomerRequest\Console;
 
 use Symfony\Component\Console\Command\Command;
