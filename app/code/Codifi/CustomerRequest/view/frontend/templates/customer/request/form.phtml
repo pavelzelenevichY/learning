@@ -34,7 +34,7 @@
                     <span><?= $block->escapeHtml(__('Message')) ?></span>
                 </label>
                 <div class="control">
-                    <textarea name="customer_messsage" maxlength="255"></textarea>
+                    <textarea name="customer_messsage" required="true" maxlength="255"></textarea>
                 </div>
             </div>
         </fieldset>
@@ -47,3 +47,10 @@
         </div>
     </form>
 </div>
+<script type="text/x-magento-init">
+    {
+        "#customer-request-form": {
+            "validation": {}
+        }
+    }
+</script>

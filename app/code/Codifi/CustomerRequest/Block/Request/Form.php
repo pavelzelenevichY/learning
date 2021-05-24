@@ -6,6 +6,8 @@
  * @author      Pavel Zelenevich <pzelenevich@codifi.me>
  */
 
+declare(strict_types=1);
+
 namespace Codifi\CustomerRequest\Block\Request;
 
 use Magento\Framework\View\Element\Template;
@@ -85,7 +87,7 @@ class Form extends Template
     {
         $customerEmail = '';
         $customerData = $this->customerSession->getCustomerData();
-        if ($customerData){
+        if ($customerData) {
             $customerEmail = $customerData->getEmail();
         }
 

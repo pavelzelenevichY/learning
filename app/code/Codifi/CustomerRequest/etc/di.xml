@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Codifi_CustomerRequest
+ *
+ * @copyright   Copyright (c) 2021 Codifi
+ * @author      Pavel Zelenevich <pzelenevich@codifi.me>
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <virtualType name="saveRequestLogger" type="Magento\Framework\Logger\Monolog">
+        <arguments>
+            <argument name="handlers"  xsi:type="array">
+                <item name="error" xsi:type="object">Codifi\CustomerRequest\Logger\Handler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Codifi\CustomerRequest\Controller\Request\Save">
+    <arguments>
+        <argument name="logger" xsi:type="object">saveRequestLogger</argument>
+    </arguments>
+    </type>
+</config>
