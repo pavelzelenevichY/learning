@@ -8,7 +8,7 @@
 
 declare(strict_types=1);
 
-namespace Codifi\CustomerRequest\CustomerData;
+namespace Codifi\Training\CustomerData;
 
 use Magento\Customer\CustomerData\SectionSourceInterface;
 use Magento\Customer\Model\Session;
@@ -18,7 +18,7 @@ use Codifi\Training\Setup\Patch\Data\AddCustomerAttributeCreditHold;
 
 /**
  * Class CreditHoldSection
- * @package Codifi\CustomerRequest\CustomerData
+ * @package Codifi\Training\CustomerData
  */
 class CreditHoldSection implements SectionSourceInterface
 {

@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!--
 /**
- * Codifi_CustomerRequest
+ * Codifi_Training
  *
  * @copyright   Copyright (c) 2021 Codifi
  * @author      Pavel Zelenevich <pzelenevich@codifi.me>
@@ -12,7 +12,7 @@
     <type name="Magento\Customer\CustomerData\SectionPoolInterface">
         <arguments>
             <argument name="sectionSourceMap" xsi:type="array">
-                <item name="credit_hold_section" xsi:type="string">Codifi\CustomerRequest\CustomerData\CreditHoldSection</item>
+                <item name="credit_hold_section" xsi:type="string">Codifi\Training\CustomerData\CreditHoldSection</item>
             </argument>
         </arguments>
     </type>
