@@ -7,7 +7,8 @@
  * @author      Pavel Zelenevich <pzelenevich@codifi.me>
  */
 -->
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/module.xsd">
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/module.xsd">
     <module name="Codifi_Training">
         <sequence>
             <module name="Magento_Customer" />

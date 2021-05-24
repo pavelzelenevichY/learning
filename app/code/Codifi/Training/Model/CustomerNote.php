@@ -6,6 +6,8 @@
  * @author      Pavel Zelenevich <pzelenevich@codifi.me>
  */
 
+declare(strict_types=1);
+
 namespace Codifi\Training\Model;
 
 use Codifi\Training\Api\Data\NoteInterface;
@@ -21,7 +23,7 @@ class CustomerNote extends AbstractModel implements NoteInterface
     /**
      * CustomerNote constructor.
      */
-    protected function _construct()
+    public function _construct()
     {
         $this->_init(ResourceModel::class);
     }

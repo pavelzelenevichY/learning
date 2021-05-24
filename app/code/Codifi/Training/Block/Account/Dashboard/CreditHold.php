@@ -12,7 +12,6 @@ namespace Codifi\Training\Block\Account\Dashboard;
 
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;
-use Codifi\Training\Model\ConfigProvider;
 use Codifi\Training\Model\CustomerSessionManagement;
 
 /**
@@ -29,28 +28,18 @@ class CreditHold extends Template
     private $customerSession;
 
     /**
-     * Config Provider.
-     *
-     * @var ConfigProvider
-     */
-    private $configProvider;
-
-    /**
      * CreditHold constructor.
      *
      * @param Context $context
      * @param CustomerSessionManagement $customerSession
-     * @param ConfigProvider $configProvider
      * @param array $data
      */
     public function __construct(
         Context $context,
         CustomerSessionManagement $customerSession,
-        ConfigProvider $configProvider,
         array $data = []
     ) {
         $this->customerSession = $customerSession;
-        $this->configProvider = $configProvider;
 
         parent::__construct($context, $data);
     }
@@ -60,7 +49,7 @@ class CreditHold extends Template
      *
      * @return bool
      */
-    public function checkForOneTimeDemoMessage() : bool
+    public function checkForOneTimeDemoMessage(): bool
     {
         return $this->customerSession->checkForOneTimeDemoMessage();
     }
@@ -70,7 +59,7 @@ class CreditHold extends Template
      *
      * @return string
      */
-    public function getMessage() : string
+    public function getMessage(): string
     {
         return $this->customerSession->getMessageAndCallSetFlag();
     }
@@ -80,7 +69,7 @@ class CreditHold extends Template
      *
      * @return int
      */
-    public function getCustomerId() : int
+    public function getCustomerId(): int
     {
         return (int)$this->customerSession->getCustomerId();
     }
@@ -90,7 +79,7 @@ class CreditHold extends Template
      *
      * @return string
      */
-    public function getSaveUrl() : string
+    public function getSaveUrl(): string
     {
         return $this->_urlBuilder->getUrl('customer/note/save');
     }

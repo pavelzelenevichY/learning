@@ -96,7 +96,9 @@ class CustomerSessionManagement
      */
     public function checkForOneTimeDemoMessage(): bool
     {
-        return $this->getCustomerAttrCreditHold() &&  $this->configProvider->isOptionCreditHoldEnable() && !$this->getFlag();
+        return $this->getCustomerAttrCreditHold() &&
+            $this->configProvider->isOptionCreditHoldEnable() &&
+            !$this->getFlag();
     }
 
     /**
@@ -104,7 +106,7 @@ class CustomerSessionManagement
      *
      * @return int
      */
-    public function getCustomerId() : int
+    public function getCustomerId(): int
     {
         return (int)$this->session->getCustomerId();
     }
@@ -114,7 +116,7 @@ class CustomerSessionManagement
      *
      * @return string
      */
-    public function getMessageAndCallSetFlag() : string
+    public function getMessageAndCallSetFlag(): string
     {
         $this->setFlag();
 

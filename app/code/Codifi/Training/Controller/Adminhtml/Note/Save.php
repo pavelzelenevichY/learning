@@ -6,6 +6,8 @@
  * @author      Pavel Zelenevich <pzelenevich@codifi.me>
  */
 
+declare(strict_types=1);
+
 namespace Codifi\Training\Controller\Adminhtml\Note;
 
 use Codifi\Training\Model\AdminSessionManagement;
@@ -18,6 +20,10 @@ use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Controller\Result\Json;
 use Exception;
 
+/**
+ * Class Save
+ * @package Codifi\Training\Controller\Adminhtml\Note
+ */
 class Save extends Action
 {
     /**

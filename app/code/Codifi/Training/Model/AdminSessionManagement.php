@@ -72,7 +72,8 @@ class AdminSessionManagement
     {
         $customerData = $this->backendSession->getCustomerData();
 
-        return isset($customerData['account'][AddCustomerAttributeCreditHold::ATTRIBUTE_CODE]) && $customerData['account'][AddCustomerAttributeCreditHold::ATTRIBUTE_CODE];
+        return isset($customerData['account'][AddCustomerAttributeCreditHold::ATTRIBUTE_CODE]) &&
+            $customerData['account'][AddCustomerAttributeCreditHold::ATTRIBUTE_CODE];
     }
 
     /**
@@ -80,7 +81,7 @@ class AdminSessionManagement
      *
      * @return int
      */
-    public function getCustomerId() : int
+    public function getCustomerId(): int
     {
         $customerData = $this->backendSession->getCustomerData();
 
@@ -90,7 +91,7 @@ class AdminSessionManagement
     /**
      * Set customer id to array in admin session.
      *
-     * @return void
+     * @param int|null $customerId
      */
     public function setCustomerIdToAdminSession(int $customerId = null): void
     {
@@ -107,7 +108,7 @@ class AdminSessionManagement
      *
      * @return array
      */
-    private function getCustomerIds() : array
+    private function getCustomerIds(): array
     {
         return $this->authSession->getData(self::ADMIN_SESSION_ATTRIBUTE_CUSTOMER_IDS) ?? [];
     }

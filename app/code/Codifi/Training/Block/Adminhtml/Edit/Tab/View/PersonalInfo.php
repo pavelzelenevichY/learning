@@ -25,21 +25,21 @@ class PersonalInfo extends Template
      *
      * @var AdminSessionManagement
      */
-    private $adminSession;
+    private $adminSessionManagement;
 
     /**
      * PersonalInfo constructor.
      *
      * @param Context $context
-     * @param AdminSessionManagement $adminSession
+     * @param AdminSessionManagement $adminSessionManagement
      * @param array $data
      */
     public function __construct(
         Context $context,
-        AdminSessionManagement $adminSession,
+        AdminSessionManagement $adminSessionManagement,
         array $data = []
     ) {
-        $this->adminSession = $adminSession;
+        $this->adminSessionManagement = $adminSessionManagement;
         parent::__construct($context, $data);
     }
 
@@ -48,9 +48,9 @@ class PersonalInfo extends Template
      *
      * @return bool
      */
-    public function checkForOneTimeDemoMessage() : bool
+    public function checkForOneTimeDemoMessage(): bool
     {
-        return $this->adminSession->checkForOneTimeDemoMessage();
+        return $this->adminSessionManagement->checkForOneTimeDemoMessage();
     }
 
     /**
@@ -58,8 +58,8 @@ class PersonalInfo extends Template
      *
      * @return string
      */
-    public function getMessage() : string
+    public function getMessage(): string
     {
-        return $this->adminSession->getMessageAndSetCustomerIdToAdminSession();
+        return $this->adminSessionManagement->getMessageAndSetCustomerIdToAdminSession();
     }
 }

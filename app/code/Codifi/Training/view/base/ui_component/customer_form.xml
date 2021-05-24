@@ -7,7 +7,8 @@
  * @author      Pavel Zelenevich <pzelenevich@codifi.me>
  */
 -->
-<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
     <fieldset name="customer_notes">
         <settings>
             <label translate="true">Account Notes</label>
@@ -18,7 +19,9 @@
                     <item name="buttonClasses" xsi:type="string">open-customer-note-form-modal-button</item>
                     <item name="actions" xsi:type="array">
                         <item name="0" xsi:type="array">
-                            <item name="targetName" xsi:type="string">${ $.parentName}.customer_note_form_modal.customer_note_form_loader</item>
+                            <item name="targetName"
+                                  xsi:type="string">${ $.parentName}.customer_note_form_modal.customer_note_form_loader
+                            </item>
                             <item name="actionName" xsi:type="string">destroyInserted</item>
                         </item>
                         <item name="1" xsi:type="array">
@@ -26,7 +29,9 @@
                             <item name="actionName" xsi:type="string">openModal</item>
                         </item>
                         <item name="2" xsi:type="array">
-                            <item name="targetName" xsi:type="string">${ $.parentName}.customer_note_form_modal.customer_note_form_loader</item>
+                            <item name="targetName" xsi:type="string">
+                                ${ $.parentName}.customer_note_form_modal.customer_note_form_loader
+                            </item>
                             <item name="actionName" xsi:type="string">render</item>
                         </item>
                     </item>
@@ -64,7 +69,8 @@
             <insertForm name="customer_note_form_loader" component="Codifi_Training/js/form/components/insert-form">
                 <argument name="data" xsi:type="array">
                     <item name="config" xsi:type="array">
-                        <item name="noteListingProvider" xsi:type="string">index = customer_note_listing_data_source</item>
+                        <item name="noteListingProvider"
+                              xsi:type="string">index = customer_note_listing_data_source</item>
                      </item>
                 </argument>
                 <settings>

@@ -6,6 +6,8 @@
  * @author      Pavel Zelenevich <pzelenevich@codifi.me>
  */
 
+declare(strict_types=1);
+
 namespace Codifi\Training\Logger;
 
 use Magento\Framework\Logger\Handler\Base;
@@ -22,12 +24,12 @@ class Handler extends Base
      *
      * @var int
      */
-    protected $loggerType = Logger::ERROR;
+    public $loggerType = Logger::ERROR;
 
     /**
      * File name
      *
      * @var string
      */
-    protected $fileName = '/var/log/attributeupdate.log';
+    public $fileName = '/var/log/attributeupdate.log';
 }

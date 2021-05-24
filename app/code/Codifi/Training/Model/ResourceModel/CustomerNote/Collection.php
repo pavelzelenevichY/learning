@@ -6,6 +6,8 @@
  * @author      Pavel Zelenevich <pzelenevich@codifi.me>
  */
 
+declare(strict_types=1);
+
 namespace Codifi\Training\Model\ResourceModel\CustomerNote;
 
 use Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection;
@@ -21,7 +23,7 @@ class Collection extends AbstractCollection
     /**
      * Collection constructor.
      */
-    protected function _construct()
+    public function _construct()
     {
         $this->_init(Model::class, ResourceModel::class);
     }

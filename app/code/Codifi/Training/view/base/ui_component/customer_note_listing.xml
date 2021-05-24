@@ -7,7 +7,8 @@
  * @author      Pavel Zelenevich <pzelenevich@codifi.me>
  */
 -->
-<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
     <argument name="data" xsi:type="array">
         <item name="js_config" xsi:type="array">
             <item name="provider" xsi:type="string">customer_note_listing.customer_note_listing_data_source</item>
@@ -23,7 +24,8 @@
         <settings>
             <updateUrl path="mui/index/render"/>
         </settings>
-        <dataProvider class="Codifi\Training\UI\Component\Listing\AccountNoteDataProvider" name="customer_note_listing_data_source">
+        <dataProvider class="Codifi\Training\UI\Component\Listing\AccountNoteDataProvider"
+                      name="customer_note_listing_data_source">
             <settings>
                 <requestFieldName>note_id</requestFieldName>
                 <primaryFieldName>note_id</primaryFieldName>
@@ -53,7 +55,8 @@
                 <label translate="true">Note</label>
             </settings>
         </column>
-        <column name="created_at" class="Magento\Ui\Component\Listing\Columns\Date" component="Magento_Ui/js/grid/columns/date" sortOrder="40">
+        <column name="created_at" class="Magento\Ui\Component\Listing\Columns\Date"
+                component="Magento_Ui/js/grid/columns/date" sortOrder="40">
             <settings>
                 <filter>dateRange</filter>
                 <dataType>date</dataType>
@@ -61,13 +64,15 @@
                 <sorting>asc</sorting>
             </settings>
         </column>
-        <column name="created_by" class="Codifi\Training\UI\Component\Listing\Notes\Column\AdminNameReceiver" sortOrder="50">
+        <column name="created_by" class="Codifi\Training\UI\Component\Listing\Notes\Column\AdminNameReceiver"
+                sortOrder="50">
             <settings>
                 <filter>textRange</filter>
                 <label translate="true">Created By</label>
             </settings>
         </column>
-        <column name="updated_at" class="Magento\Ui\Component\Listing\Columns\Date" component="Magento_Ui/js/grid/columns/date" sortOrder="60">
+        <column name="updated_at" class="Magento\Ui\Component\Listing\Columns\Date"
+                component="Magento_Ui/js/grid/columns/date" sortOrder="60">
             <settings>
                 <filter>dateRange</filter>
                 <dataType>date</dataType>
@@ -75,7 +80,8 @@
                 <sorting>asc</sorting>
             </settings>
         </column>
-        <column name="updated_by" class="Codifi\Training\UI\Component\Listing\Notes\Column\AdminNameReceiver" sortOrder="70">
+        <column name="updated_by" class="Codifi\Training\UI\Component\Listing\Notes\Column\AdminNameReceiver"
+                sortOrder="70">
             <settings>
                 <filter>textRange</filter>
                 <label translate="true">Updated By</label>
@@ -89,7 +95,8 @@
                 <label translate="true">Autocomplete</label>
             </settings>
         </column>
-        <actionsColumn name="actions" class="Codifi\Training\UI\Component\Listing\Notes\Column\Actions" component="Magento_Customer/js/grid/columns/actions">
+        <actionsColumn name="actions" class="Codifi\Training\UI\Component\Listing\Notes\Column\Actions"
+                       component="Magento_Customer/js/grid/columns/actions">
             <settings>
                 <indexField>note_id</indexField>
             </settings>

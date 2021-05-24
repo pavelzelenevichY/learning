@@ -6,6 +6,8 @@
  * @author      Pavel Zelenevich <pzelenevich@codifi.me>
  */
 
+declare(strict_types=1);
+
 namespace Codifi\Training\Controller\Note;
 
 use Codifi\Training\Model\ResourceModel\CustomerNote as CustomerNoteResource;
@@ -18,7 +20,6 @@ use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\ResponseInterface;
 use Exception;
-
 
 /**
  * Class Save
@@ -59,7 +60,7 @@ class Save extends Action
         Context $context,
         JsonFactory $jsonFactory,
         CustomerNoteFactory $customerNoteFactory,
-        CustomerNoteResource $customerNoteResource,
+        CustomerNoteResource $customerNoteResource
     ) {
         parent::__construct($context);
         $this->jsonFactory = $jsonFactory;
@@ -70,10 +71,10 @@ class Save extends Action
     /**
      * Execute function
      *
-     * @return ResponseInterface|Json|ResultInterface
+     * @return Json
      * @throws Exception
      */
-    public function execute()
+    public function execute(): Json
     {
         $note = $this->getRequest()->getParam('note');
         $customerId = $this->getRequest()->getParam('customer_id');

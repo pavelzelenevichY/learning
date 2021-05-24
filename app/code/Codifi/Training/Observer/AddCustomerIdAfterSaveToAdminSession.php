@@ -44,7 +44,7 @@ class AddCustomerIdAfterSaveToAdminSession implements ObserverInterface
      * @param EventObserver $observer
      * @return void
      */
-    public function execute(EventObserver $observer) : void
+    public function execute(EventObserver $observer): void
     {
         $event = $observer->getEvent();
         $customer = $event->getCustomer();

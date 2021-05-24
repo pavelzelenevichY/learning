@@ -6,6 +6,8 @@
  * @author      Pavel Zelenevich <pzelenevich@codifi.me>
  */
 
+declare(strict_types=1);
+
 namespace Codifi\Training\Setup\Patch\Data;
 
 use Magento\Framework\Setup\Patch\DataPatchInterface;
@@ -94,7 +96,7 @@ class AddCustomerAttributeCreditHold implements DataPatchInterface
      * @throws LocalizedException
      * @throws \Zend_Validate_Exception
      */
-    public function apply() : void
+    public function apply(): void
     {
         $moduleDataSetupConnection = $this->moduleDataSetup->getConnection();
         $moduleDataSetupConnection->startSetup();

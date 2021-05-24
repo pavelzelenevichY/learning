@@ -6,6 +6,8 @@
  * @author      Pavel Zelenevich <pzelenevich@codifi.me>
  */
 
+declare(strict_types=1);
+
 namespace Codifi\Training\Model\ResourceModel;
 
 use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
@@ -19,7 +21,7 @@ class CustomerNote extends AbstractDb
     /**
      * CustomerNote constructor.
      */
-    protected function _construct()
+    public function _construct()
     {
         $this->_init('customer_note', 'note_id');
     }
