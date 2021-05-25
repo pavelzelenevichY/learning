@@ -13,7 +13,7 @@ namespace Codifi\Training\Model;
 use Codifi\Training\Api\CreditHoldAttributeManagementInterface;
 use Magento\Customer\Model\ResourceModel\CustomerRepository;
 use Exception;
-use NoteRepository;
+use Codifi\Training\Model\NoteRepository;
 use Codifi\Training\Model\AttributeManagementResponseFactory;
 use Codifi\Training\Api\AttributeManagementResponseInterface;
 use Codifi\Training\Setup\Patch\Data\AddCustomerAttributeCreditHold;

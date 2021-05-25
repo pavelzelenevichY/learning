@@ -147,7 +147,8 @@ class AdminSessionManagement
      */
     public function checkForOneTimeDemoMessage(): bool
     {
-        return $this->getCustomerAttrCreditHold() && $this->isCreditHoldConfigEnabled() && !$this->checkCustomerIdInArrayAdminSession();
+        return $this->getCustomerAttrCreditHold() &&
+            $this->isCreditHoldConfigEnabled() && !$this->checkCustomerIdInArrayAdminSession();
     }
 
     /**

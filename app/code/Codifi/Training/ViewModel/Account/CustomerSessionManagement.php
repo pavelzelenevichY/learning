@@ -8,18 +8,21 @@
 
 declare(strict_types=1);
 
-namespace Codifi\Training\Model;
+namespace Codifi\Training\ViewModel\Account;
 
+use Codifi\Training\Model\ConfigProvider;
+use Codifi\Training\Setup\Patch\Data\AddCustomerAttributeCreditHold;
 use Magento\Customer\Model\Session;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Codifi\Training\Setup\Patch\Data\AddCustomerAttributeCreditHold;
+use Magento\Framework\View\Element\Block\ArgumentInterface;
+use Magento\Framework\UrlInterface;
 
 /**
  * Class CustomerSessionManagement
- * @package Codifi\Training\Model
+ * @package Codifi\Training\ViewModel\Account
  */
-class CustomerSessionManagement
+class CustomerSessionManagement implements ArgumentInterface
 {
     /**
      * Customer session.
@@ -36,17 +39,25 @@ class CustomerSessionManagement
     private $configProvider;
 
     /**
+     * @var UrlInterface
+     */
+    private $urlBuilder;
+
+    /**
      * CustomerSessionManagement constructor.
      *
      * @param ConfigProvider $configProvider
      * @param Session $session
+     * @param UrlInterface $urlBuilder
      */
     public function __construct(
         ConfigProvider $configProvider,
-        Session $session
+        Session $session,
+        UrlInterface $urlBuilder
     ) {
         $this->configProvider = $configProvider;
         $this->session = $session;
+        $this->urlBuilder = $urlBuilder;
     }
 
     /**
@@ -90,15 +101,13 @@ class CustomerSessionManagement
     }
 
     /**
-     * Check for one time demo message.
+     * Check for one time demo message
      *
      * @return bool
      */
     public function checkForOneTimeDemoMessage(): bool
     {
-        return $this->getCustomerAttrCreditHold() &&
-            $this->configProvider->isOptionCreditHoldEnable() &&
-            !$this->getFlag();
+        return $this->configProvider->isOptionCreditHoldEnable() && !$this->getFlag();
     }
 
     /**
@@ -121,5 +130,15 @@ class CustomerSessionManagement
         $this->setFlag();
 
         return $this->configProvider->getMessage();
+    }
+
+    /**
+     * Get save url
+     *
+     * @return string
+     */
+    public function getSaveUrl(): string
+    {
+        return $this->urlBuilder->getUrl('customer/note/save');
     }
 }
