@@ -39,6 +39,8 @@ class CustomerSessionManagement implements ArgumentInterface
     private $configProvider;
 
     /**
+     * Url builder
+     *
      * @var UrlInterface
      */
     private $urlBuilder;

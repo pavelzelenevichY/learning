@@ -12,10 +12,9 @@
 $viewModel = $block->getCustomerSessionManagementViewModel();
 $check = $viewModel->checkForOneTimeDemoMessage();
 ?>
-<?php //if ($viewModel->checkForOneTimeDemoMessage()): ?>
-    <div class="confirmation-modal-content" style="display: none;">
-        <p><?= $block->escapeHtml($viewModel->getMessageAndCallSetFlag()) ?></p>
-    </div>
+<div class="confirmation-modal-content" style="display: none;">
+    <p><?= $block->escapeHtml($viewModel->getMessageAndCallSetFlag()) ?></p>
+</div>
 <script type="text/x-magento-init">
     {
         "*": {
@@ -44,4 +43,3 @@ $check = $viewModel->checkForOneTimeDemoMessage();
         }
     }
 </script>
-<?php //endif; ?>
