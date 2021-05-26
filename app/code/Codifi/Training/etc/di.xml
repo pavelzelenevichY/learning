@@ -14,6 +14,14 @@
             <argument name="session" xsi:type="object">Magento\Customer\Model\Session\Proxy</argument>
         </arguments>
     </type>
+    <type name="Codifi\Training\ViewModel\Admin\AdminSessionManagement">
+        <arguments>
+            <argument name="authSession" xsi:type="object">Magento\Backend\Model\Auth\Session\Proxy</argument>
+        </arguments>
+        <arguments>
+            <argument name="backendSession" xsi:type="object">Magento\Backend\Model\Session\Proxy</argument>
+        </arguments>
+    </type>
     <type name="Codifi\Training\Model\AdminSessionManagement">
         <arguments>
             <argument name="authSession" xsi:type="object">Magento\Backend\Model\Auth\Session\Proxy</argument>

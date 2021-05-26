@@ -7,12 +7,13 @@
  */
 
 /**
- * @var Codifi\Training\Block\Adminhtml\Edit\Tab\View\PersonalInfo $block
+ * @var \Magento\Framework\View\Element\Template $block
  */
+$viewModel = $block->getAdminSessionManagementViewModel();
 ?>
-<?php if ($block->checkForOneTimeDemoMessage()): ?>
+<?php if ($viewModel->checkForOneTimeDemoMessage()): ?>
     <div class="confirmation-modal-content">
-        <p><?= $block->escapeHtml($block->getMessage()) ?></p>
+        <p><?= $block->escapeHtml($viewModel->getMessageAndSetCustomerIdToAdminSession()) ?></p>
     </div>
     <script>
         require([
