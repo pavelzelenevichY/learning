@@ -60,36 +60,6 @@ define([
                     }]
                 });
             }
-
-            // this.customsection.subscribe(function (updatedCustomer) {
-            //     var creditHold = updatedCustomer.credit_hold;
-            //     if (creditHold) {
-            //         $('.confirmation-modal-content').show();
-            //         $('.confirmation-modal-content').confirm({
-            //             actions: {
-            //                 always: function () {
-            //                     $.ajax({
-            //                         type: "POST",
-            //                         url: this.url,
-            //                         data: {
-            //                             'note': $.mage.__('Customer is notified about credit hold.'),
-            //                             'customer_id': this.customerId
-            //                         },
-            //                         success: function (data) {
-            //                         }
-            //                     });
-            //                 }
-            //             },
-            //             buttons: [{
-            //                 text: $.mage.__('OK'),
-            //                 class: 'action primary action-accept',
-            //                 click: function (event) {
-            //                     this.closeModal(event, true);
-            //                 }
-            //             }]
-            //         });
-            //     }
-            // });
         }
     });
 });
