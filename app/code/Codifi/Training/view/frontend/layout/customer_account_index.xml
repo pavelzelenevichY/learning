@@ -12,7 +12,7 @@
         <referenceContainer name="content">
             <block name="codifi.training.layout.credithold" template="Codifi_Training::account/dashboard/credithold.phtml">
                 <arguments>
-                    <argument name="customer_session_management_view_model" xsi:type="object">Codifi\Training\ViewModel\Account\CustomerSessionManagement</argument>
+                    <argument name="customer_session_management_view_model" xsi:type="object">Codifi\Training\ViewModel\Account\CustomerSessionManagementViewModel</argument>
                 </arguments>
             </block>
         </referenceContainer>

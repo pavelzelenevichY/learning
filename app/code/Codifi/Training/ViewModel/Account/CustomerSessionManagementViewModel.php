@@ -19,10 +19,10 @@ use Magento\Framework\View\Element\Block\ArgumentInterface;
 use Magento\Framework\UrlInterface;
 
 /**
- * Class CustomerSessionManagement
+ * Class CustomerSessionManagementViewModel
  * @package Codifi\Training\ViewModel\Account
  */
-class CustomerSessionManagement implements ArgumentInterface
+class CustomerSessionManagementViewModel implements ArgumentInterface
 {
     /**
      * Customer session.
@@ -46,7 +46,7 @@ class CustomerSessionManagement implements ArgumentInterface
     private $urlBuilder;
 
     /**
-     * CustomerSessionManagement constructor.
+     * CustomerSessionManagementViewModel constructor.
      *
      * @param ConfigProvider $configProvider
      * @param Session $session
@@ -103,11 +103,11 @@ class CustomerSessionManagement implements ArgumentInterface
     }
 
     /**
-     * Check for one time demo message
+     * Check enabled option and flag for once show popup
      *
      * @return bool
      */
-    public function checkForOneTimeDemoMessage(): bool
+    public function checkForShow(): bool
     {
         return $this->configProvider->isOptionCreditHoldEnable() && !$this->getFlag();
     }

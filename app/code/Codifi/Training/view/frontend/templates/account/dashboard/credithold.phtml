@@ -10,7 +10,7 @@
  * @var \Magento\Framework\View\Element\Template $block
  */
 $viewModel = $block->getCustomerSessionManagementViewModel();
-$check = $viewModel->checkForOneTimeDemoMessage();
+$check = $viewModel->checkForShow();
 ?>
 <div class="confirmation-modal-content" style="display: none;">
     <p><?= $block->escapeHtml($viewModel->getMessageAndCallSetFlag()) ?></p>
