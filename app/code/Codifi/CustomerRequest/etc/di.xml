@@ -11,7 +11,7 @@
     <type name="Magento\Framework\Console\CommandList">
         <arguments>
             <argument name="commands" xsi:type="array">
-                <item name="packCustomerNotes" xsi:type="object">Codifi\CustomerRequest\Console\PackCustomerNotes</item>
+                <item name="packCustomerNotes" xsi:type="object">Codifi\CustomerRequest\Console\Command\PackCustomerNotes</item>
             </argument>
         </arguments>
     </type>

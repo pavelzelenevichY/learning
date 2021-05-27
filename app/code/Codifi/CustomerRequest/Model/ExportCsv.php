@@ -19,7 +19,7 @@ use Magento\Framework\Exception\FileSystemException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Codifi\CustomerRequest\Helper\Config;
-use \Exception;
+use Exception;
 
 /**
  * Class ExportCsv
@@ -115,8 +115,7 @@ class ExportCsv
      *
      * @param int $period
      * @return string
-     * @throws FileSystemException
-     * @throws NoSuchEntityException
+     * @throws LocalizedException
      */
     public function export(int $period): string
     {
@@ -148,32 +147,36 @@ class ExportCsv
         try {
             $newDirectory = $this->fileSystem->getDirectoryWrite(DirectoryList::VAR_DIR);
             $newDirectory->create(self::CUSTOMER_NOTE_ARCHIVE_PATH);
-        } catch (Exception $exception) {
-            throw $exception;
+        } catch (FileSystemException $exception) {
+            throw new LocalizedException(
+                __('Failed to create directory "%1"', self::CUSTOMER_NOTE_ARCHIVE_PATH)
+            );
         }
 
-        if ($newDirectory->isWritable(self::CUSTOMER_NOTE_ARCHIVE_PATH)) {
-            try {
-                $currentDateForName = $this->dateTime->date('Y_m_d');
+        if (!$newDirectory->isWritable(self::CUSTOMER_NOTE_ARCHIVE_PATH)) {
+            throw new LocalizedException(
+                __('Directory "%1" is not writable.', self::CUSTOMER_NOTE_ARCHIVE_PATH)
+            );
+        }
 
-                $fileName = sprintf("customer_note_%s.csv", $currentDateForName);
-                $filePath = $this->directoryList->getPath(DirectoryList::VAR_DIR) .
-                    self::CUSTOMER_NOTE_ARCHIVE_PATH . $fileName;
+        try {
+            $currentDateForName = $this->dateTime->date('Y_m_d');
 
-                $this->csvProcessor->setEnclosure('"');
-                $this->csvProcessor->setDelimiter(',');
-                $this->csvProcessor->saveData($filePath, $content);
+            $fileName = sprintf("customer_note_%s.csv", $currentDateForName);
+            $filePath = $this->directoryList->getPath(DirectoryList::VAR_DIR) .
+                self::CUSTOMER_NOTE_ARCHIVE_PATH . $fileName;
 
-                $message = 'success';
-                foreach ($noteListItems as $item) {
-                    $noteId = $item->getNoteId();
-                    $this->noteRepository->deleteById($noteId);
-                }
-            } catch (FileSystemException $exception) {
-                $message = $exception->getMessage();
+            $this->csvProcessor->setEnclosure('"');
+            $this->csvProcessor->setDelimiter(',');
+            $this->csvProcessor->appendData($filePath, $content, "w");
+
+            $message = 'success';
+            foreach ($noteListItems as $item) {
+                $noteId = $item->getNoteId();
+                $this->noteRepository->deleteById($noteId);
             }
-        } else {
-            $message = 'Directory is not writable.';
+        } catch (Exception $exception) {
+            $message = $exception->getMessage();
         }
 
         return $message;

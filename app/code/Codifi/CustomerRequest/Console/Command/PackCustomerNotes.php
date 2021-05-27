@@ -6,7 +6,7 @@
  * @author      Pavel Zelenevich <pzelenevich@codifi.me>
  */
 
-namespace Codifi\CustomerRequest\Console;
+namespace Codifi\CustomerRequest\Console\Command;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -33,7 +33,7 @@ class PackCustomerNotes extends Command
      *
      * @var ExportCsv
      */
-    private $exportCsv;
+    private $exportStatus;
 
     /**
      * Config
@@ -45,14 +45,14 @@ class PackCustomerNotes extends Command
     /**
      * PackCustomerNotes constructor.
      *
-     * @param ExportCsv $exportCsv
+     * @param ExportCsv $exportStatus
      * @param Config $config
      */
     public function __construct(
-        ExportCsv $exportCsv,
+        ExportCsv $exportStatus,
         Config $config
     ) {
-        $this->exportCsv = $exportCsv;
+        $this->exportStatus = $exportStatus;
         $this->config = $config;
         parent::__construct();
     }
@@ -83,7 +83,6 @@ class PackCustomerNotes extends Command
      *
      * @param InputInterface $input
      * @param OutputInterface $output
-     * @return $this
      * @throws LocalizedException
      * @throws NoSuchEntityException
      */
@@ -97,7 +96,7 @@ class PackCustomerNotes extends Command
             throw new LocalizedException(__("Input value must have integer type"));
         }
 
-        $export = $this->exportCsv->export($period);
+        $export = $this->exportStatus->export($period);
 
         if ($export === 'success') {
             $format = "Customer notes that haven't updates %s months archived.";
@@ -105,7 +104,5 @@ class PackCustomerNotes extends Command
         } else {
             $output->writeln($export);
         }
-
-        return $this;
     }
 }
