@@ -8,16 +8,11 @@
  */
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
-    <virtualType name="saveRequestLogger" type="Magento\Framework\Logger\Monolog">
+    <type name="Magento\Framework\Console\CommandList">
         <arguments>
-            <argument name="handlers"  xsi:type="array">
-                <item name="error" xsi:type="object">Codifi\CustomerRequest\Logger\Handler</item>
+            <argument name="commands" xsi:type="array">
+                <item name="packCustomerNotes" xsi:type="object">Codifi\CustomerRequest\Console\Command\PackCustomerNotes</item>
             </argument>
         </arguments>
-    </virtualType>
-    <type name="Codifi\CustomerRequest\Controller\Request\Save">
-    <arguments>
-        <argument name="logger" xsi:type="object">saveRequestLogger</argument>
-    </arguments>
     </type>
 </config>
