@@ -13,6 +13,33 @@ define([
 ], function ($, Component, customerData) {
     'use strict';
 
+    function showPopup(url, customerId){
+        $('.confirmation-modal-content').show();
+        $('.confirmation-modal-content').confirm({
+            actions: {
+                always: function () {
+                    $.ajax({
+                        type: "POST",
+                        url: url,
+                        data: {
+                            'note': $.mage.__('Customer is notified about credit hold.'),
+                            'customer_id': customerId
+                        },
+                        success: function (data) {
+                        }
+                    });
+                }
+            },
+            buttons: [{
+                text: $.mage.__('OK'),
+                class: 'action primary action-accept',
+                click: function (event) {
+                    this.closeModal(event, true);
+                }
+            }]
+        });
+    }
+
     return Component.extend({
         initialize: function () {
             this._super();
@@ -24,43 +51,14 @@ define([
             var customerId = this.customerId;
 
             if (this.checkOptionAndFlag) {
-
                 if (this.creditHold) {
-                    showPopup();
+                    showPopup(url, customerId);
                 }
-
                 this.customsection.subscribe(function (updatedCustomer) {
                     this.creditHold = updatedCustomer.credit_hold;
                     if (this.creditHold) {
-                        showPopup();
+                        showPopup(url, customerId);
                     }
-                });
-            }
-
-            function showPopup(){
-                $('.confirmation-modal-content').show();
-                $('.confirmation-modal-content').confirm({
-                    actions: {
-                        always: function () {
-                            $.ajax({
-                                type: "POST",
-                                url: url,
-                                data: {
-                                    'note': $.mage.__('Customer is notified about credit hold.'),
-                                    'customer_id': customerId
-                                },
-                                success: function (data) {
-                                }
-                            });
-                        }
-                    },
-                    buttons: [{
-                        text: $.mage.__('OK'),
-                        class: 'action primary action-accept',
-                        click: function (event) {
-                            this.closeModal(event, true);
-                        }
-                    }]
                 });
             }
         }
