@@ -136,6 +136,7 @@ class ExportCsv
 
         $content = [];
         $isHeaderColsSet = false;
+
         foreach ($noteListItems as $item) {
             if (!$isHeaderColsSet) {
                 $content[] = array_keys($item->getData());
@@ -176,7 +177,9 @@ class ExportCsv
                 $this->noteRepository->deleteById($noteId);
             }
         } catch (Exception $exception) {
-            $message = $exception->getMessage();
+            throw new LocalizedException(
+                __('Failed to archive notes')
+            );
         }
 
         return $message;
