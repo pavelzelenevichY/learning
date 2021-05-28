@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace Codifi\CustomerRequest\Model\Config\Backend;
 
+use Magento\Framework\App\Config\Storage\WriterInterface;
 use Magento\Framework\App\Config\Value;
 use Magento\Framework\Model\Context;
 use Magento\Framework\Registry;
@@ -19,7 +20,7 @@ use Magento\Framework\App\Config\ValueFactory;
 use Magento\Framework\Model\ResourceModel\AbstractResource;
 use Magento\Framework\Data\Collection\AbstractDb;
 use Magento\Cron\Model\Config\Source\Frequency;
-use \Exception;
+use Exception;
 
 /**
  * Class Archive
@@ -33,18 +34,11 @@ class Archive extends Value
     const CRON_CODIFI_STRING_PATH = 'crontab/archive/jobs/codifi_customerrequest_cron_archivecronmodel/schedule/cron_expr';
 
     /**
-     * Value factory
+     * Writer Interface
      *
-     * @var ValueFactory
+     * @var WriterInterface
      */
-    protected $_configValueFactory;
-
-    /**
-     * Run model path
-     *
-     * @var string
-     */
-    protected $_runModelPath = '';
+    private $configWriter;
 
     /**
      * Archive constructor.
@@ -53,10 +47,8 @@ class Archive extends Value
      * @param Registry $registry
      * @param ScopeConfigInterface $config
      * @param TypeListInterface $cacheTypeList
-     * @param ValueFactory $configValueFactory
      * @param AbstractResource|null $resource
      * @param AbstractDb|null $resourceCollection
-     * @param string $runModelPath
      * @param array $data
      */
     public function __construct(
@@ -64,14 +56,12 @@ class Archive extends Value
         Registry $registry,
         ScopeConfigInterface $config,
         TypeListInterface $cacheTypeList,
-        ValueFactory $configValueFactory,
         AbstractResource $resource = null,
         AbstractDb $resourceCollection = null,
-        $runModelPath = '',
+        WriterInterface $configWriter,
         array $data = []
     ) {
-        $this->_runModelPath = $runModelPath;
-        $this->_configValueFactory = $configValueFactory;
+        $this->configWriter = $configWriter;
         parent::__construct(
             $context,
             $registry,
@@ -84,9 +74,9 @@ class Archive extends Value
     }
 
     /**
-     * @inheritdoc
+     * After save
      *
-     * @return $this
+     * @return Archive
      * @throws Exception
      */
     public function afterSave()
@@ -105,14 +95,7 @@ class Archive extends Value
         $cronExprString = join(' ', $cronExprArray);
 
         try {
-            $this->_configValueFactory->create()->load(
-                self::CRON_CODIFI_STRING_PATH,
-                'path'
-            )->setValue(
-                $cronExprString
-            )->setPath(
-                self::CRON_CODIFI_STRING_PATH
-            )->save();
+            $this->configWriter->save(self::CRON_CODIFI_STRING_PATH, $cronExprString);
         } catch (Exception $e) {
             throw new Exception(__('We can\'t save the cron expression.'));
         }
