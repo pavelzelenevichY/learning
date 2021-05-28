@@ -91,13 +91,14 @@ class Save extends Action
         $ids = $this->adminSessionManagement->getAdminId();
 
         $adminId = $ids['admin_id'];
-        $customerId = $ids['customer_id'];
+//        $customerId = $ids['customer_id'];  // old customer_id from session
 
         $request = $this->getRequest();
         $noteId = $request->getParam('note_id');
         $note = $request->getParam('note');
         $createdAt = $request->getParam('created_at');
         $createdBy = $request->getParam('created_by');
+        $customerId = $request->getParam('parent_id');  // new customer_id from form
 
         if ($note) {
             if (!$noteId) {
@@ -137,6 +138,7 @@ class Save extends Action
             try {
                 $customerNoteModel->setData($data);
                 $this->customerNoteResource->save($customerNoteModel);
+                $this->adminSessionManagement->setCustomerIdToAdminSession();
             } catch (LocalizedException $exception) {
                 $resultData = [
                     'success' => false,

@@ -23,7 +23,7 @@ class CustomerNote extends AbstractModel implements NoteInterface
     /**
      * CustomerNote constructor.
      */
-    public function _construct()
+    protected function _construct()
     {
         $this->_init(ResourceModel::class);
     }

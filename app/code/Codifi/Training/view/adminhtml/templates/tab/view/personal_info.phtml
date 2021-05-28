@@ -11,9 +11,9 @@
  */
 $viewModel = $block->getAdminSessionManagementViewModel();
 ?>
-<?php if ($viewModel->checkForShow()): ?>
+<?php if ($viewModel->checkBeforeDemo()): ?>
     <div class="confirmation-modal-content">
-        <p><?= $block->escapeHtml($viewModel->getMessageAndSetCustomerIdToAdminSession()) ?></p>
+        <p><?= $block->escapeHtml($viewModel->getMessage()) ?></p>
     </div>
     <script>
         require([

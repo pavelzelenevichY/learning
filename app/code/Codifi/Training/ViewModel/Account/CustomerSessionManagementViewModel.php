@@ -93,23 +93,13 @@ class CustomerSessionManagementViewModel implements ArgumentInterface
     }
 
     /**
-     * Set flag value true.
-     *
-     * @return void
-     */
-    public function setFlag(): void
-    {
-        $this->session->setData(ConfigProvider::SESSION_FLAG, true);
-    }
-
-    /**
      * Check enabled option and flag for once show popup
      *
      * @return bool
      */
-    public function checkForShow(): bool
+    public function checkBeforeDemo(): bool
     {
-        return $this->configProvider->isOptionCreditHoldEnable() && !$this->getFlag();
+        return $this->configProvider->isOptionCreditHoldEnabled() && !$this->getFlag();
     }
 
     /**
@@ -127,10 +117,8 @@ class CustomerSessionManagementViewModel implements ArgumentInterface
      *
      * @return string
      */
-    public function getMessageAndCallSetFlag(): string
+    public function getMessage(): string
     {
-        $this->setFlag();
-
         return $this->configProvider->getMessage();
     }
 

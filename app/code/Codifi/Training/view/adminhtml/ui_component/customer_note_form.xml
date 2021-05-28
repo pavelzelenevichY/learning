@@ -33,8 +33,7 @@
         <settings>
             <submitUrl path="customer/note/save"/>
         </settings>
-        <dataProvider class="Codifi\Training\UI\Config\AccountNoteFormDataProvider"
-                      name="customer_note_form_data_source">
+        <dataProvider class="Codifi\Training\UI\Config\AccountNoteFormDataProvider" name="customer_note_form_data_source">
             <settings>
                 <requestFieldName>note_id</requestFieldName>
                 <primaryFieldName>note_id</primaryFieldName>
@@ -51,6 +50,13 @@
             <label translate="true">Customer note fieldset</label>
             <dataScope/>
         </settings>
+        <field name="parent_id" formElement="hidden">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Customer Id</label>
+                <disabled>1</disabled>
+            </settings>
+        </field>
         <field name="note_id" formElement="hidden">
             <settings>
                 <dataType>text</dataType>

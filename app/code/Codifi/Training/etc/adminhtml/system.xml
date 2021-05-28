@@ -18,16 +18,13 @@
             <label>Customer</label>
             <tab>codifi</tab>
             <resource>Codifi_Training::config</resource>
-            <group id="credit_hold" translate="label" type="text" sortOrder="10" showInDefault="1"
-                   showInWebsite="1" showInStore="1">
+            <group id="credit_hold" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Credit Hold</label>
-                <field id="active" translate="label comment" type="select" sortOrder="10" showInDefault="1"
-                       showInWebsite="1" showInStore="0" canRestore="1">
+                <field id="active" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Enable</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="message" translate="label comment"  type="text" sortOrder="10" showInDefault="1"
-                       showInWebsite="1" showInStore="0" canRestore="1">
+                <field id="message" translate="label comment"  type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Message</label>
                 </field>
             </group>

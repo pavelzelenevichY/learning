@@ -7,8 +7,7 @@
  * @author      Pavel Zelenevich <pzelenevich@codifi.me>
  */
 -->
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <type name="Codifi\Training\ViewModel\Account\CustomerSessionManagementViewModel">
         <arguments>
             <argument name="session" xsi:type="object">Magento\Customer\Model\Session\Proxy</argument>
@@ -16,13 +15,13 @@
     </type>
     <type name="Codifi\Training\ViewModel\Admin\AdminSessionManagementViewModel">
         <arguments>
+            <argument name="authSession" xsi:type="object">Magento\Backend\Model\Auth\Session\Proxy</argument>
+        </arguments>
+        <arguments>
             <argument name="backendSession" xsi:type="object">Magento\Backend\Model\Session\Proxy</argument>
         </arguments>
     </type>
     <type name="Codifi\Training\Model\AdminSessionManagement">
-        <arguments>
-            <argument name="authSession" xsi:type="object">Magento\Backend\Model\Auth\Session\Proxy</argument>
-        </arguments>
         <arguments>
             <argument name="backendSession" xsi:type="object">Magento\Backend\Model\Session\Proxy</argument>
         </arguments>
@@ -41,8 +40,6 @@
     </type>
     <preference for="Codifi\Training\Api\NoteRepositoryInterface" type="Codifi\Training\Model\NoteRepository"/>
     <preference for="Codifi\Training\Api\Data\NoteInterface" type="Codifi\Training\Model\CustomerNote"/>
-    <preference for="Codifi\Training\Api\CreditHoldAttributeManagementInterface"
-                type="Codifi\Training\Model\CreditHoldAttributeManagement"/>
-    <preference for="Codifi\Training\Api\AttributeManagementResponseInterface"
-                type="Codifi\Training\Model\AttributeManagementResponse"/>
+    <preference for="Codifi\Training\Api\CreditHoldAttributeManagementInterface" type="Codifi\Training\Model\CreditHoldAttributeManagement"/>
+    <preference for="Codifi\Training\Api\AttributeManagementResponseInterface" type="Codifi\Training\Model\AttributeManagementResponse"/>
 </config>

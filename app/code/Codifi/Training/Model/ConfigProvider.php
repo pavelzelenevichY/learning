@@ -63,7 +63,7 @@ class ConfigProvider
      *
      * @return bool
      */
-    public function isOptionCreditHoldEnable(): bool
+    public function isOptionCreditHoldEnabled(): bool
     {
         return $this->scopeConfig->isSetFlag(self::PATH_OPTION_ENABLE, ScopeInterface::SCOPE_WEBSITE);
     }

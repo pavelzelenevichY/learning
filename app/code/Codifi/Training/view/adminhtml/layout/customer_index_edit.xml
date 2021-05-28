@@ -13,8 +13,7 @@
         <referenceContainer name="after.body.start">
             <block name="codifi.training.layout.personalinfo" template="Codifi_Training::tab/view/personal_info.phtml">
                 <arguments>
-                    <argument name="admin_session_management_view_model"
-                              xsi:type="object">Codifi\Training\ViewModel\Admin\AdminSessionManagementViewModel</argument>
+                    <argument name="admin_session_management_view_model" xsi:type="object">Codifi\Training\ViewModel\Admin\AdminSessionManagementViewModel</argument>
                 </arguments>
             </block>
         </referenceContainer>

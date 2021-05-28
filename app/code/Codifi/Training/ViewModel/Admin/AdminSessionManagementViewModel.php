@@ -13,6 +13,7 @@ use Codifi\Training\Setup\Patch\Data\AddCustomerAttributeCreditHold;
 use Magento\Backend\Model\Session as BackendSession;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
 use Codifi\Training\Model\AdminSessionManagement;
+use Magento\Backend\Model\Auth\Session;
 
 /**
  * Class AdminSessionManagementViewModel
@@ -24,6 +25,13 @@ class AdminSessionManagementViewModel implements ArgumentInterface
      * Admin session attribute customers id.
      */
     const ADMIN_SESSION_ATTRIBUTE_CUSTOMER_IDS = 'customers_id';
+
+    /**
+     * Auth session.
+     *
+     * @var Session
+     */
+    private $authSession;
 
     /**
      * Backend session.
@@ -55,10 +63,12 @@ class AdminSessionManagementViewModel implements ArgumentInterface
      */
     public function __construct(
         ConfigProvider $configProvider,
+        Session $authSession,
         BackendSession $backendSession,
         AdminSessionManagement $adminSessionModel
     ) {
         $this->configProvider = $configProvider;
+        $this->authSession = $authSession;
         $this->backendSession = $backendSession;
         $this->adminSessionModel = $adminSessionModel;
     }
@@ -81,10 +91,10 @@ class AdminSessionManagementViewModel implements ArgumentInterface
      *
      * @return bool
      */
-    public function checkCustomerIdInArrayAdminSession(): bool
+    public function isCustomerIdInAdminSession(): bool
     {
-        $currentCustomerId = $this->adminSessionModel->getCustomerId();
-        $customerIds = $this->adminSessionModel->getCustomerIds();
+        $currentCustomerId = $this->getCustomerId();
+        $customerIds = $this->getCustomerIds();
         $isCustomerIdInArray = false;
         if (!empty($customerIds) && in_array($currentCustomerId, $customerIds)) {
             $isCustomerIdInArray = true;
@@ -100,7 +110,7 @@ class AdminSessionManagementViewModel implements ArgumentInterface
      */
     public function isCreditHoldConfigEnabled(): bool
     {
-        return $this->configProvider->isOptionCreditHoldEnable();
+        return $this->configProvider->isOptionCreditHoldEnabled();
     }
 
     /**
@@ -108,10 +118,10 @@ class AdminSessionManagementViewModel implements ArgumentInterface
      *
      * @return bool
      */
-    public function checkForShow(): bool
+    public function checkBeforeDemo(): bool
     {
         return $this->getCustomerAttrCreditHold() &&
-            $this->isCreditHoldConfigEnabled() && !$this->checkCustomerIdInArrayAdminSession();
+            $this->isCreditHoldConfigEnabled() && !$this->isCustomerIdInAdminSession();
     }
 
     /**
@@ -119,10 +129,46 @@ class AdminSessionManagementViewModel implements ArgumentInterface
      *
      * @return string
      */
-    public function getMessageAndSetCustomerIdToAdminSession(): string
+    public function getMessage(): string
     {
-        $this->adminSessionModel->setCustomerIdToAdminSession();
-
+        $this->setCustomerIdToAdminSession();
         return $this->configProvider->getMessage();
+    }
+
+    /**
+     * Set customer id to array in admin session.
+     *
+     * @param int|null $customerId
+     */
+    public function setCustomerIdToAdminSession(int $customerId = null): void
+    {
+        if (!$customerId) {
+            $customerId = $this->getCustomerId();
+        }
+        $customerIds = $this->getCustomerIds() ?? [];
+        $customerIds[] = $customerId;
+        $this->authSession->setData(self::ADMIN_SESSION_ATTRIBUTE_CUSTOMER_IDS, $customerIds);
+    }
+
+    /**
+     * Get array customers id from admin session.
+     *
+     * @return array
+     */
+    public function getCustomerIds(): array
+    {
+        return $this->authSession->getData(self::ADMIN_SESSION_ATTRIBUTE_CUSTOMER_IDS) ?? [];
+    }
+
+    /**
+     * Get current customer id from admin session.
+     *
+     * @return int
+     */
+    public function getCustomerId(): int
+    {
+        $customerData = $this->backendSession->getCustomerData();
+
+        return (int)$customerData['account']['id'] ?? 0;
     }
 }
