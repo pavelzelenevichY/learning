@@ -6,6 +6,8 @@
  * @author      Pavel Zelenevich <pzelenevich@codifi.me>
  */
 
+declare(strict_types=1);
+
 namespace Codifi\CustomerRequest\Controller\Request;
 
 use Magento\Framework\App\Action\Action;
@@ -15,14 +17,16 @@ use Magento\Framework\App\Action\Context;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Mail\Template\TransportBuilder;
 use Magento\Store\Model\StoreManagerInterface;
-use Magento\Framework\Escaper;
-use Magento\Framework\Message\ManagerInterface;
 use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Exception\MailException;
 use Magento\Framework\App\Area;
 use Magento\Store\Model\Store;
 use Magento\Framework\Controller\ResultFactory;
+use Codifi\CustomerRequest\Helper\Config;
+use Magento\Framework\App\RequestInterface;
+use Magento\Framework\Validator\EmailAddress;
+use \Psr\Log\LoggerInterface;
 
 /**
  * Class Save
@@ -52,13 +56,6 @@ class Save extends Action
     private $transportBuilder;
 
     /**
-     * Escaper
-     *
-     * @var Escaper
-     */
-    private $escaper;
-
-    /**
      * Store manager interface
      *
      * @var StoreManagerInterface
@@ -66,11 +63,25 @@ class Save extends Action
     private $storeManager;
 
     /**
-     * Message manager
+     * Config
      *
-     * @var ManagerInterface
+     * @var Config
      */
-    private $_messageManager;
+    private $config;
+
+    /**
+     * Email validator
+     *
+     * @var EmailAddress
+     */
+    private $emailValidator;
+
+    /**
+     * Logger interface
+     *
+     * @var LoggerInterface
+     */
+    private $logger;
 
     /**
      * Save constructor.
@@ -80,8 +91,9 @@ class Save extends Action
      * @param NoteRepository $customerNoteRepository
      * @param TransportBuilder $transportBuilder
      * @param StoreManagerInterface $storeManager
-     * @param Escaper $escaper
-     * @param ManagerInterface $messageManager
+     * @param Config $config
+     * @param EmailAddress $emailValidator
+     * @param LoggerInterface $logger
      */
     public function __construct(
         Context $context,
@@ -89,15 +101,17 @@ class Save extends Action
         NoteRepository $customerNoteRepository,
         TransportBuilder $transportBuilder,
         StoreManagerInterface $storeManager,
-        Escaper $escaper,
-        ManagerInterface $messageManager
+        Config $config,
+        EmailAddress $emailValidator,
+        LoggerInterface $logger
     ) {
         $this->customerNoteFactory = $customerNoteFactory;
         $this->customerNoteRepository = $customerNoteRepository;
         $this->transportBuilder = $transportBuilder;
         $this->storeManager = $storeManager;
-        $this->escaper = $escaper;
-        $this->_messageManager = $messageManager;
+        $this->config = $config;
+        $this->emailValidator = $emailValidator;
+        $this->logger = $logger;
         parent::__construct($context);
     }
 
@@ -111,41 +125,40 @@ class Save extends Action
      */
     public function execute(): ResultInterface
     {
-        $successMessage = "Thanks for contacting us with your request. We'll respond to you very soon.";
-        $errorMessage = "An error occurred while processing your form. Please try again later";
+        $request = $this->getRequest();
 
-        $customerId = $this->getRequest()->getParam('customer_id');
-        $customerEmail = $this->getRequest()->getParam('email_address');
-        $message = $this->getRequest()->getParam('customer_messsage');
-        $customerName = $this->getRequest()->getParam('customer_name');
+        $validate = $this->validate($request);
 
-        if ($customerId && $customerEmail && $message && $customerName) {
+        $customerId = $validate['customerId'];
+        $customerEmail = $validate['customerEmail'];
+        $message = $validate['message'];
+        $customerName = $validate['customerName'];
 
-            $storeName = $this->storeManager->getStore()->getFrontendName();
+        try {
+            $store = $this->storeManager->getStore();
 
-            $note = "Customer sent request from $storeName";
+            $note = sprintf('Customer sent request from %s', $store->getFrontendName());
 
             $sender = [
-                'name' => $this->escaper->escapeHtml($customerName),
-                'email' => $this->escaper->escapeHtml($customerEmail),
+                'name' => $customerName,
+                'email' => $customerEmail
             ];
 
-            $transport = $this->transportBuilder
-                ->setTemplateIdentifier('email_request_template')
-                ->setTemplateOptions(
-                    [
-                        'area' => Area::AREA_FRONTEND,
-                        'store' => Store::DEFAULT_STORE_ID,
-                    ]
-                )
-                ->setTemplateVars([
-                    'customerNameVar' => $customerName,
-                    'customerEmailVar' => $customerEmail,
-                    'messageVar' => $message,
-                ])
-                ->setFromByScope($sender)
-                ->addTo('support@example.com')
-                ->getTransport();
+            $this->transportBuilder->setTemplateIdentifier('customer_request_template');
+            $this->transportBuilder->setTemplateOptions(
+                [
+                    'area' => Area::AREA_FRONTEND,
+                    'store' => Store::DEFAULT_STORE_ID,
+                ]
+            );
+            $this->transportBuilder->setTemplateVars([
+                'customerNameVar' => $customerName,
+                'customerEmailVar' => $customerEmail,
+                'messageVar' => $message,
+            ]);
+            $this->transportBuilder->setFromByScope($sender);
+            $this->transportBuilder->addTo($this->config->getSupportEmail());
+            $transport = $this->transportBuilder->getTransport();
             $transport->sendMessage();
 
             $customerNoteModel = $this->customerNoteFactory->create();
@@ -157,17 +170,62 @@ class Save extends Action
                     'autocomplete' => 1
                 ]);
                 $this->customerNoteRepository->save($customerNoteModel);
-                $this->_messageManager->addSuccessMessage($successMessage);
             } catch (LocalizedException $exception) {
-                $this->_messageManager->addErrorMessage($errorMessage);
+                $message = $exception->getMessage();
+                $this->logger->error($message);
             }
-        } else {
-            $this->_messageManager->addErrorMessage($errorMessage);
+            $this->messageManager->addSuccessMessage(Config::SUCCESS_MESSAGE);
+        } catch (NoSuchEntityException $exception) {
+            $this->messageManager->addErrorMessage(Config::ERROR_MESSAGE . $exception->getMessage());
         }
 
         $redirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
         $redirect->setPath('customer/request/index');
 
         return $redirect;
+    }
+
+    /**
+     * Validate request values
+     *
+     * @param RequestInterface $request
+     * @return array
+     * @throws LocalizedException
+     */
+    private function validate(RequestInterface $request): array
+    {
+        $customerId = $request->getParam('customer_id');
+        $customerEmail = strip_tags($request->getParam('email_address'));
+        $message = strip_tags($request->getParam('customer_messsage'));
+        $customerName = strip_tags($request->getParam('customer_name'));
+
+        if (!$customerId) {
+            throw new LocalizedException(__('Customer id is empty'));
+        }
+
+        if (!trim($customerEmail)) {
+            throw new LocalizedException(__('Email must be specified'));
+        }
+
+        if (!$this->emailValidator->isValid($customerEmail)) {
+            throw new LocalizedException(__('Email is invalid'));
+        }
+
+        if (!trim($message)) {
+            throw new LocalizedException(__('Message is empty'));
+        }
+
+        if (!trim($customerName)) {
+            throw new LocalizedException(__('Customer name is empty'));
+        }
+
+        $values = [
+            'customerId' => $customerId,
+            'customerEmail' => $customerEmail,
+            'message' => $message,
+            'customerName' => $customerName
+        ];
+
+        return $values;
     }
 }

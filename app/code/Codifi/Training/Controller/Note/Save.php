@@ -8,16 +8,17 @@
 
 namespace Codifi\Training\Controller\Note;
 
-use Magento\Framework\App\Action\Action;
-use Magento\Framework\App\Action\Context;
-use Magento\Framework\App\ResponseInterface;
-use Codifi\Training\Model\CustomerNoteFactory;
 use Codifi\Training\Model\ResourceModel\CustomerNote as CustomerNoteResource;
+use Codifi\Training\Model\CustomerNoteFactory;
 use Magento\Framework\Controller\Result\JsonFactory;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Controller\Result\Json;
 use Magento\Framework\Controller\ResultInterface;
+use Magento\Framework\App\Action\Action;
+use Magento\Framework\App\Action\Context;
+use Magento\Framework\App\ResponseInterface;
 use Exception;
+
 
 /**
  * Class Save
@@ -26,25 +27,25 @@ use Exception;
 class Save extends Action
 {
     /**
-     * Customer note factory.
+     * Json factory
+     *
+     * @var JsonFactory
+     */
+    private $jsonFactory;
+
+    /**
+     * Customer note factory
      *
      * @var CustomerNoteFactory
      */
     private $customerNoteFactory;
 
     /**
-     * Customer note resource model.
+     * Customer note resource model
      *
      * @var CustomerNoteResource
      */
     private $customerNoteResource;
-
-    /**
-     * Json factory.
-     *
-     * @var JsonFactory
-     */
-    private $jsonFactory;
 
     /**
      * Save constructor.
@@ -58,7 +59,7 @@ class Save extends Action
         Context $context,
         JsonFactory $jsonFactory,
         CustomerNoteFactory $customerNoteFactory,
-        CustomerNoteResource $customerNoteResource
+        CustomerNoteResource $customerNoteResource,
     ) {
         parent::__construct($context);
         $this->jsonFactory = $jsonFactory;
@@ -67,7 +68,7 @@ class Save extends Action
     }
 
     /**
-     * Execute function.
+     * Execute function
      *
      * @return ResponseInterface|Json|ResultInterface
      * @throws Exception
