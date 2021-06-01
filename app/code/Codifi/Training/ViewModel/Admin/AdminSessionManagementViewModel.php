@@ -12,7 +12,6 @@ use Codifi\Training\Model\ConfigProvider;
 use Codifi\Training\Setup\Patch\Data\AddCustomerAttributeCreditHold;
 use Magento\Backend\Model\Session as BackendSession;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
-use Codifi\Training\Model\AdminSessionManagement;
 use Magento\Backend\Model\Auth\Session;
 
 /**
@@ -48,29 +47,20 @@ class AdminSessionManagementViewModel implements ArgumentInterface
     private $configProvider;
 
     /**
-     * Admin session management model
-     *
-     * @var AdminSessionManagement
-     */
-    private $adminSessionModel;
-
-    /**
      * AdminSessionManagementViewModel constructor.
      *
      * @param ConfigProvider $configProvider
+     * @param Session $authSession
      * @param BackendSession $backendSession
-     * @param AdminSessionManagement $adminSessionModel
      */
     public function __construct(
         ConfigProvider $configProvider,
         Session $authSession,
-        BackendSession $backendSession,
-        AdminSessionManagement $adminSessionModel
+        BackendSession $backendSession
     ) {
         $this->configProvider = $configProvider;
         $this->authSession = $authSession;
         $this->backendSession = $backendSession;
-        $this->adminSessionModel = $adminSessionModel;
     }
 
     /**
@@ -131,7 +121,6 @@ class AdminSessionManagementViewModel implements ArgumentInterface
      */
     public function getMessage(): string
     {
-        $this->setCustomerIdToAdminSession();
         return $this->configProvider->getMessage();
     }
 

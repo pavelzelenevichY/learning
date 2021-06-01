@@ -75,7 +75,6 @@ class ConfigProvider
      */
     public function getMessage(): string
     {
-        return $this->scopeConfig->getValue(self::PATH_OPTION_MESSAGE,
-            ScopeConfigInterface::SCOPE_TYPE_DEFAULT);
+        return $this->scopeConfig->getValue(self::PATH_OPTION_MESSAGE, ScopeConfigInterface::SCOPE_TYPE_DEFAULT);
     }
 }

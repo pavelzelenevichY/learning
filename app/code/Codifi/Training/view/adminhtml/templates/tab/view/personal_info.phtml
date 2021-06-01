@@ -12,6 +12,7 @@
 $viewModel = $block->getAdminSessionManagementViewModel();
 ?>
 <?php if ($viewModel->checkBeforeDemo()): ?>
+    <?php $viewModel->setCustomerIdToAdminSession(); ?>
     <div class="confirmation-modal-content">
         <p><?= $block->escapeHtml($viewModel->getMessage()) ?></p>
     </div>

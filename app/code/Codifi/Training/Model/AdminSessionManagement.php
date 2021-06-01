@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace Codifi\Training\Model;
 
-use Magento\Backend\Model\Session as BackendSession;
+use Magento\Backend\Model\Auth\Session;
 
 /**
  * Class AdminSessionManagement
@@ -24,32 +24,32 @@ class AdminSessionManagement
     const ADMIN_SESSION_ATTRIBUTE_CUSTOMER_IDS = 'customers_id';
 
     /**
-     * Backend session.
+     * Auth session
      *
-     * @var BackendSession
+     * @var Session
      */
-    private $backendSession;
+    private $authSession;
 
     /**
      * AdminSessionManagement constructor.
      *
-     * @param BackendSession $backendSession
+     * @param Session $authSession
      */
     public function __construct(
-        BackendSession $backendSession
+        Session $authSession
     ) {
-        $this->backendSession = $backendSession;
+        $this->authSession = $authSession;
     }
 
     /**
-     * Get current customer id from admin session.
+     * Get admin id
      *
      * @return int
      */
-    public function getCustomerId(): int
+    public function getAdminId(): int
     {
-        $customerData = $this->backendSession->getCustomerData();
+        $admin = $this->authSession->getUser();
 
-        return (int)$customerData['account']['id'] ?? 0;
+        return (int)$admin->getId() ?? 0;
     }
 }

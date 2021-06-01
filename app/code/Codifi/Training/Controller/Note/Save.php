@@ -15,10 +15,8 @@ use Codifi\Training\Model\CustomerNoteFactory;
 use Magento\Framework\Controller\Result\JsonFactory;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Controller\Result\Json;
-use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
-use Magento\Framework\App\ResponseInterface;
 use Codifi\Training\Model\CustomerSessionManagement;
 use Exception;
 
@@ -63,6 +61,7 @@ class Save extends Action
      * @param JsonFactory $jsonFactory
      * @param CustomerNoteFactory $customerNoteFactory
      * @param CustomerNoteResource $customerNoteResource
+     * @param CustomerSessionManagement $customerSessionManagement
      */
     public function __construct(
         Context $context,

@@ -11,26 +11,17 @@ declare(strict_types=1);
 namespace Codifi\Training\UI\Component\Listing;
 
 use Magento\Framework\Api\FilterBuilder;
-use Magento\Framework\Api\Search\ReportingInterface;
 use Magento\Framework\Api\Search\SearchCriteriaBuilder;
 use Magento\Framework\App\RequestInterface;
-use Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider;
-use Codifi\Training\Model\AdminSessionManagement;
 use Codifi\Training\Model\NoteRepository;
+use Magento\Ui\DataProvider\AbstractDataProvider;
 
 /**
  * Class AccountNoteDataProvider
  * @package Codifi\Training\UI\Component\Listing
  */
-class AccountNoteDataProvider extends DataProvider
+class AccountNoteDataProvider extends AbstractDataProvider
 {
-    /**
-     * Admin session management
-     *
-     * @var AdminSessionManagement
-     */
-    private $adminSessionManagement;
-
     /**
      * Note repository
      *
@@ -39,17 +30,35 @@ class AccountNoteDataProvider extends DataProvider
     private $noteRepository;
 
     /**
-     * AccountNoteDataProvider constructor.
+     * Result interface
      *
+     * @var RequestInterface
+     */
+    private $request;
+
+    /**
+     * Filter builder
+     *
+     * @var FilterBuilder
+     */
+    private $filterBuilder;
+
+    /**
+     * Search criteria builder
+     *
+     * @var SearchCriteriaBuilder
+     */
+    private $searchCriteriaBuilder;
+
+    /**
+     * AccountNoteDataProvider constructor.
      * @param string $name
      * @param string $primaryFieldName
      * @param string $requestFieldName
-     * @param ReportingInterface $reporting
-     * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param RequestInterface $request
-     * @param FilterBuilder $filterBuilder
      * @param NoteRepository $noteRepository
-     * @param AdminSessionManagement $adminSessionManagement
+     * @param FilterBuilder $filterBuilder
+     * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param array $meta
      * @param array $data
      */
@@ -57,25 +66,21 @@ class AccountNoteDataProvider extends DataProvider
         $name,
         $primaryFieldName,
         $requestFieldName,
-        ReportingInterface $reporting,
-        SearchCriteriaBuilder $searchCriteriaBuilder,
         RequestInterface $request,
-        FilterBuilder $filterBuilder,
         NoteRepository $noteRepository,
-        AdminSessionManagement $adminSessionManagement,
+        FilterBuilder $filterBuilder,
+        SearchCriteriaBuilder $searchCriteriaBuilder,
         array $meta = [],
         array $data = []
     ) {
+        $this->request = $request;
         $this->noteRepository = $noteRepository;
-        $this->adminSessionManagement = $adminSessionManagement;
+        $this->filterBuilder = $filterBuilder;
+        $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         parent::__construct(
             $name,
             $primaryFieldName,
             $requestFieldName,
-            $reporting,
-            $searchCriteriaBuilder,
-            $request,
-            $filterBuilder,
             $meta,
             $data
         );
@@ -88,7 +93,7 @@ class AccountNoteDataProvider extends DataProvider
      */
     public function getData(): array
     {
-        $customerId = $this->adminSessionManagement->getCustomerId();
+        $customerId = $this->request->getParam('parent_id');
 
         $this->filterBuilder->setField('customer_id');
         $this->filterBuilder->setValue($customerId);

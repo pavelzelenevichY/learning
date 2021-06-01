@@ -15,7 +15,7 @@
         </item>
     </argument>
     <settings>
-        <spinner>columns</spinner>
+        <spinner>customer_note_columns</spinner>
         <deps>
             <dep>customer_note_listing.customer_note_listing_data_source</dep>
         </deps>
@@ -35,17 +35,11 @@
         <columnsControls name="columns_controls"/>
         <filters name="listing_filters"/>
     </listingToolbar>
-    <columns name="columns">
-        <selectionsColumn name="ids" sortOrder="10">
-            <settings>
-                <indexField>note_id</indexField>
-            </settings>
-        </selectionsColumn>
+    <columns name="customer_note_columns">
         <column name="note_id" sortOrder="20">
             <settings>
                 <filter>textRange</filter>
                 <label translate="true">Note ID</label>
-                <sorting>asc</sorting>
             </settings>
         </column>
         <column name="note" sortOrder="30">
@@ -59,7 +53,6 @@
                 <filter>dateRange</filter>
                 <dataType>date</dataType>
                 <label translate="true">Created At</label>
-                <sorting>asc</sorting>
             </settings>
         </column>
         <column name="created_by" class="Codifi\Training\UI\Component\Listing\Notes\Column\AdminNameReceiver" sortOrder="50">
@@ -73,7 +66,6 @@
                 <filter>dateRange</filter>
                 <dataType>date</dataType>
                 <label translate="true">Updated At</label>
-                <sorting>asc</sorting>
             </settings>
         </column>
         <column name="updated_by" class="Codifi\Training\UI\Component\Listing\Notes\Column\AdminNameReceiver" sortOrder="70">

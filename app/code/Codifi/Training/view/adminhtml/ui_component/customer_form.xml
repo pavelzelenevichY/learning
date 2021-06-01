@@ -88,8 +88,8 @@
         </modal>
         <insertListing name="customer_note_listing">
             <settings>
+                <externalProvider>${ $.ns }.customer_note_listing_data_source</externalProvider>
                 <autoRender>true</autoRender>
-                <selectionsProvider>customer_note_listing.customer_note_listing.columns.ids</selectionsProvider>
                 <dataScope>customer_note_listing</dataScope>
                 <ns>customer_note_listing</ns>
                 <exports>
