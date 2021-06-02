@@ -14,6 +14,12 @@
             <label>Customer Note</label>
             <tab>codifi</tab>
             <resource>Codifi_CustomerRequest::config</resource>
+            <group id="archive" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Archive Customer Notes</label>
+                <field id="lifetime" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Months</label>
+                </field>
+            </group>
             <group id="archive_cron" translate="label" type="text" sortOrder="260" showInDefault="1" showInWebsite="0" showInStore="0">
                 <label>Archive Customer Notes Cron</label>
                 <field id="frequency" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
