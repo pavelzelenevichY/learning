@@ -11,38 +11,34 @@
  */
 ?>
 <?php if ($block->checkForOneTimeDemoMessage()): ?>
-    <div class="confirmation-modal-content">
+    <div class="confirmation-modal-content" style="display: none;">
         <p><?= $block->escapeHtml($block->getMessage()) ?></p>
     </div>
-    <script>
-        require([
-            'jquery',
-            'Magento_Ui/js/modal/confirm'
-        ], function ($) {
-            'use strict';
-
-            $('.confirmation-modal-content').confirm({
-                actions: {
-                    always: function() {
-                        $.ajax({
-                            type: "POST",
-                            url: '<?= $block->escapeJs($block->getSaveUrl()) ?>',
-                            data: {
-                                'note': $.mage.__('Customer is notified about credit hold.'),
-                                'customer_id': '<?= $block->escapeJs($block->getCustomerId()) ?>'
-                            },
-                            success: function(data){}
-                        });
+    <script type="text/x-magento-init">
+    {
+        "*": {
+            "Magento_Ui/js/core/app": {
+                "components": {
+                    "creditHold": {
+                        "component": "Codifi_Training/js/popup",
+                        "config": {
+                            "url": "<?= $block->escapeJs($block->getSaveUrl()) ?>",
+                            "customerId": <?= $block->escapeJs($block->getCustomerId()) ?>
+                        },
+                        "children": {
+                            "errors": {
+                                "component": "Magento_Ui/js/view/messages",
+                                "sortOrder": 0,
+                                "displayArea": "messages",
+                                "config": {
+                                    "autoHideTimeOut": -1
+                                }
+                            }
+                        }
                     }
-                },
-                buttons: [{
-                    text: $.mage.__('OK'),
-                    class: 'action primary action-accept',
-                    click: function (event) {
-                        this.closeModal(event, true);
-                    }
-                }]
-            });
-        });
+                }
+            }
+        }
+    }
     </script>
 <?php endif; ?>
