@@ -13,7 +13,6 @@ namespace Codifi\Training\UI\Component\Listing\Notes\Column;
 use Magento\Framework\View\Element\UiComponent\ContextInterface;
 use Magento\Framework\View\Element\UiComponentFactory;
 use Magento\Ui\Component\Listing\Columns\Column;
-use Magento\Framework\UrlInterface;
 
 /**
  * Class Actions
@@ -22,29 +21,19 @@ use Magento\Framework\UrlInterface;
 class Actions extends Column
 {
     /**
-     * Url interface
-     *
-     * @var UrlInterface
-     */
-    private $urlBuilder;
-
-    /**
      * Actions constructor.
      *
      * @param ContextInterface $context
      * @param UiComponentFactory $uiComponentFactory
-     * @param UrlInterface $urlBuilder
      * @param array $components
      * @param array $data
      */
     public function __construct(
         ContextInterface $context,
         UiComponentFactory $uiComponentFactory,
-        UrlInterface $urlBuilder,
         array $components = [],
         array $data = []
     ) {
-        $this->urlBuilder = $urlBuilder;
         parent::__construct($context, $uiComponentFactory, $components, $data);
     }
 

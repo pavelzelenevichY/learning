@@ -42,7 +42,6 @@ class CustomerNote extends AbstractModel implements NoteInterface
      * Set note id.
      *
      * @param int $noteId
-     * @return void
      */
     public function setNoteId(int $noteId): void
     {
@@ -63,7 +62,6 @@ class CustomerNote extends AbstractModel implements NoteInterface
      * Set note.
      *
      * @param string $noteText
-     * @return void
      */
     public function setNoteText(string $noteText): void
     {

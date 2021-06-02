@@ -20,6 +20,7 @@ use Magento\Customer\Model\Customer;
 use Codifi\Training\Model\Source\CustomSelect;
 use Magento\Framework\Exception\AlreadyExistsException;
 use Magento\Framework\Exception\LocalizedException;
+use Zend_Validate_Exception;
 
 /**
  * Class AddCustomerAttributeCreditHold
@@ -94,7 +95,7 @@ class AddCustomerAttributeCreditHold implements DataPatchInterface
      *
      * @throws AlreadyExistsException
      * @throws LocalizedException
-     * @throws \Zend_Validate_Exception
+     * @throws Zend_Validate_Exception
      */
     public function apply(): void
     {

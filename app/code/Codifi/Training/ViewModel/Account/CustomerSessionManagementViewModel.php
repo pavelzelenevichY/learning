@@ -76,10 +76,10 @@ class CustomerSessionManagementViewModel implements ArgumentInterface
         if ($customerAttribute !== null) {
             $value = (bool)$customerAttribute->getValue();
         } else {
-            $value = 0;
+            $value = false;
         }
 
-        return $value;
+        return (bool)$value;
     }
 
     /**

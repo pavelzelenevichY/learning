@@ -38,8 +38,6 @@ class CustomerSessionManagement
 
     /**
      * Set flag value true.
-     *
-     * @return void
      */
     public function setFlag(): void
     {
