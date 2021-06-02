@@ -13,6 +13,21 @@
             <archive>
                 <lifetime>1</lifetime>
             </archive>
+            <archive_cron>
+                <frequency>D</frequency>
+                <time>01,00,00</time>
+            </archive_cron>
         </customer_note>
     </default>
+    <crontab>
+        <archive>
+            <jobs>
+                <codifi_customerrequest_cron_archivecronmodel>
+                    <schedule>
+                        <cron_expr>* 1 * * *</cron_expr>
+                    </schedule>
+                </codifi_customerrequest_cron_archivecronmodel>
+            </jobs>
+        </archive>
+    </crontab>
 </config>

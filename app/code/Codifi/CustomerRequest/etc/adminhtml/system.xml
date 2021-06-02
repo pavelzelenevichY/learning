@@ -20,6 +20,18 @@
                     <label>Months</label>
                 </field>
             </group>
+            <group id="archive_cron" translate="label" type="text" sortOrder="260" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Archive Customer Notes Cron</label>
+                <field id="frequency" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Frequency</label>
+                    <source_model>Magento\Cron\Model\Config\Source\Frequency</source_model>
+                    <backend_model>Codifi\CustomerRequest\Model\Config\Backend\Archive</backend_model>
+                </field>
+                <field id="time" translate="label" type="time" sortOrder="2" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Start Time</label>
+                    <backend_model>Codifi\CustomerRequest\Model\Config\Backend\Archive</backend_model>
+                </field>
+            </group>
         </section>
     </system>
 </config>
