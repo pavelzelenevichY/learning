@@ -6,11 +6,11 @@
  * @author      Pavel Zelenevich <pzelenevich@codifi.me>
  */
 
-declare(strict_types=1);
-
 namespace Codifi\CustomerRequest\Helper;
 
 use Magento\Framework\App\Helper\AbstractHelper;
+use Magento\Framework\App\Helper\Context;
+use Magento\Framework\App\Config\ScopeConfigInterface;
 
 /**
  * Class Config
@@ -19,27 +19,17 @@ use Magento\Framework\App\Helper\AbstractHelper;
 class Config extends AbstractHelper
 {
     /**
-     * Success response message after customer request
+     * Path to config
      */
-    const SUCCESS_MESSAGE = "Thanks for contacting us with your request. We'll respond to you very soon.";
+    const MONTHS_PERIOD_PATH = 'customer_note/archive/months';
 
     /**
-     * Error response message after customer request
-     */
-    const ERROR_MESSAGE = "An error occurred while processing your form. Please try again later";
-
-    /**
-     * Magento support email path
-     */
-    const MAGENTO_SUPPORT_EMAIL_PATH = 'trans_email/ident_support/email';
-
-    /**
-     * Get support email
+     * Get months period
      *
-     * @return string
+     * @return int
      */
-    public function getSupportEmail(): string
+    public function getPeriod(): int
     {
-        return $this->scopeConfig->getValue(self::MAGENTO_SUPPORT_EMAIL_PATH) ?? '';
+        return (int)$this->scopeConfig->getValue(self::MONTHS_PERIOD_PATH, ScopeConfigInterface::SCOPE_TYPE_DEFAULT);
     }
 }
