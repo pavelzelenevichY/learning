@@ -20,22 +20,22 @@ use Magento\Ui\Component\Listing\Columns\Column;
  */
 class Actions extends Column
 {
-    /**
-     * Actions constructor.
-     *
-     * @param ContextInterface $context
-     * @param UiComponentFactory $uiComponentFactory
-     * @param array $components
-     * @param array $data
-     */
-    public function __construct(
-        ContextInterface $context,
-        UiComponentFactory $uiComponentFactory,
-        array $components = [],
-        array $data = []
-    ) {
-        parent::__construct($context, $uiComponentFactory, $components, $data);
-    }
+//    /**
+//     * Actions constructor.
+//     *
+//     * @param ContextInterface $context
+//     * @param UiComponentFactory $uiComponentFactory
+//     * @param array $components
+//     * @param array $data
+//     */
+//    public function __construct(
+//        ContextInterface $context,
+//        UiComponentFactory $uiComponentFactory,
+//        array $components = [],
+//        array $data = []
+//    ) {
+//        parent::__construct($context, $uiComponentFactory, $components, $data);
+//    }
 
     /**
      * Prepare Data Source

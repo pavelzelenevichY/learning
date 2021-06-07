@@ -21,7 +21,7 @@ class CustomerNote extends AbstractDb
     /**
      * CustomerNote constructor.
      */
-    public function _construct()
+    protected function _construct()
     {
         $this->_init('customer_note', 'note_id');
     }

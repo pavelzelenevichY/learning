@@ -6,13 +6,15 @@
  * @author      Pavel Zelenevich <pzelenevich@codifi.me>
  */
 
+declare(strict_types=1);
+
 namespace Codifi\Training\ViewModel\Admin;
 
 use Codifi\Training\Model\ConfigProvider;
 use Codifi\Training\Setup\Patch\Data\AddCustomerAttributeCreditHold;
 use Magento\Backend\Model\Session as BackendSession;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
-use Magento\Backend\Model\Auth\Session;
+use Codifi\Training\Model\AdminSessionManagement;
 
 /**
  * Class AdminSessionManagementViewModel
@@ -24,13 +26,6 @@ class AdminSessionManagementViewModel implements ArgumentInterface
      * Admin session attribute customers id.
      */
     const ADMIN_SESSION_ATTRIBUTE_CUSTOMER_IDS = 'customers_id';
-
-    /**
-     * Auth session.
-     *
-     * @var Session
-     */
-    private $authSession;
 
     /**
      * Backend session.
@@ -47,20 +42,27 @@ class AdminSessionManagementViewModel implements ArgumentInterface
     private $configProvider;
 
     /**
+     * Admin session management
+     *
+     * @var AdminSessionManagement
+     */
+    private $adminSessionManagement;
+
+    /**
      * AdminSessionManagementViewModel constructor.
      *
      * @param ConfigProvider $configProvider
-     * @param Session $authSession
      * @param BackendSession $backendSession
+     * @param AdminSessionManagement $adminSessionManagement
      */
     public function __construct(
         ConfigProvider $configProvider,
-        Session $authSession,
-        BackendSession $backendSession
+        BackendSession $backendSession,
+        AdminSessionManagement $adminSessionManagement
     ) {
         $this->configProvider = $configProvider;
-        $this->authSession = $authSession;
         $this->backendSession = $backendSession;
+        $this->adminSessionManagement = $adminSessionManagement;
     }
 
     /**
@@ -83,8 +85,8 @@ class AdminSessionManagementViewModel implements ArgumentInterface
      */
     public function isCustomerIdInAdminSession(): bool
     {
-        $currentCustomerId = $this->getCustomerId();
-        $customerIds = $this->getCustomerIds();
+        $currentCustomerId = $this->adminSessionManagement->getCustomerId();
+        $customerIds = $this->adminSessionManagement->getCustomerIds();
         $isCustomerIdInArray = false;
         if (!empty($customerIds) && in_array($currentCustomerId, $customerIds)) {
             $isCustomerIdInArray = true;
@@ -121,7 +123,7 @@ class AdminSessionManagementViewModel implements ArgumentInterface
      */
     public function getMessage(): string
     {
-        return $this->configProvider->getMessage();
+        return $this->configProvider->getMessage() ?? '';
     }
 
     /**
@@ -131,33 +133,6 @@ class AdminSessionManagementViewModel implements ArgumentInterface
      */
     public function setCustomerIdToAdminSession(int $customerId = null): void
     {
-        if (!$customerId) {
-            $customerId = $this->getCustomerId();
-        }
-        $customerIds = $this->getCustomerIds() ?? [];
-        $customerIds[] = $customerId;
-        $this->authSession->setData(self::ADMIN_SESSION_ATTRIBUTE_CUSTOMER_IDS, $customerIds);
-    }
-
-    /**
-     * Get array customers id from admin session.
-     *
-     * @return array
-     */
-    public function getCustomerIds(): array
-    {
-        return $this->authSession->getData(self::ADMIN_SESSION_ATTRIBUTE_CUSTOMER_IDS) ?? [];
-    }
-
-    /**
-     * Get current customer id from admin session.
-     *
-     * @return int
-     */
-    public function getCustomerId(): int
-    {
-        $customerData = $this->backendSession->getCustomerData();
-
-        return (int)$customerData['account']['id'] ?? 0;
+        $this->adminSessionManagement->setCustomerIdToAdminSession($customerId);
     }
 }

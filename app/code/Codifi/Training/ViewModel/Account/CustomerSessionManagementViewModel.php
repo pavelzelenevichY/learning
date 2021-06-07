@@ -72,14 +72,9 @@ class CustomerSessionManagementViewModel implements ArgumentInterface
     public function getCustomerAttrCreditHold(): bool
     {
         $customerData = $this->session->getCustomerData();
-        $customerAttribute = $customerData->getCustomAttribute(AddCustomerAttributeCreditHold::ATTRIBUTE_CODE);
-        if ($customerAttribute !== null) {
-            $value = (bool)$customerAttribute->getValue();
-        } else {
-            $value = false;
-        }
+        $customerAttribute = (bool)$customerData->getCustomAttribute(AddCustomerAttributeCreditHold::ATTRIBUTE_CODE);
 
-        return (bool)$value;
+        return $customerAttribute && $customerAttribute->getValue();
     }
 
     /**
@@ -119,7 +114,7 @@ class CustomerSessionManagementViewModel implements ArgumentInterface
      */
     public function getMessage(): string
     {
-        return $this->configProvider->getMessage();
+        return $this->configProvider->getMessage() ?? '';
     }
 
     /**

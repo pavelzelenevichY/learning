@@ -24,12 +24,12 @@ class Handler extends Base
      *
      * @var int
      */
-    public $loggerType = Logger::ERROR;
+    protected $loggerType = Logger::ERROR;
 
     /**
      * File name
      *
      * @var string
      */
-    public $fileName = '/var/log/attributeupdate.log';
+    protected $fileName = '/var/log/attributeupdate.log';
 }
