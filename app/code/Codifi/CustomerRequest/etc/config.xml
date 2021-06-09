@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Codifi_CustomerRequest
+ *
+ * @copyright   Copyright (c) 2021 Codifi
+ * @author      Pavel Zelenevich <pzelenevich@codifi.me>
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <customer_note>
+            <archive>
+                <lifetime>1</lifetime>
+            </archive>
+            <archive_cron>
+                <frequency>D</frequency>
+                <time>01,00,00</time>
+            </archive_cron>
+        </customer_note>
+    </default>
+    <crontab>
+        <archive>
+            <jobs>
+                <codifi_customerrequest_cron_archivecronmodel>
+                    <schedule>
+                        <cron_expr>* 1 * * *</cron_expr>
+                    </schedule>
+                </codifi_customerrequest_cron_archivecronmodel>
+            </jobs>
+        </archive>
+    </crontab>
+</config>

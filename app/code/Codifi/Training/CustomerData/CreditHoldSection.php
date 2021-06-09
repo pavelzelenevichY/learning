@@ -1,6 +1,10 @@
 <?php
 /**
+<<<<<<< HEAD
  * Codifi_Training
+=======
+ * Codifi_CustomerRequest
+>>>>>>> 29f892be72c3d1bb34daeb7d42e8d573bf90400e
  *
  * @copyright   Copyright (c) 2021 Codifi
  * @author      Pavel Zelenevich <pzelenevich@codifi.me>
