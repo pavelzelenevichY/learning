@@ -1,6 +1,6 @@
 <?php
 /**
- * Codifi_CustomerRequest
+ * Codifi_Catalog
  *
  * @copyright   Copyright (c) 2021 Codifi
  * @author      Pavel Zelenevich <pzelenevich@codifi.me>
@@ -8,7 +8,7 @@
 
 declare(strict_types=1);
 
-namespace Codifi\CustomerRequest\Setup\Patch\Data;
+namespace Codifi\Catalog\Setup\Patch\Data;
 
 use Magento\Framework\Setup\Patch\DataPatchInterface;
 use Magento\Catalog\Model\Category;
@@ -21,6 +21,8 @@ use Magento\UrlRewrite\Model\ResourceModel\UrlRewriteCollectionFactory;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Api\FilterBuilder;
+use Magento\Framework\Api\Search\SearchCriteriaBuilder;
 
 /**
  * Class AddSaleCategory
@@ -95,7 +97,7 @@ class AddSaleCategory implements DataPatchInterface
      */
     public function apply(): void
     {
-        $urlKey = 'customer_request_sale';
+        $urlKey = 'url-key-for-sale-category';
         $row = [
             'name'            => 'Sale',
             'url_key'         => $urlKey,
@@ -106,9 +108,6 @@ class AddSaleCategory implements DataPatchInterface
         ];
 
         $this->state->setAreaCode('adminhtml');
-        $store = $this->storeManager->getStore(Store::ADMIN_CODE);
-        $this->storeManager->setCurrentStore($store->getCode());
-
         $parentId = $this->getParentCategoryId();
 
         $data = [
@@ -124,51 +123,23 @@ class AddSaleCategory implements DataPatchInterface
         $defaultSetId = $category->getDefaultAttributeSetId();
         $category->setData($data);
         $category->setAttributeSetId($defaultSetId);
-        $this->setAdditionalData($row, $category);
         $this->categoryRepository->save($category);
     }
 
-    /**
-     * Set additional data
-     *
-     * @param array    $row
-     * @param Category $category
-     */
-    protected function setAdditionalData($row, $category): void
-    {
-        $additionalAttributes = [
-            'position',
-            'display_mode',
-            'page_layout',
-            'custom_layout_update',
-        ];
-        foreach ($additionalAttributes as $categoryAttribute) {
-            if (!empty($row[$categoryAttribute])) {
-                $attributeData = [$categoryAttribute => $row[$categoryAttribute]];
-                $category->addData($attributeData);
-            }
-        }
-    }
 
     /**
      * Get parent category id
      *
      * @return int
      */
-    public function getParentCategoryId(): int
+    private function getParentCategoryId(): int
     {
         $urlCollection = $this->urlRewriteCollectionFactory->create();
-        $rows = $urlCollection->getData();
-        $id = 0;
-        foreach ($rows as $row) {
-            if ($row['entity_type'] === 'category') {
-                if ($row['request_path'] === 'gear/fitness-equipment.html') {
-                    $id = $row['entity_id'];
-                }
-            }
-        }
+        $urlCollection->addFilter('request_path', 'gear/fitness-equipment.html');
 
-        return $id;
+        $id = $urlCollection->getData()[0]['entity_id'] ?? 0;
+
+        return (int)$id;
     }
 
     /**
