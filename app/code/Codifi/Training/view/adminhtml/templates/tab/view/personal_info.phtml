@@ -12,7 +12,6 @@
 $viewModel = $block->getAdminSessionManagementViewModel();
 ?>
 <?php if ($viewModel->checkBeforeDemo()): ?>
-    <?php $viewModel->setCustomerIdToAdminSession(); ?>
     <div class="confirmation-modal-content">
         <p><?= $block->escapeHtml($viewModel->getMessage()) ?></p>
     </div>
@@ -24,6 +23,19 @@ $viewModel = $block->getAdminSessionManagementViewModel();
             'use strict';
 
             $('.confirmation-modal-content').confirm({
+                actions: {
+                    always: function () {
+                        $.ajax({
+                            type: "POST",
+                            url: "<?= $block->escapeJs($viewModel->getSaveIdUrl()) ?>",
+                            data: {
+                                'customer_id': "<?= $block->escapeJs($viewModel->getCustomerId()) ?>"
+                            },
+                            success: function (data) {
+                            }
+                        });
+                    }
+                },
                 buttons: [{
                     text: $.mage.__('OK'),
                     class: 'action primary action-accept',

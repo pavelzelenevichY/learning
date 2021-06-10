@@ -13,6 +13,7 @@ namespace Codifi\Training\ViewModel\Admin;
 use Codifi\Training\Model\ConfigProvider;
 use Codifi\Training\Setup\Patch\Data\AddCustomerAttributeCreditHold;
 use Magento\Backend\Model\Session as BackendSession;
+use Magento\Framework\UrlInterface;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
 use Codifi\Training\Model\AdminSessionManagement;
 
@@ -49,20 +50,30 @@ class AdminSessionManagementViewModel implements ArgumentInterface
     private $adminSessionManagement;
 
     /**
+     * Url builder
+     *
+     * @var UrlInterface
+     */
+    private $urlBuilder;
+
+    /**
      * AdminSessionManagementViewModel constructor.
      *
      * @param ConfigProvider $configProvider
      * @param BackendSession $backendSession
      * @param AdminSessionManagement $adminSessionManagement
+     * @param UrlInterface $urlBuilder
      */
     public function __construct(
         ConfigProvider $configProvider,
         BackendSession $backendSession,
-        AdminSessionManagement $adminSessionManagement
+        AdminSessionManagement $adminSessionManagement,
+        UrlInterface $urlBuilder
     ) {
         $this->configProvider = $configProvider;
         $this->backendSession = $backendSession;
         $this->adminSessionManagement = $adminSessionManagement;
+        $this->urlBuilder = $urlBuilder;
     }
 
     /**
@@ -135,5 +146,25 @@ class AdminSessionManagementViewModel implements ArgumentInterface
     public function setCustomerIdToAdminSession(int $customerId = null): void
     {
         $this->adminSessionManagement->setCustomerIdToAdminSession($customerId);
+    }
+
+    /**
+     * Get save id url
+     *
+     * @return string
+     */
+    public function getSaveIdUrl(): string
+    {
+        return $this->urlBuilder->getUrl('customer/note/saveid');
+    }
+
+    /**
+     * Get customer id
+     *
+     * @return int
+     */
+    public function getCustomerId(): int
+    {
+        return $this->adminSessionManagement->getCustomerId();
     }
 }
