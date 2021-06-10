@@ -20,13 +20,15 @@
                     <span><?= $block->escapeHtml(__('Name')) ?></span>
                 </label>
                 <div class="control">
-                    <input type="text" name="customer_name" value="<?= $block->escapeHtml($block->getCustomerName()) ?>"/>
+                    <input type="text" name="customer_name"
+                           value="<?= $block->escapeHtml($block->getCustomerName()) ?>"/>
                 </div>
             </div>
             <div class="field required">
                 <label for="customer_email" class="label"><span><?= $block->escapeHtml(__('Email')) ?></span></label>
                 <div class="control">
-                    <input type="email" name="customer_email" value="<?= $block->escapeHtml($block->getCustomerEmail()) ?>"/>
+                    <input type="email" name="customer_email"
+                           value="<?= $block->escapeHtml($block->getCustomerEmail()) ?>"/>
                 </div>
             </div>
             <div class="field required">
@@ -34,7 +36,7 @@
                     <span><?= $block->escapeHtml(__('Message')) ?></span>
                 </label>
                 <div class="control">
-                    <textarea name="customer_messsage" maxlength="255"></textarea>
+                    <textarea name="customer_messsage" required="true" maxlength="255"></textarea>
                 </div>
             </div>
         </fieldset>
@@ -47,3 +49,10 @@
         </div>
     </form>
 </div>
+<script type="text/x-magento-init">
+    {
+        "#customer-request-form": {
+            "validation": {}
+        }
+    }
+</script>

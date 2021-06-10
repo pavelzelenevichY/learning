@@ -1,0 +1,30 @@
+<!--
+/**
+ * Codifi_CustomerRequest
+ *
+ * @copyright   Copyright (c) 2021 Codifi
+ * @author      Pavel Zelenevich <pzelenevich@codifi.me>
+ */
+-->
+<!--@vars {
+"var customerNameVar":"Customer Name",
+"var customerEmailVar":"Customer Email",
+"var messageVar":"Message",
+} @-->
+{{template config_path="design/email/header_template"}}
+
+<div>
+    <div>
+        <span>
+            {{trans "%customerNameVar %customerEmailVar sent request:" customerNameVar=$customerNameVar customerEmailVar=$customerEmailVar}}
+        </span>
+    </div>
+    <br/>
+    <div>
+        <span>
+            {{trans "%messageVar" messageVar=$messageVar}}
+        </span>
+    </div>
+</div>
+
+{{template config_path="design/email/footer_template"}}
