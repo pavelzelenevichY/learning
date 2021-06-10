@@ -112,8 +112,9 @@ class AdminSessionManagementViewModel implements ArgumentInterface
      */
     public function checkBeforeDemo(): bool
     {
-        return $this->getCustomerAttrCreditHold() &&
-            $this->isCreditHoldConfigEnabled() && !$this->isCustomerIdInAdminSession();
+        return $this->getCustomerAttrCreditHold()
+            && $this->isCreditHoldConfigEnabled()
+            && !$this->isCustomerIdInAdminSession();
     }
 
     /**
