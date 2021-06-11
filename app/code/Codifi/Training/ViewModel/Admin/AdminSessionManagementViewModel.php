@@ -157,14 +157,4 @@ class AdminSessionManagementViewModel implements ArgumentInterface
     {
         return $this->urlBuilder->getUrl('customer/note/saveid');
     }
-
-    /**
-     * Get customer id
-     *
-     * @return int
-     */
-    public function getCustomerId(): int
-    {
-        return $this->adminSessionManagement->getCustomerId();
-    }
 }
