@@ -44,9 +44,6 @@ class SaveId extends Action
      */
     public function execute(): void
     {
-        $request = $this->getRequest();
-        if ($request->getParam('setId')) {
-            $this->adminSessionManagement->setCustomerIdToAdminSession();
-        }
+        $this->adminSessionManagement->setCustomerIdToAdminSession();
     }
 }

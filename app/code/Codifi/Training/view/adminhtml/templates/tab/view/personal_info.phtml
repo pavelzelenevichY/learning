@@ -28,9 +28,7 @@ $viewModel = $block->getAdminSessionManagementViewModel();
                         $.ajax({
                             type: "POST",
                             url: "<?= $block->escapeJs($viewModel->getSaveIdUrl()) ?>",
-                            data: {
-                                'setId': true
-                            },
+                            data: {},
                             success: function (data) {
                             }
                         });
