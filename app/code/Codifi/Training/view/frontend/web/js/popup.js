@@ -50,15 +50,17 @@ define([
             var url = this.url;
             var customerId = this.customerId;
 
-            if (this.creditHold) {
-                showPopup(url, customerId);
-            }
-            this.customsection.subscribe(function (updatedCustomer) {
-                this.creditHold = updatedCustomer.credit_hold;
+            if (this.checkOptionAndFlag) {
                 if (this.creditHold) {
                     showPopup(url, customerId);
                 }
-            });
-        },
+                this.customsection.subscribe(function (updatedCustomer) {
+                    this.creditHold = updatedCustomer.credit_hold;
+                    if (this.creditHold) {
+                        showPopup(url, customerId);
+                    }
+                });
+            }
+        }
     });
 });

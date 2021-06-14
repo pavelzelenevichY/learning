@@ -18,7 +18,8 @@
                     <item name="buttonClasses" xsi:type="string">open-customer-note-form-modal-button</item>
                     <item name="actions" xsi:type="array">
                         <item name="0" xsi:type="array">
-                            <item name="targetName" xsi:type="string">${ $.parentName}.customer_note_form_modal.customer_note_form_loader</item>
+                            <item name="targetName" xsi:type="string">${ $.parentName}.customer_note_form_modal.customer_note_form_loader
+                            </item>
                             <item name="actionName" xsi:type="string">destroyInserted</item>
                         </item>
                         <item name="1" xsi:type="array">
@@ -65,7 +66,7 @@
                 <argument name="data" xsi:type="array">
                     <item name="config" xsi:type="array">
                         <item name="noteListingProvider" xsi:type="string">index = customer_note_listing_data_source</item>
-                     </item>
+                    </item>
                 </argument>
                 <settings>
                     <formSubmitType>ajax</formSubmitType>
@@ -76,15 +77,27 @@
                     <loading>true</loading>
                     <externalProvider>${ $.ns }.customer_note_form_data_source</externalProvider>
                     <ns>customer_note_form</ns>
+                    <exports>
+                        <link name="parentId">${ $.externalProvider }:data.parent_id</link>
+                    </exports>
+                    <imports>
+                        <link name="parentId">${ $.provider}:data.customer_id</link>
+                    </imports>
                 </settings>
             </insertForm>
         </modal>
         <insertListing name="customer_note_listing">
             <settings>
+                <externalProvider>${ $.ns }.customer_note_listing_data_source</externalProvider>
                 <autoRender>true</autoRender>
-                <selectionsProvider>customer_note_listing.customer_note_listing.columns.ids</selectionsProvider>
                 <dataScope>customer_note_listing</dataScope>
                 <ns>customer_note_listing</ns>
+                <exports>
+                    <link name="parent_id">${ $.externalProvider }:params.parent_id</link>
+                </exports>
+                <imports>
+                    <link name="parent_id">${ $.provider }:data.customer.entity_id</link>
+                </imports>
             </settings>
         </insertListing>
     </fieldset>

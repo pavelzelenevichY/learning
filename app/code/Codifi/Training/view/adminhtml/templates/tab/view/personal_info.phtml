@@ -7,12 +7,13 @@
  */
 
 /**
- * @var Codifi\Training\Block\Adminhtml\Edit\Tab\View\PersonalInfo $block
+ * @var \Magento\Framework\View\Element\Template $block
  */
+$viewModel = $block->getAdminSessionManagementViewModel();
 ?>
-<?php if ($block->checkForOneTimeDemoMessage()): ?>
+<?php if ($viewModel->checkBeforeDemo()): ?>
     <div class="confirmation-modal-content">
-        <p><?= $block->escapeHtml($block->getMessage()) ?></p>
+        <p><?= $block->escapeHtml($viewModel->getMessage()) ?></p>
     </div>
     <script>
         require([
@@ -22,6 +23,17 @@
             'use strict';
 
             $('.confirmation-modal-content').confirm({
+                actions: {
+                    always: function () {
+                        $.ajax({
+                            type: "POST",
+                            url: "<?= $block->escapeJs($viewModel->getSaveIdUrl()) ?>",
+                            data: {},
+                            success: function (data) {
+                            }
+                        });
+                    }
+                },
                 buttons: [{
                     text: $.mage.__('OK'),
                     class: 'action primary action-accept',

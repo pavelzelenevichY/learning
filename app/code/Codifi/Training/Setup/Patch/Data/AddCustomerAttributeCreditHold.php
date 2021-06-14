@@ -6,6 +6,8 @@
  * @author      Pavel Zelenevich <pzelenevich@codifi.me>
  */
 
+declare(strict_types=1);
+
 namespace Codifi\Training\Setup\Patch\Data;
 
 use Magento\Framework\Setup\Patch\DataPatchInterface;
@@ -18,6 +20,7 @@ use Magento\Customer\Model\Customer;
 use Codifi\Training\Model\Source\CustomSelect;
 use Magento\Framework\Exception\AlreadyExistsException;
 use Magento\Framework\Exception\LocalizedException;
+use Zend_Validate_Exception;
 
 /**
  * Class AddCustomerAttributeCreditHold
@@ -92,9 +95,9 @@ class AddCustomerAttributeCreditHold implements DataPatchInterface
      *
      * @throws AlreadyExistsException
      * @throws LocalizedException
-     * @throws \Zend_Validate_Exception
+     * @throws Zend_Validate_Exception
      */
-    public function apply() : void
+    public function apply(): void
     {
         $moduleDataSetupConnection = $this->moduleDataSetup->getConnection();
         $moduleDataSetupConnection->startSetup();

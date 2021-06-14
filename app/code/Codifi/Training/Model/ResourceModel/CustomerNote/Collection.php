@@ -6,6 +6,8 @@
  * @author      Pavel Zelenevich <pzelenevich@codifi.me>
  */
 
+declare(strict_types=1);
+
 namespace Codifi\Training\Model\ResourceModel\CustomerNote;
 
 use Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection;

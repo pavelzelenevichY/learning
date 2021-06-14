@@ -6,6 +6,8 @@
  * @author      Pavel Zelenevich <pzelenevich@codifi.me>
  */
 
+declare(strict_types=1);
+
 namespace Codifi\Training\Model;
 
 use Codifi\Training\Api\Data\NoteInterface;
@@ -40,7 +42,6 @@ class CustomerNote extends AbstractModel implements NoteInterface
      * Set note id.
      *
      * @param int $noteId
-     * @return void
      */
     public function setNoteId(int $noteId): void
     {
@@ -61,7 +62,6 @@ class CustomerNote extends AbstractModel implements NoteInterface
      * Set note.
      *
      * @param string $noteText
-     * @return void
      */
     public function setNoteText(string $noteText): void
     {

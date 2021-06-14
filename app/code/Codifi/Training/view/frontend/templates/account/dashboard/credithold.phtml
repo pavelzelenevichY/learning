@@ -7,14 +7,15 @@
  */
 
 /**
- * @var Codifi\Training\Block\Account\Dashboard\CreditHold $block
+ * @var \Magento\Framework\View\Element\Template $block
  */
+$viewModel = $block->getCustomerSessionManagementViewModel();
+$check = $viewModel->checkBeforeDemo();
 ?>
-<?php if ($block->checkForOneTimeDemoMessage()): ?>
-    <div class="confirmation-modal-content" style="display: none;">
-        <p><?= $block->escapeHtml($block->getMessage()) ?></p>
-    </div>
-    <script type="text/x-magento-init">
+<div class="confirmation-modal-content" style="display: none;">
+    <p><?= $block->escapeHtml($viewModel->getMessage()) ?></p>
+</div>
+<script type="text/x-magento-init">
     {
         "*": {
             "Magento_Ui/js/core/app": {
@@ -22,8 +23,9 @@
                     "creditHold": {
                         "component": "Codifi_Training/js/popup",
                         "config": {
-                            "url": "<?= $block->escapeJs($block->getSaveUrl()) ?>",
-                            "customerId": <?= $block->escapeJs($block->getCustomerId()) ?>
+                            "url": "<?= $block->escapeJs($viewModel->getSaveUrl()) ?>",
+                            "customerId": <?= $block->escapeJs($viewModel->getCustomerId()) ?>,
+                            "checkOptionAndFlag": "<?= $block->escapeJs($check) ?>"
                         },
                         "children": {
                             "errors": {
@@ -40,5 +42,5 @@
             }
         }
     }
-    </script>
-<?php endif; ?>
+</script>
+

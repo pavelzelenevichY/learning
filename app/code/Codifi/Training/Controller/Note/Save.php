@@ -6,6 +6,8 @@
  * @author      Pavel Zelenevich <pzelenevich@codifi.me>
  */
 
+declare(strict_types=1);
+
 namespace Codifi\Training\Controller\Note;
 
 use Codifi\Training\Model\ResourceModel\CustomerNote as CustomerNoteResource;
@@ -13,12 +15,10 @@ use Codifi\Training\Model\CustomerNoteFactory;
 use Magento\Framework\Controller\Result\JsonFactory;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Controller\Result\Json;
-use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
-use Magento\Framework\App\ResponseInterface;
+use Codifi\Training\Model\CustomerSessionManagement;
 use Exception;
-
 
 /**
  * Class Save
@@ -48,35 +48,46 @@ class Save extends Action
     private $customerNoteResource;
 
     /**
+     * Customer session management
+     *
+     * @var CustomerSessionManagement
+     */
+    private $customerSessionManagement;
+
+    /**
      * Save constructor.
      *
      * @param Context $context
      * @param JsonFactory $jsonFactory
      * @param CustomerNoteFactory $customerNoteFactory
      * @param CustomerNoteResource $customerNoteResource
+     * @param CustomerSessionManagement $customerSessionManagement
      */
     public function __construct(
         Context $context,
         JsonFactory $jsonFactory,
         CustomerNoteFactory $customerNoteFactory,
         CustomerNoteResource $customerNoteResource,
+        CustomerSessionManagement $customerSessionManagement
     ) {
         parent::__construct($context);
         $this->jsonFactory = $jsonFactory;
         $this->customerNoteFactory = $customerNoteFactory;
         $this->customerNoteResource = $customerNoteResource;
+        $this->customerSessionManagement = $customerSessionManagement;
     }
 
     /**
      * Execute function
      *
-     * @return ResponseInterface|Json|ResultInterface
+     * @return Json
      * @throws Exception
      */
-    public function execute()
+    public function execute(): Json
     {
-        $note = $this->getRequest()->getParam('note');
-        $customerId = $this->getRequest()->getParam('customer_id');
+        $request = $this->getRequest();
+        $note = $request->getParam('note');
+        $customerId = $request->getParam('customer_id');
 
         $customerNoteModel = $this->customerNoteFactory->create();
         $resultJson = $this->jsonFactory->create();
@@ -94,6 +105,7 @@ class Save extends Action
                         'success' => true,
                         'message' => ''
                     ]);
+                    $this->customerSessionManagement->setFlag();
                 } catch (LocalizedException $exception) {
                     $response = $resultJson->setData([
                         'success' => false,

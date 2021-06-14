@@ -10,7 +10,11 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceContainer name="content">
-            <block class="Codifi\Training\Block\Account\Dashboard\CreditHold" name="codifi.training.layout.credithold" template="Codifi_Training::account/dashboard/credithold.phtml"/>
+            <block name="codifi.training.layout.credithold" template="Codifi_Training::account/dashboard/credithold.phtml">
+                <arguments>
+                    <argument name="customer_session_management_view_model" xsi:type="object">Codifi\Training\ViewModel\Account\CustomerSessionManagementViewModel</argument>
+                </arguments>
+            </block>
         </referenceContainer>
     </body>
 </page>

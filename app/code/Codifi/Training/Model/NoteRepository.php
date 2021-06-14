@@ -20,7 +20,6 @@ use Magento\Framework\Api\SearchCriteriaInterface;
 use Magento\Framework\Api\SearchCriteria\CollectionProcessorInterface;
 use Exception;
 use Codifi\Training\Model\ResourceModel\CustomerNote\CollectionFactory;
-use Codifi\Training\Model\ResourceModel\CustomerNote\Collection;
 use Magento\Framework\Api\SearchResultsInterfaceFactory;
 use Magento\Framework\Api\SearchResultsInterface;
 
@@ -66,34 +65,26 @@ class NoteRepository implements NoteRepositoryInterface
     private $customerNoteCollectionFactory;
 
     /**
-     * Customer note collection.
-     *
-     * @var Collection
-     */
-    private $noteCollection;
-
-    /**
      * NoteRepository constructor.
      *
      * @param CustomerNoteFactory $noteFactory
      * @param CustomerNoteResourse $noteResourse
      * @param SearchResultsInterfaceFactory $searchResultFactory
      * @param CollectionProcessorInterface $collectionProcessor
+     * @param CollectionFactory $customerNoteCollectionFactory
      */
     public function __construct(
         CustomerNoteFactory $noteFactory,
         CustomerNoteResourse $noteResourse,
         SearchResultsInterfaceFactory $searchResultFactory,
         CollectionProcessorInterface $collectionProcessor,
-        CollectionFactory $customerNoteCollectionFactory,
-        Collection $noteCollection
+        CollectionFactory $customerNoteCollectionFactory
     ) {
         $this->noteFactory = $noteFactory;
         $this->noteResourse = $noteResourse;
         $this->searchResultFactory = $searchResultFactory;
         $this->collectionProcessor = $collectionProcessor;
         $this->customerNoteCollectionFactory = $customerNoteCollectionFactory;
-        $this->noteCollection = $noteCollection;
     }
 
     /**
@@ -103,7 +94,7 @@ class NoteRepository implements NoteRepositoryInterface
      * @return CustomerNote
      * @throws NoSuchEntityException
      */
-    public function getById($id): CustomerNote
+    public function getById(int $id): CustomerNote
     {
         $noteModel = $this->noteFactory->create();
         $this->noteResourse->load($noteModel, $id);
@@ -121,7 +112,7 @@ class NoteRepository implements NoteRepositoryInterface
      * @return NoteInterface
      * @throws Exception
      */
-    public function save(NoteInterface $note)
+    public function save(NoteInterface $note): NoteInterface
     {
         try {
             $this->noteResourse->save($note);
@@ -139,7 +130,7 @@ class NoteRepository implements NoteRepositoryInterface
      * @return NoteInterface
      * @throws Exception
      */
-    public function delete(NoteInterface $note)
+    public function delete(NoteInterface $note): NoteInterface
     {
         try {
             $this->noteResourse->delete($note);
@@ -156,7 +147,7 @@ class NoteRepository implements NoteRepositoryInterface
      * @param int $noteId
      * @throws NoSuchEntityException
      */
-    public function deleteById($noteId): void
+    public function deleteById(int $noteId): void
     {
         $this->delete($this->getById($noteId));
     }

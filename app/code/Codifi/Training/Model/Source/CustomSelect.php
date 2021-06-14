@@ -6,6 +6,8 @@
  * @author      Pavel Zelenevich <pzelenevich@codifi.me>
  */
 
+declare(strict_types=1);
+
 namespace Codifi\Training\Model\Source;
 
 use Magento\Eav\Model\Entity\Attribute\Source\AbstractSource;
@@ -21,7 +23,7 @@ class CustomSelect extends AbstractSource
      *
      * @return array
      */
-    public function getAllOptions() : array
+    public function getAllOptions(): array
     {
         if (null === $this->_options) {
             $this->_options = [

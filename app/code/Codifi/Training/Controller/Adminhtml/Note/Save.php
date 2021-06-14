@@ -6,9 +6,10 @@
  * @author      Pavel Zelenevich <pzelenevich@codifi.me>
  */
 
+declare(strict_types=1);
+
 namespace Codifi\Training\Controller\Adminhtml\Note;
 
-use Codifi\Training\Model\AdminSessionManagement;
 use Codifi\Training\Model\CustomerNoteFactory;
 use Codifi\Training\Model\ResourceModel\CustomerNote as CustomerNoteResource;
 use Magento\Framework\App\Action\Action;
@@ -16,8 +17,13 @@ use Magento\Framework\App\Action\Context;
 use Magento\Framework\Controller\Result\JsonFactory;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Controller\Result\Json;
+use Magento\Backend\Model\Auth\Session;
 use Exception;
 
+/**
+ * Class Save
+ * @package Codifi\Training\Controller\Adminhtml\Note
+ */
 class Save extends Action
 {
     /**
@@ -35,13 +41,6 @@ class Save extends Action
     private $customerNoteResource;
 
     /**
-     * Admin session management
-     *
-     * @var AdminSessionManagement
-     */
-    private $adminSessionManagement;
-
-    /**
      * Json factory
      *
      * @var JsonFactory
@@ -49,25 +48,32 @@ class Save extends Action
     private $jsonFactory;
 
     /**
+     * Auth session
+     *
+     * @var Session
+     */
+    private $authSession;
+
+    /**
      * Save constructor.
      *
      * @param Context $context
      * @param CustomerNoteFactory $customerNoteFactory
      * @param CustomerNoteResource $customerNoteResource
-     * @param AdminSessionManagement $adminSessionManagement
      * @param JsonFactory $jsonFactory
+     * @param Session $authSession
      */
     public function __construct(
         Context $context,
         CustomerNoteFactory $customerNoteFactory,
         CustomerNoteResource $customerNoteResource,
-        AdminSessionManagement $adminSessionManagement,
-        JsonFactory $jsonFactory
+        JsonFactory $jsonFactory,
+        Session $authSession
     ) {
         $this->customerNoteFactory = $customerNoteFactory;
         $this->customerNoteResource = $customerNoteResource;
-        $this->adminSessionManagement = $adminSessionManagement;
         $this->jsonFactory = $jsonFactory;
+        $this->authSession = $authSession;
         parent::__construct($context);
     }
 
@@ -82,16 +88,14 @@ class Save extends Action
         $customerNoteModel = $this->customerNoteFactory->create();
         $resultJson = $this->jsonFactory->create();
 
-        $ids = $this->adminSessionManagement->getAdminId();
-
-        $adminId = $ids['admin_id'];
-        $customerId = $ids['customer_id'];
+        $adminId = $this->getAdminId();
 
         $request = $this->getRequest();
         $noteId = $request->getParam('note_id');
         $note = $request->getParam('note');
         $createdAt = $request->getParam('created_at');
         $createdBy = $request->getParam('created_by');
+        $customerId = $request->getParam('parent_id');
 
         if ($note) {
             if (!$noteId) {
@@ -152,5 +156,17 @@ class Save extends Action
         $resultJson->setData($resultData);
 
         return $resultJson;
+    }
+
+    /**
+     * Get admin id
+     *
+     * @return int
+     */
+    public function getAdminId(): int
+    {
+        $admin = $this->authSession->getUser();
+
+        return (int)$admin->getId() ?? 0;
     }
 }
